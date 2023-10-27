@@ -1,0 +1,68 @@
+.LoginPage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: space-around; /* Change this to space-between */
+  align-items: center;
+
+  .password-toggle {
+    display: inline-block;
+    width: 20px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}
+
+.left {
+  width: 600px;
+  margin-right: 180px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.right {
+  width: 400px;
+  .text-input{
+    width: 210px;
+    height: 35px;
+    margin: 10px 0;
+    padding: 4px;
+    border-radius: 4px;
+  }
+  .check-box{
+    margin: 5px 0;
+  }
+}
+
+.error {
+  color: red;
+}
+
+.social-media-icon {
+  width: 28px;
+  margin-left: 14px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+  }
+}
+
+.login-with {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+}
+#facebook{
+  width: 25px;
+  margin-left: 14px;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+  }
+}

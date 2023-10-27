@@ -1,0 +1,21 @@
+.header {
+  position: relative;
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+
+  &__btn {
+    width: 130px;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.home-intro {
+  display: block;
+  margin: 100px auto 0;
+  text-align: center;
+  img {
+    width: 600px;
+  }
+}
