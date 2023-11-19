@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useFormik } from 'formik';
+import React, {useState} from 'react';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
 import student from '../../../assets/studentbook.png';
@@ -31,7 +31,6 @@ const SignUpPage = () => {
             password: Yup.string().required('Required'),
         }),
         onSubmit: (values) => {
-            // Handle form submission here, e.g., send data to the server
             console.log(values);
         },
     });
@@ -39,7 +38,7 @@ const SignUpPage = () => {
     return (
         <div className="LoginPage">
             <div className="left">
-                <img src={student} alt="login-page" />
+                <img src={student} alt="login-page"/>
             </div>
             <div className="right">
                 <h2>Sign Up</h2>
@@ -131,13 +130,13 @@ const SignUpPage = () => {
                 <div className="login-with">
                     <div>Sign Up with:</div>
                     <div id="google" className="social-media-icon">
-                        <img src={google_icon} alt="google-icon" />
+                        <img src={google_icon} alt="google-icon"/>
                     </div>
                     <div id="github" className="social-media-icon">
-                        <img src={github_icon} alt="github-icon" />
+                        <img src={github_icon} alt="github-icon"/>
                     </div>
                     <div id="facebook" className="social-media-icon">
-                        <img src={facebook_icon} alt="facebook-icon" />
+                        <img src={facebook_icon} alt="facebook-icon"/>
                     </div>
                 </div>
             </div>

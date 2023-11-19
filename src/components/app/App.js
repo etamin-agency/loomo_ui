@@ -1,18 +1,32 @@
-import './App.scss';
-import HomePage from "../pages/home_page/HomePage";
 import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
-import LogInPage from "../pages/login_page/LogInPage";
-import SignUpPage from "../pages/signup_page/SignUpPage";
+import {lazy, Suspense} from "react";
+import {Transition} from "react-transition-group";
+
+import Spinner from "../spinner/Spinner";
+import Page404 from "../error/Page404";
+
+import './App.scss';
+
+
+const HomePage = lazy(() => import("../pages/home_page/HomePage"))
+const LogInPage = lazy(() => import("../pages/login_page/LogInPage"));
+const SignUpPage = lazy(() => import("../pages/signup_page/SignUpPage"));
+
 
 function App() {
+
+
     return (
         <Router>
             <div className="App">
-                <Routes>
-                    <Route path="/" element={<HomePage/>}/>
-                    <Route path="/login" element={<LogInPage/>}/>
-                    <Route path="/signup" element={<SignUpPage/>}/>
-                </Routes>
+                <Suspense fallback={<Spinner/>}>
+                    <Routes>
+                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/login" element={<LogInPage/>}/>
+                        <Route path="/signup" element={<SignUpPage/>}/>
+                        <Route path="*" element={<Page404/>}/>
+                    </Routes>
+                </Suspense>
             </div>
         </Router>
 
