@@ -1,17 +1,23 @@
-import React, {useState} from 'react';
+import React,  {useState,useEffect,useRef} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
+// import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+
 import student from '../../../assets/studentbook.png';
 import eye from '../../../assets/eye-icon.png';
 import facebook_icon from '../../../assets/face.svg';
 import google_icon from '../../../assets/google.svg';
 import github_icon from '../../../assets/github.svg';
+
 import './SignUpPage.scss';
 
 const SignUpPage = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
-
+    const userRef = useRef();
+    useEffect(() => {
+        userRef.current.focus();
+    }, []);
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
     };
@@ -22,13 +28,30 @@ const SignUpPage = () => {
             username: '',
             emailOrPhone: '',
             password: '',
-            rememberMe: false,
+            isTeacher: false,
         },
         validationSchema: Yup.object({
-            name: Yup.string().required('Required'),
+            name: Yup.string().min(2, "at least 2 characters").required('Required'),
             username: Yup.string().required('Required'),
-            emailOrPhone: Yup.string().required('Required'),
-            password: Yup.string().required('Required'),
+            emailOrPhone: Yup.string().required('Required').test('is-valid-format', 'Invalid email or phone number format', (value) => {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const phoneRegex = /^[0-9]{10}$/;
+
+                if (emailRegex.test(value)) {
+                    return true;
+                }
+
+                if (phoneRegex.test(value)) {
+                    return true;
+                }
+
+                return false;
+            })
+                .test('is-unique-email-or-phone', 'Email or phone number is already in use', async (value) => {
+                    const isUnique = false //await checkEmailOrPhoneUniqueness(value);
+                    return isUnique;
+                }),
+            password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
         }),
         onSubmit: (values) => {
             console.log(values);
@@ -36,9 +59,9 @@ const SignUpPage = () => {
     });
 
     return (
-        <div className="LoginPage">
+        <div className="SignUp">
             <div className="left">
-                <img src={student} alt="login-page"/>
+                <img src={student} alt="sign-up-page"/>
             </div>
             <div className="right">
                 <h2>Sign Up</h2>
@@ -49,14 +72,16 @@ const SignUpPage = () => {
                             type="text"
                             id="emailOrPhone"
                             name="emailOrPhone"
+                            ref={userRef}
                             placeholder="Email or Phone"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.emailOrPhone}
                         />
-                        {formik.touched.emailOrPhone && formik.errors.emailOrPhone ? (
-                            <div className="error">{formik.errors.emailOrPhone}</div>
-                        ) : null}
+                        {/*{formik.touched.emailOrPhone && formik.errors.emailOrPhone ?*/}
+                        {/*    // <div className="error">{formik.errors.emailOrPhone}</div>*/}
+                        {/*    <CheckCircleRoundedIcon/>*/}
+                        {/*: null}*/}
                     </div>
                     <div className="form-group">
                         <input
@@ -115,8 +140,8 @@ const SignUpPage = () => {
                             Teacher Account{' '}
                             <input
                                 type="checkbox"
-                                name="rememberMe"
-                                checked={formik.values.rememberMe}
+                                name="isTeacher"
+                                checked={formik.values.isTeacher}
                                 onChange={formik.handleChange}
                             />
                         </label>
