@@ -1,6 +1,5 @@
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
+ import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import {lazy, Suspense} from "react";
-import {Transition} from "react-transition-group";
 
 import Spinner from "../spinner/Spinner";
 import Page404 from "../error/Page404";
@@ -28,7 +27,7 @@ function App() {
                     </Routes>
                 </Suspense>
             </div>
-        </Router>
+         </Router>
 
     );
 }

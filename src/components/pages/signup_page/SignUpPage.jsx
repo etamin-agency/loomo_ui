@@ -1,8 +1,8 @@
-import React,  {useState,useEffect,useRef} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
-// import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
 import student from '../../../assets/studentbook.png';
 import eye from '../../../assets/eye-icon.png';
@@ -14,6 +14,7 @@ import './SignUpPage.scss';
 
 const SignUpPage = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [isBlur, setBlur] = useState(false);
     const userRef = useRef();
     useEffect(() => {
         userRef.current.focus();
@@ -22,6 +23,15 @@ const SignUpPage = () => {
         setPasswordVisible(!passwordVisible);
     };
 
+    const mouseIn = () => {
+        console.log("in")
+        setBlur(true);
+    }
+
+    const mouseOut = () => {
+        console.log("out")
+        setBlur(false);
+    }
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -78,10 +88,14 @@ const SignUpPage = () => {
                             onBlur={formik.handleBlur}
                             value={formik.values.emailOrPhone}
                         />
-                        {/*{formik.touched.emailOrPhone && formik.errors.emailOrPhone ?*/}
-                        {/*    // <div className="error">{formik.errors.emailOrPhone}</div>*/}
-                        {/*    <CheckCircleRoundedIcon/>*/}
-                        {/*: null}*/}
+                        {formik.touched.emailOrPhone && formik.errors.emailOrPhone ? (
+                            <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
+                                <CancelRoundedIcon style={{color: 'red'}}/>
+                                <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
+                                    {formik.errors.emailOrPhone}
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                     <div className="form-group">
                         <input
@@ -95,7 +109,12 @@ const SignUpPage = () => {
                             value={formik.values.name}
                         />
                         {formik.touched.name && formik.errors.name ? (
-                            <div className="error">{formik.errors.name}</div>
+                                <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
+                                    <CancelRoundedIcon style={{color: 'red'}}/>
+                                    <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
+                                        {formik.errors.name}
+                                    </div>
+                                </div>
                         ) : null}
                     </div>
                     <div className="form-group">
@@ -110,7 +129,12 @@ const SignUpPage = () => {
                             value={formik.values.username}
                         />
                         {formik.touched.username && formik.errors.username ? (
-                            <div className="error">{formik.errors.username}</div>
+                                <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
+                                    <CancelRoundedIcon style={{color: 'red'}}/>
+                                    <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
+                                        {formik.errors.username}
+                                    </div>
+                                </div>
                         ) : null}
                     </div>
                     <div className="form-group">
@@ -130,10 +154,15 @@ const SignUpPage = () => {
                                 onClick={togglePasswordVisibility}
                                 className="password-toggle"
                             />
+                            {formik.touched.password && formik.errors.password ? (
+                                <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
+                                    <CancelRoundedIcon style={{color: 'red'}}/>
+                                    <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
+                                        {formik.errors.password}
+                                    </div>
+                                </div>
+                            ) : null}
                         </div>
-                        {formik.touched.password && formik.errors.password ? (
-                            <div className="error">{formik.errors.password}</div>
-                        ) : null}
                     </div>
                     <div className="form-group check-box">
                         <label>
