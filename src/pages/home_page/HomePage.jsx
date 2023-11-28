@@ -1,6 +1,6 @@
-import SearchBar from "../../searchbar/SearchBar";
+import SearchBar from "../../components/searchbar/SearchBar";
 import Button from "react-bootstrap/Button";
-import Loomo from "../../../assets/loomo.png"
+import Loomo from "../../assets/loomo.png"
 import './HomePage.scss'
 import {Link} from "react-router-dom";
 

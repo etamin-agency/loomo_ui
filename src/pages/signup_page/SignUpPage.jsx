@@ -4,11 +4,13 @@ import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 
-import student from '../../../assets/studentbook.png';
-import eye from '../../../assets/eye-icon.png';
-import facebook_icon from '../../../assets/face.svg';
-import google_icon from '../../../assets/google.svg';
-import github_icon from '../../../assets/github.svg';
+import authService from "../../services/authService";
+
+import student from '../../assets/studentbook.png';
+import eye from '../../assets/eye-icon.png';
+import facebook_icon from '../../assets/face.svg';
+import google_icon from '../../assets/google.svg';
+import github_icon from '../../assets/github.svg';
 
 import './SignUpPage.scss';
 
@@ -24,12 +26,10 @@ const SignUpPage = () => {
     };
 
     const mouseIn = () => {
-        console.log("in")
         setBlur(true);
     }
 
     const mouseOut = () => {
-        console.log("out")
         setBlur(false);
     }
     const formik = useFormik({
@@ -38,11 +38,15 @@ const SignUpPage = () => {
             username: '',
             emailOrPhone: '',
             password: '',
-            isTeacher: false,
+            isTeacher: true,
         },
         validationSchema: Yup.object({
             name: Yup.string().min(2, "at least 2 characters").required('Required'),
-            username: Yup.string().required('Required'),
+            username: Yup.string().min(6, "at least 6 characters").required('Required')
+                .test('is-unique-username', 'Username is already in use', async (value) => {
+                    const isUnique = await authService.checkUserName(value);
+                    return !isUnique;
+                }),
             emailOrPhone: Yup.string().required('Required').test('is-valid-format', 'Invalid email or phone number format', (value) => {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 const phoneRegex = /^[0-9]{10}$/;
@@ -58,13 +62,30 @@ const SignUpPage = () => {
                 return false;
             })
                 .test('is-unique-email-or-phone', 'Email or phone number is already in use', async (value) => {
-                    const isUnique = false //await checkEmailOrPhoneUniqueness(value);
-                    return isUnique;
+                    const isUnique = await authService.checkEmail(value);
+                    return !isUnique;
                 }),
             password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
         }),
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values, { setSubmitting }) => {
+            try {
+                if (formik.isValid) {
+                    const name = values.name.replaceAll("  "," ").split(" ");
+                    const registrationResponse = await authService.register({
+                        firstName: name[0],
+                        lastName: name[1],
+                        userName: values.username,
+                        email: values.emailOrPhone,
+                        password: values.password,
+                        role: values.isTeacher?"TEACHER":"STUDENT",
+                    });
+                    console.log(registrationResponse);
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setSubmitting(false);
+            }
         },
     });
 
@@ -109,12 +130,12 @@ const SignUpPage = () => {
                             value={formik.values.name}
                         />
                         {formik.touched.name && formik.errors.name ? (
-                                <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
-                                    <CancelRoundedIcon style={{color: 'red'}}/>
-                                    <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
-                                        {formik.errors.name}
-                                    </div>
+                            <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
+                                <CancelRoundedIcon style={{color: 'red'}}/>
+                                <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
+                                    {formik.errors.name}
                                 </div>
+                            </div>
                         ) : null}
                     </div>
                     <div className="form-group">
@@ -129,12 +150,12 @@ const SignUpPage = () => {
                             value={formik.values.username}
                         />
                         {formik.touched.username && formik.errors.username ? (
-                                <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
-                                    <CancelRoundedIcon style={{color: 'red'}}/>
-                                    <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
-                                        {formik.errors.username}
-                                    </div>
+                            <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
+                                <CancelRoundedIcon style={{color: 'red'}}/>
+                                <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
+                                    {formik.errors.username}
                                 </div>
+                            </div>
                         ) : null}
                     </div>
                     <div className="form-group">
@@ -176,7 +197,7 @@ const SignUpPage = () => {
                         </label>
                     </div>
                     <div className="form-group">
-                        <Button type="submit" size="sm">
+                        <Button type="submit" size="sm" disabled={!formik.isValid}>
                             Sign Up
                         </Button>
                     </div>

@@ -7,9 +7,9 @@ import Page404 from "../error/Page404";
 import './App.scss';
 
 
-const HomePage = lazy(() => import("../pages/home_page/HomePage"))
-const LogInPage = lazy(() => import("../pages/login_page/LogInPage"));
-const SignUpPage = lazy(() => import("../pages/signup_page/SignUpPage"));
+const HomePage = lazy(() => import("../../pages/home_page/HomePage"))
+const LogInPage = lazy(() => import("../../pages/login_page/LogInPage"));
+const SignUpPage = lazy(() => import("../../pages/signup_page/SignUpPage"));
 
 
 function App() {

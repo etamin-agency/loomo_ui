@@ -4,11 +4,11 @@ import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
 
 
-import pcman from '../../../assets/pcman.png';
-import eye from '../../../assets/eye-icon.png';
-import facebook_icon from '../../../assets/face.svg';
-import google_icon from '../../../assets/google.svg';
-import github_icon from '../../../assets/github.svg';
+import pcman from '../../assets/pcman.png';
+import eye from '../../assets/eye-icon.png';
+import facebook_icon from '../../assets/face.svg';
+import google_icon from '../../assets/google.svg';
+import github_icon from '../../assets/github.svg';
 import './LoginPage.scss';
 
 
@@ -33,7 +33,6 @@ const LogInPage = () => {
             password: Yup.string().required('Required'),
         }),
         onSubmit: (values) => {
-            // Handle form submission here, e.g., send data to the server
             console.log(values);
         },
     });
