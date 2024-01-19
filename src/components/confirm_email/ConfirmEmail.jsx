@@ -9,6 +9,7 @@ import authService from "../../services/authService";
 
 const ConfirmEmail = (props) => {
     const userRef = useRef();
+    const [errorText, setErrorText] = useState("");
 
     useEffect(() => {
         userRef.current.focus();
@@ -26,13 +27,33 @@ const ConfirmEmail = (props) => {
                 if (formik.isValid) {
                     const data = {
                         ...props.data,
-                        verificationNumber:values.code,
+                        verificationNumber: values.code,
                     };
-                    console.log(data)
                     formik.setSubmitting(true);
                     const registerResponse = await authService.register(data);
-                    if (registerResponse) {
+                    if (registerResponse === "SUCCESS") {
+                        const loginResponse = await authService.authenticate({
+                            email: data.email,
+                            password: data.password
+                        });
+                        console.log(loginResponse)
+                    } else {
+                        switch (registerResponse) {
+                            case "INCORRECT_NUMBER":
+                                setErrorText("Incorrect  number format. Please enter a valid  number.");
+                                break;
 
+                            case "TOO_MANY_ATTEMPTS":
+                                setErrorText("Too many attempts. Please try again later.");
+                                break;
+
+                            case "WRONG_EMAIL":
+                                setErrorText("Incorrect email. Please register email first.");
+                                break;
+
+                            default:
+                                setErrorText("Please try again later.");
+                        }
                     }
 
                 }
@@ -74,9 +95,17 @@ const ConfirmEmail = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <button type="submit" className="submit-form">
+                        <button type="submit" className="submit-form"
+                                disabled={!formik.isValid || formik.isSubmitting || errorText}>
                             Confirm code
                         </button>
+                        {errorText && (
+                            <div className="error-container">
+                                <div className={'error-message  show_message'}>
+                                    {errorText}
+                                </div>
+                            </div>
+                        )}
                     </div>
                     <div className="back-btn" onClick={() => props.setPage("sign-up")}>Back</div>
                 </form>

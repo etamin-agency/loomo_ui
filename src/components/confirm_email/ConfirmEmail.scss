@@ -56,4 +56,14 @@
     cursor: pointer;
     font-weight: 600;
   }
+  .error-message {
+    display: block;
+    height: 44px;
+    width: 150px;
+    margin:  0 auto;
+    margin-top: 10px;
+    color: red;
+    font-size: 16px;
+    cursor: auto;
+  }
 }

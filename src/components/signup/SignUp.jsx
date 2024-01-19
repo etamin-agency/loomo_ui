@@ -17,6 +17,8 @@ import './SignUp.scss';
 const SignUp = (props) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isBlur, setBlur] = useState(false);
+    const [errorText, setErrorText] = useState("");
+
     const userRef = useRef();
     useEffect(() => {
         userRef.current.focus();
@@ -36,7 +38,6 @@ const SignUp = (props) => {
         initialValues: {
             name: props.data?.lastName != null ? props.data.firstName + ' ' + props.data.lastName : props.data?.firstName,
             username: props.data?.userName,
-            // emailOrPhone:  props.data?.emailOrPhone,
             email: props.data?.email,
             password: props.data?.password,
             isTeacher: props.data?.role === 'TEACHER' ? true : false,
@@ -50,16 +51,9 @@ const SignUp = (props) => {
                 }),
             email: Yup.string().required('Required').test('is-valid-format', 'Invalid email', (value) => {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                // const phoneRegex = /^[0-9]{10}$/;
-
                 if (emailRegex.test(value)) {
                     return true;
                 }
-
-                // if (phoneRegex.test(value)) {
-                //     return true;
-                // }
-
                 return false;
             })
                 .test('is-unique-email-or-phone', 'Email or phone number is already in use', async (value) => {
@@ -72,16 +66,6 @@ const SignUp = (props) => {
         onSubmit: async (values, {setSubmitting}) => {
             try {
                 if (formik.isValid) {
-                    //     const name = values.name.replaceAll("  "," ").split(" ");
-                    //     const registrationResponse = await authService.register({
-                    //         firstName: name[0],
-                    //         lastName: name[1],
-                    //         userName: values.username,
-                    //         email: values.emailOrPhone,
-                    //         password: values.password,
-                    //         role: values.isTeacher?"TEACHER":"STUDENT",
-                    //     });
-                    //     console.log(registrationResponse);
 
                     const name = values.name.replaceAll("  ", " ").split(" ");
                     const data = {
@@ -94,12 +78,13 @@ const SignUp = (props) => {
                     };
                     formik.setSubmitting(true);
                     const verificationNumberResponse = await authService.verificationNumber(data.email);
-                    if (verificationNumberResponse){
+                    if (verificationNumberResponse?.data){
                         props.setData(data);
                         props.setEmail(values.email)
                         props.setPage("confirm-page")
+                    } else {
+                        setErrorText("Too many attempts, please try again later.");
                     }
-
                 }
 
             } catch (error) {
@@ -219,10 +204,18 @@ const SignUp = (props) => {
                         </label>
                     </div>
                     <div className="form-group">
-                        <Button type="submit" size="sm" disabled={!formik.isValid || formik.isSubmitting}>
+                        <Button type="submit" size="sm" disabled={!formik.isValid || formik.isSubmitting || errorText}>
                             Sign Up
                         </Button>
+                        {errorText && (
+                            <div className="error-container">
+                                <div className={'error-message  show_message'}>
+                                    {errorText}
+                                </div>
+                            </div>
+                        )}
                     </div>
+
                 </form>
                 <div className="login-with">
                     <div>Sign Up with:</div>

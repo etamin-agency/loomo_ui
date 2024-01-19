@@ -10,6 +10,7 @@ import facebook_icon from '../../assets/face.svg';
 import google_icon from '../../assets/google.svg';
 import github_icon from '../../assets/github.svg';
 import './LoginPage.scss';
+import authService from "../../services/authService";
 
 
 const LogInPage = () => {
@@ -24,16 +25,29 @@ const LogInPage = () => {
 
     const formik = useFormik({
         initialValues: {
-            emailOrUsername: '',
+            email: '',
             password: '',
             rememberMe: false,
         },
         validationSchema: Yup.object({
-            emailOrUsername: Yup.string().required('Required'),
+            email: Yup.string().required('Required'),
             password: Yup.string().required('Required'),
         }),
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values, {setSubmitting}) => {
+            try {
+                if (formik.isValid) {
+                    formik.setSubmitting(true);
+                        const loginResponse = await authService.authenticate({
+                            email: values.email,
+                            password: values.password
+                        });
+                        console.log(loginResponse)
+                    }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setSubmitting(false);
+            }
         },
     });
 
@@ -49,17 +63,17 @@ const LogInPage = () => {
                         <input
                             className="text-input"
                             type="text"
-                            id="emailOrUsername"
+                            id="email"
                             ref={userRef}
-                            name="emailOrUsername"
+                            name="email"
                             placeholder="Username or Email"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.emailOrUsername}
+                            value={formik.values.email}
                         />
 
-                        {formik.touched.emailOrUsername && formik.errors.emailOrUsername ? (
-                            <div className="error">{formik.errors.emailOrUsername}</div>
+                        {formik.touched.email && formik.errors.email ? (
+                            <div className="error">{formik.errors.email}</div>
                         ) : null}
 
                     </div>
