@@ -5,6 +5,8 @@ import Spinner from "../spinner/Spinner";
 import Page404 from "../error/Page404";
 
 import './App.scss';
+import ConfirmEmail from "../confirm_email/ConfirmEmail";
+
 
 
 const HomePage = lazy(() => import("../../pages/home_page/HomePage"))
@@ -21,12 +23,13 @@ function App() {
                 <Suspense fallback={<Spinner/>}>
                     <Routes>
                         <Route path="/" element={<HomePage/>}/>
-                        <Route path="/login" element={<LogInPage/>}/>
+                {/*        <Route path="/login" element={<LogInPage/>}/>*/}
                         <Route path="/signup" element={<SignUpPage/>}/>
-                        <Route path="*" element={<Page404/>}/>
+                {/*        <Route path="*" element={<Page404/>}/>*/}
                     </Routes>
                 </Suspense>
             </div>
+
         </Router>
 
     );

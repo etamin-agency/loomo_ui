@@ -1,14 +1,12 @@
-
 import {useState, useEffect, useRef} from 'react';
 
 import {useFormik} from "formik";
 import * as Yup from "yup";
 
-import Button from "react-bootstrap/Button";
 
 import './ConfirmEmail.scss';
 
-const ConfirmEmail = () => {
+const ConfirmEmail = (props) => {
     const [code, setCode] = useState(0);
     const userRef = useRef();
 
@@ -18,13 +16,11 @@ const ConfirmEmail = () => {
 
     const formik = useFormik({
         initialValues: {
-            emailOrUsername: '',
-            password: '',
-            rememberMe: false,
+            code: '',
         },
         validationSchema: Yup.object({
-            emailOrUsername: Yup.string().required('Required'),
-            password: Yup.string().required('Required'),
+            emailOrUsername: Yup.number()
+                .test('len', 'wrong numbers', (val) => val && val.toString().length === 6),
         }),
         onSubmit: (values) => {
             console.log(values);
@@ -32,7 +28,7 @@ const ConfirmEmail = () => {
     });
 
     return (
-        <div className="confirm-email">
+        <div className="ConfirmEmail">
             <div className="wrapper">
                 <div className="message-icon">
 
@@ -42,9 +38,8 @@ const ConfirmEmail = () => {
                     Enter confirmation code
                 </div>
                 <div className="email-info">
-                    Enter the confirmation code that we sent to the email address {}
+                    Enter the confirmation code that we sent to the email address {props.email} <div className="code-request">Request  code.</div>
                 </div>
-                <div> Request the code again</div>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group">
                         <input
@@ -52,18 +47,19 @@ const ConfirmEmail = () => {
                             type="text"
                             id="code"
                             ref={userRef}
-                            name="emailOrUsername"
+                            name="code"
                             placeholder="Confirmation code"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.emailOrUsername}
+                            value={formik.values.code}
                         />
                     </div>
                     <div className="form-group">
-                        <Button type="submit" size="sm">
-                            Further
-                        </Button>
+                        <button  className="submit-form" >
+                            Confirm code
+                        </button >
                     </div>
+                    <div className="back-btn" onClick={()=>props.setPage("sign-up")}>Back</div>
                 </form>
             </div>
         </div>

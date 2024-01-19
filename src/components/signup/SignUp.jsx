@@ -14,7 +14,7 @@ import github_icon from '../../assets/github.svg';
 
 import './SignUp.scss';
 
-const SignUp = () => {
+const SignUp = (props) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [isBlur, setBlur] = useState(false);
     const userRef = useRef();
@@ -38,7 +38,7 @@ const SignUp = () => {
             username: '',
             emailOrPhone: '',
             password: '',
-            isTeacher: true,
+            isTeacher: false,
         },
         validationSchema: Yup.object({
             name: Yup.string().min(2, "at least 2 characters").required('Required'),
@@ -69,18 +69,21 @@ const SignUp = () => {
         }),
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                if (formik.isValid) {
-                    const name = values.name.replaceAll("  "," ").split(" ");
-                    const registrationResponse = await authService.register({
-                        firstName: name[0],
-                        lastName: name[1],
-                        userName: values.username,
-                        email: values.emailOrPhone,
-                        password: values.password,
-                        role: values.isTeacher?"TEACHER":"STUDENT",
-                    });
-                    console.log(registrationResponse);
-                }
+                // if (formik.isValid) {
+                //     const name = values.name.replaceAll("  "," ").split(" ");
+                //     const registrationResponse = await authService.register({
+                //         firstName: name[0],
+                //         lastName: name[1],
+                //         userName: values.username,
+                //         email: values.emailOrPhone,
+                //         password: values.password,
+                //         role: values.isTeacher?"TEACHER":"STUDENT",
+                //     });
+                //     console.log(registrationResponse);
+                // }
+
+                props.setEmail(values.emailOrPhone)
+                props.setPage("confirm-page")
             } catch (error) {
                 console.error(error);
             } finally {
