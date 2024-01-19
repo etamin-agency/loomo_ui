@@ -5,9 +5,9 @@ import * as Yup from "yup";
 
 
 import './ConfirmEmail.scss';
+import authService from "../../services/authService";
 
 const ConfirmEmail = (props) => {
-    const [code, setCode] = useState(0);
     const userRef = useRef();
 
     useEffect(() => {
@@ -19,11 +19,29 @@ const ConfirmEmail = (props) => {
             code: '',
         },
         validationSchema: Yup.object({
-            emailOrUsername: Yup.number()
-                .test('len', 'wrong numbers', (val) => val && val.toString().length === 6),
+            code: Yup.number().required("type a code"),
         }),
-        onSubmit: (values) => {
-            console.log(values);
+        onSubmit: async (values, {setSubmitting}) => {
+            try {
+                if (formik.isValid) {
+                    const data = {
+                        ...props.data,
+                        verificationNumber:values.code,
+                    };
+                    console.log(data)
+                    formik.setSubmitting(true);
+                    const registerResponse = await authService.register(data);
+                    if (registerResponse) {
+
+                    }
+
+                }
+
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setSubmitting(false);
+            }
         },
     });
 
@@ -38,7 +56,8 @@ const ConfirmEmail = (props) => {
                     Enter confirmation code
                 </div>
                 <div className="email-info">
-                    Enter the confirmation code that we sent to the email address {props.email} <div className="code-request">Request  code.</div>
+                    Enter the confirmation code that we sent to the email address {props.email}
+                    <div className="code-request">Request code.</div>
                 </div>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group">
@@ -55,11 +74,11 @@ const ConfirmEmail = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <button  className="submit-form" >
+                        <button type="submit" className="submit-form">
                             Confirm code
-                        </button >
+                        </button>
                     </div>
-                    <div className="back-btn" onClick={()=>props.setPage("sign-up")}>Back</div>
+                    <div className="back-btn" onClick={() => props.setPage("sign-up")}>Back</div>
                 </form>
             </div>
         </div>

@@ -34,11 +34,12 @@ const SignUp = (props) => {
     }
     const formik = useFormik({
         initialValues: {
-            name: '',
-            username: '',
-            emailOrPhone: '',
-            password: '',
-            isTeacher: false,
+            name: props.data?.lastName != null ? props.data.firstName + ' ' + props.data.lastName : props.data?.firstName,
+            username: props.data?.userName,
+            // emailOrPhone:  props.data?.emailOrPhone,
+            email: props.data?.email,
+            password: props.data?.password,
+            isTeacher: props.data?.role === 'TEACHER' ? true : false,
         },
         validationSchema: Yup.object({
             name: Yup.string().min(2, "at least 2 characters").required('Required'),
@@ -47,17 +48,17 @@ const SignUp = (props) => {
                     const isUnique = await authService.checkUserName(value);
                     return !isUnique;
                 }),
-            emailOrPhone: Yup.string().required('Required').test('is-valid-format', 'Invalid email or phone number format', (value) => {
+            email: Yup.string().required('Required').test('is-valid-format', 'Invalid email', (value) => {
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const phoneRegex = /^[0-9]{10}$/;
+                // const phoneRegex = /^[0-9]{10}$/;
 
                 if (emailRegex.test(value)) {
                     return true;
                 }
 
-                if (phoneRegex.test(value)) {
-                    return true;
-                }
+                // if (phoneRegex.test(value)) {
+                //     return true;
+                // }
 
                 return false;
             })
@@ -66,24 +67,41 @@ const SignUp = (props) => {
                     return !isUnique;
                 }),
             password: Yup.string().min(6, 'Password must be at least 6 characters').required('Required'),
-        }),
-        onSubmit: async (values, { setSubmitting }) => {
-            try {
-                // if (formik.isValid) {
-                //     const name = values.name.replaceAll("  "," ").split(" ");
-                //     const registrationResponse = await authService.register({
-                //         firstName: name[0],
-                //         lastName: name[1],
-                //         userName: values.username,
-                //         email: values.emailOrPhone,
-                //         password: values.password,
-                //         role: values.isTeacher?"TEACHER":"STUDENT",
-                //     });
-                //     console.log(registrationResponse);
-                // }
 
-                props.setEmail(values.emailOrPhone)
-                props.setPage("confirm-page")
+        }),
+        onSubmit: async (values, {setSubmitting}) => {
+            try {
+                if (formik.isValid) {
+                    //     const name = values.name.replaceAll("  "," ").split(" ");
+                    //     const registrationResponse = await authService.register({
+                    //         firstName: name[0],
+                    //         lastName: name[1],
+                    //         userName: values.username,
+                    //         email: values.emailOrPhone,
+                    //         password: values.password,
+                    //         role: values.isTeacher?"TEACHER":"STUDENT",
+                    //     });
+                    //     console.log(registrationResponse);
+
+                    const name = values.name.replaceAll("  ", " ").split(" ");
+                    const data = {
+                        firstName: name[0],
+                        lastName: name[1],
+                        userName: values.username,
+                        email: values.email,
+                        password: values.password,
+                        role: values.isTeacher ? "TEACHER" : "STUDENT",
+                    };
+                    formik.setSubmitting(true);
+                    const verificationNumberResponse = await authService.verificationNumber(data.email);
+                    if (verificationNumberResponse){
+                        props.setData(data);
+                        props.setEmail(values.email)
+                        props.setPage("confirm-page")
+                    }
+
+                }
+
             } catch (error) {
                 console.error(error);
             } finally {
@@ -104,19 +122,19 @@ const SignUp = (props) => {
                         <input
                             className="text-input"
                             type="text"
-                            id="emailOrPhone"
-                            name="emailOrPhone"
+                            id="email"
+                            name="email"
                             ref={userRef}
-                            placeholder="Email or Phone"
+                            placeholder="Email"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
-                            value={formik.values.emailOrPhone}
+                            value={formik.values.email}
                         />
-                        {formik.touched.emailOrPhone && formik.errors.emailOrPhone ? (
+                        {formik.touched.email && formik.errors.email ? (
                             <div className="error-container" onMouseOver={mouseIn} onMouseOut={mouseOut}>
                                 <CancelRoundedIcon style={{color: 'red'}}/>
                                 <div className={`error-message ${isBlur ? 'show_message' : ''}`}>
-                                    {formik.errors.emailOrPhone}
+                                    {formik.errors.email}
                                 </div>
                             </div>
                         ) : null}
@@ -193,6 +211,7 @@ const SignUp = (props) => {
                             Teacher Account{' '}
                             <input
                                 type="checkbox"
+                                id="isTeacher"
                                 name="isTeacher"
                                 checked={formik.values.isTeacher}
                                 onChange={formik.handleChange}
@@ -200,7 +219,7 @@ const SignUp = (props) => {
                         </label>
                     </div>
                     <div className="form-group">
-                        <Button type="submit" size="sm" disabled={!formik.isValid}>
+                        <Button type="submit" size="sm" disabled={!formik.isValid || formik.isSubmitting}>
                             Sign Up
                         </Button>
                     </div>
