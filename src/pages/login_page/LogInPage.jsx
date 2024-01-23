@@ -2,6 +2,7 @@ import {useState, useEffect, useRef} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 
 import pcman from '../../assets/pcman.png';
@@ -9,12 +10,16 @@ import eye from '../../assets/eye-icon.png';
 import facebook_icon from '../../assets/face.svg';
 import google_icon from '../../assets/google.svg';
 import github_icon from '../../assets/github.svg';
-import './LoginPage.scss';
-import authService from "../../services/authService";
+import handleLogin from "../../utils/auth/authUtils";
 
+import './LoginPage.scss';
 
 const LogInPage = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [loginError, setLoginError] = useState(null);
+
+    const navigate = useNavigate();
+
     const userRef = useRef();
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
@@ -27,7 +32,6 @@ const LogInPage = () => {
         initialValues: {
             email: '',
             password: '',
-            rememberMe: false,
         },
         validationSchema: Yup.object({
             email: Yup.string().required('Required'),
@@ -37,11 +41,15 @@ const LogInPage = () => {
             try {
                 if (formik.isValid) {
                     formik.setSubmitting(true);
-                        const loginResponse = await authService.authenticate({
+                        const loginResponse = await handleLogin({
                             email: values.email,
                             password: values.password
                         });
-                        console.log(loginResponse)
+                        if (loginResponse){
+                            navigate('/dashboard');
+                        }else {
+                            setLoginError('Incorrect email or password');
+                        }
                     }
             } catch (error) {
                 console.error(error);
@@ -99,17 +107,22 @@ const LogInPage = () => {
                             <div className="error">{formik.errors.password}</div>
                         ) : null}
                     </div>
-                    <div className="form-group check-box">
-                        <label>
-                            Remember Me{' '}
-                            <input
-                                type="checkbox"
-                                name="rememberMe"
-                                checked={formik.values.rememberMe}
-                                onChange={formik.handleChange}
-                            />
-                        </label>
-                    </div>
+                    {/*<div className="form-group check-box">*/}
+                    {/*    <label>*/}
+                    {/*        Remember Me{' '}*/}
+                    {/*        <input*/}
+                    {/*            type="checkbox"*/}
+                    {/*            name="rememberMe"*/}
+                    {/*            checked={formik.values.rememberMe}*/}
+                    {/*            onChange={formik.handleChange}*/}
+                    {/*        />*/}
+                    {/*    </label>*/}
+                    {/*</div>*/}
+                    {loginError && (
+                        <div className="error-message">
+                            {loginError}
+                        </div>
+                    )}
                     <div className="form-group">
                         <Button type="submit" size="sm">
                             Log in

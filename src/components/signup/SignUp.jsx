@@ -66,7 +66,6 @@ const SignUp = (props) => {
         onSubmit: async (values, {setSubmitting}) => {
             try {
                 if (formik.isValid) {
-
                     const name = values.name.replaceAll("  ", " ").split(" ");
                     const data = {
                         firstName: name[0],
@@ -80,7 +79,7 @@ const SignUp = (props) => {
                     const verificationNumberResponse = await authService.verificationNumber(data.email);
                     if (verificationNumberResponse?.data){
                         props.setData(data);
-                        props.setEmail(values.email)
+                        props.setEmail(data.email)
                         props.setPage("confirm-page")
                     } else {
                         setErrorText("Too many attempts, please try again later.");

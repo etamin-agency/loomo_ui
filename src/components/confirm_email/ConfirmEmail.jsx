@@ -1,4 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
 
 import {useFormik} from "formik";
 import * as Yup from "yup";
@@ -6,14 +7,27 @@ import * as Yup from "yup";
 
 import './ConfirmEmail.scss';
 import authService from "../../services/authService";
+import handleLogin from "../../utils/auth/authUtils";
+import Button from "react-bootstrap/Button";
 
 const ConfirmEmail = (props) => {
     const userRef = useRef();
     const [errorText, setErrorText] = useState("");
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         userRef.current.focus();
     }, []);
+
+    const requestNewConfirmationCode = async (email) => {
+        const verificationNumberResponse = await authService.verificationNumber(email);
+        if (verificationNumberResponse?.data){
+            setErrorText("");
+        } else {
+            setErrorText("Too many attempts, please try again later.");
+        }
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -31,16 +45,20 @@ const ConfirmEmail = (props) => {
                     };
                     formik.setSubmitting(true);
                     const registerResponse = await authService.register(data);
+                    console.log(registerResponse)
                     if (registerResponse === "SUCCESS") {
-                        const loginResponse = await authService.authenticate({
+                        const loginResponse = await handleLogin({
                             email: data.email,
                             password: data.password
                         });
-                        console.log(loginResponse)
+                        if (loginResponse) {
+                            navigate('/dashboard');
+                        }
                     } else {
+                        console.log(registerResponse)
                         switch (registerResponse) {
                             case "INCORRECT_NUMBER":
-                                setErrorText("Incorrect  number format. Please enter a valid  number.");
+                                setErrorText("Wrong Code");
                                 break;
 
                             case "TOO_MANY_ATTEMPTS":
@@ -78,7 +96,7 @@ const ConfirmEmail = (props) => {
                 </div>
                 <div className="email-info">
                     Enter the confirmation code that we sent to the email address {props.email}
-                    <div className="code-request">Request code.</div>
+                    <div className="code-request" onClick={()=>requestNewConfirmationCode(props.email)}>Request code.</div>
                 </div>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group">
@@ -95,10 +113,14 @@ const ConfirmEmail = (props) => {
                         />
                     </div>
                     <div className="form-group">
-                        <button type="submit" className="submit-form"
-                                disabled={!formik.isValid || formik.isSubmitting || errorText}>
+                        <Button
+                            type="submit"
+                            size="sm"
+                            disabled={!formik.isValid || formik.isSubmitting || (errorText && errorText!=='Wrong Code') }
+                            className={`submit-form ${formik.isSubmitting || errorText==='Too many attempts, please try again later.' ? 'disabled-button' : ''}`}
+                        >
                             Confirm code
-                        </button>
+                        </Button>
                         {errorText && (
                             <div className="error-container">
                                 <div className={'error-message  show_message'}>

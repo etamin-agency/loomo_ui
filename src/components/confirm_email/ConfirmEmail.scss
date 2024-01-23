@@ -59,11 +59,18 @@
   .error-message {
     display: block;
     height: 44px;
-    width: 150px;
+    width: 220px;
     margin:  0 auto;
     margin-top: 10px;
+    text-align: center;
     color: red;
     font-size: 16px;
     cursor: auto;
+  }
+  .disabled-button {
+    background-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+    border: none;
   }
 }
