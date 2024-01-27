@@ -3,12 +3,12 @@ import authService from "../../services/authService";
 
 
 const handleLogin = async (data) => {
+
     try {
         const loginResponse = await authService.authenticate({
             email: data.email,
             password: data.password,
         });
-        console.log(loginResponse)
         if (+loginResponse.status == 401 || loginResponse.data === "INCORRECT_EMAIL_OR_PASSWORD") {
             return false;
         }

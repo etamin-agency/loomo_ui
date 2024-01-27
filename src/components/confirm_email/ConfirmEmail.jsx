@@ -1,20 +1,25 @@
 import {useState, useEffect, useRef} from 'react';
 import {useNavigate} from 'react-router-dom';
-
+import Button from "react-bootstrap/Button";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 
 
-import './ConfirmEmail.scss';
 import authService from "../../services/authService";
 import handleLogin from "../../utils/auth/authUtils";
-import Button from "react-bootstrap/Button";
 
+import Cookie from "js-cookie";
+import {jwtDecode} from "jwt-decode";
+import {setStudent, setTeacher} from "../../tmp/actions";
+import {useDispatch} from "react-redux";
+
+
+import './ConfirmEmail.scss';
 const ConfirmEmail = (props) => {
     const userRef = useRef();
     const [errorText, setErrorText] = useState("");
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
 
     useEffect(() => {
         userRef.current.focus();
@@ -22,7 +27,7 @@ const ConfirmEmail = (props) => {
 
     const requestNewConfirmationCode = async (email) => {
         const verificationNumberResponse = await authService.verificationNumber(email);
-        if (verificationNumberResponse?.data){
+        if (verificationNumberResponse?.data) {
             setErrorText("");
         } else {
             setErrorText("Too many attempts, please try again later.");
@@ -52,6 +57,18 @@ const ConfirmEmail = (props) => {
                             password: data.password
                         });
                         if (loginResponse) {
+                            const token = Cookie.get("access_token");
+                            if (token != null) {
+                                const tokeRole = jwtDecode(token)?.role;
+                                switch (tokeRole) {
+                                    case "TEACHER":
+                                        dispatch(setTeacher());
+                                        break;
+                                    case "STUDENT":
+                                        dispatch(setStudent());
+                                        break;
+                                }
+                            }
                             navigate('/dashboard');
                         }
                     } else {
@@ -60,7 +77,6 @@ const ConfirmEmail = (props) => {
                             case "INCORRECT_NUMBER":
                                 setErrorText("Wrong Code");
                                 break;
-
                             case "TOO_MANY_ATTEMPTS":
                                 setErrorText("Too many attempts. Please try again later.");
                                 break;
@@ -96,7 +112,9 @@ const ConfirmEmail = (props) => {
                 </div>
                 <div className="email-info">
                     Enter the confirmation code that we sent to the email address {props.email}
-                    <div className="code-request" onClick={()=>requestNewConfirmationCode(props.email)}>Request code.</div>
+                    <div className="code-request" onClick={() => requestNewConfirmationCode(props.email)}>Request
+                        code.
+                    </div>
                 </div>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="form-group">
@@ -116,8 +134,8 @@ const ConfirmEmail = (props) => {
                         <Button
                             type="submit"
                             size="sm"
-                            disabled={!formik.isValid || formik.isSubmitting || (errorText && errorText!=='Wrong Code') }
-                            className={`submit-form ${formik.isSubmitting || errorText==='Too many attempts, please try again later.' ? 'disabled-button' : ''}`}
+                            disabled={!formik.isValid || formik.isSubmitting || (errorText && errorText !== 'Wrong Code')}
+                            className={`submit-form ${formik.isSubmitting || errorText === 'Too many attempts, please try again later.' ? 'disabled-button' : ''}`}
                         >
                             Confirm code
                         </Button>
