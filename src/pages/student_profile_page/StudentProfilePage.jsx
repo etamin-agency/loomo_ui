@@ -1,4 +1,5 @@
 const StudentProfilePage = () => {
+
     return (
         <div>
             fucking student profile bitch

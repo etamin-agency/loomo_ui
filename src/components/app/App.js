@@ -9,7 +9,12 @@ import './App.scss';
 import {jwtDecode} from "jwt-decode";
 import Cookie from "js-cookie";
 import {setStudent, setTeacher} from "../../tmp/actions";
-
+import StudentDashboard from "../../pages/student_dashboard_page/StudentDashboard";
+import StudentProfilePage from "../../pages/student_profile_page/StudentProfilePage";
+import StudentClassesPage from "../../pages/student_classes_page/StudentClassesPage";
+import MessagingPage from "../../pages/messaging_page/MessagingPage";
+import AssignmentsPage from "../../pages/assignments_page/AssignmentsPage";
+import ArchivePage from "../../pages/archive_page/ArchivePage";
 
 const HomePage = lazy(() => import("../../pages/home_page/HomePage"))
 const LogInPage = lazy(() => import("../../pages/login_page/LogInPage"));
@@ -37,25 +42,39 @@ function App() {
     return (
         <Router>
             <div className="App">
-                <nav>
-                    <Link to="/"> <img className={"loomo-home"} src={loomo_home} alt="loomo-home"/> </Link>
-                </nav>
+                {/*<nav>*/}
+                {/*    <Link to="/"> <img className={"loomo-home"} src={loomo_home} alt="loomo-home"/> </Link>*/}
+                {/*</nav>*/}
                 <Suspense fallback={<Spinner/>}>
                     <Routes>
-                        <Route path="/" element={<HomePage/>}/>
-                        <Route path="/login" element={<LogInPage/>}/>
-                        <Route path="/signup" element={<SignUpPage/>}/>
-                        <Route path="*" element={<Page404/>}/>
-                        <Route path="/dashboard" element={
-                            <div className="role_text">hey:{role}</div>
-                        }/>
+                        {/*<Route path="/" element={<HomePage/>}/>*/}
+                        {/*<Route path="/login" element={<LogInPage/>}/>*/}
+                        {/*<Route path="/signup" element={<SignUpPage/>}/>*/}
+                        {/*<Route path="*" element={<Page404/>}/>*/}
+                        {/*{role === "TEACHER" &&*/}
+                        {/*    <Route path="/dashboard" element={*/}
+                        {/*        <div className="role_text">hey:{role}</div>*/}
+                        {/*    }/>}*/}
+                        {/*{role === "STUDENT" &&*/}
+                        {/*    <Route path="/dashboard" element={StudentDashboard}>*/}
+                        {/*        <Route path="/:profile" element={StudentProfilePage}/>*/}
+                        {/*    </Route>*/}
+                        {/*}*/}
+                        <Route path="/" element={<StudentDashboard/>}>
+                            <Route path="/classes" element={<StudentClassesPage/>}/>
+                            <Route path="/messages" element={<MessagingPage/>}/>
+                            <Route path="/assignments" element={<AssignmentsPage/>}/>
+                            <Route path="/archive" element={<ArchivePage/>}/>
+                            <Route path="/:profile" element={<StudentProfilePage/>}/>
+                        </Route>
                     </Routes>
                 </Suspense>
             </div>
 
         </Router>
 
-    );
+    )
+        ;
 }
 
 
