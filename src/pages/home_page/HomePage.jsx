@@ -29,7 +29,7 @@ const HomePage = () => {
                         </Link>
                     </div>:
                     <div className="header__btn">
-                        <Link to="/dashboard">
+                        <Link to="/classes">
                             <img className="profile_picture" src={profile_picture} alt="profile-picture"/>
                         </Link>
                     </div>

@@ -69,7 +69,7 @@ const ConfirmEmail = (props) => {
                                         break;
                                 }
                             }
-                            navigate('/dashboard');
+                            navigate('/classes');
                         }
                     } else {
                         console.log(registerResponse)

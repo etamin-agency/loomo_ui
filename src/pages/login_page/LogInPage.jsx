@@ -64,7 +64,7 @@ const LogInPage = () => {
                                         break;
                                 }
                             }
-                            navigate('/dashboard');
+                            navigate('/classes');
                         }else {
                             setLoginError('Incorrect email or password');
                         }

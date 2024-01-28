@@ -1,9 +1,8 @@
 import {Route, BrowserRouter as Router, Routes, Link} from "react-router-dom";
 import {lazy, Suspense, useEffect} from "react";
-import {connect, useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 import Spinner from "../spinner/Spinner";
 import Page404 from "../error/Page404";
-import loomo_home from "../../assets/loomo_home.png"
 
 import './App.scss';
 import {jwtDecode} from "jwt-decode";
@@ -15,6 +14,7 @@ import StudentClassesPage from "../../pages/student_classes_page/StudentClassesP
 import MessagingPage from "../../pages/messaging_page/MessagingPage";
 import AssignmentsPage from "../../pages/assignments_page/AssignmentsPage";
 import ArchivePage from "../../pages/archive_page/ArchivePage";
+import TeacherDashboard from "../../pages/teacher_dashboard_page/TeacherDashboard";
 
 const HomePage = lazy(() => import("../../pages/home_page/HomePage"))
 const LogInPage = lazy(() => import("../../pages/login_page/LogInPage"));
@@ -47,26 +47,34 @@ function App() {
                 {/*</nav>*/}
                 <Suspense fallback={<Spinner/>}>
                     <Routes>
-                        {/*<Route path="/" element={<HomePage/>}/>*/}
-                        {/*<Route path="/login" element={<LogInPage/>}/>*/}
-                        {/*<Route path="/signup" element={<SignUpPage/>}/>*/}
-                        {/*<Route path="*" element={<Page404/>}/>*/}
-                        {/*{role === "TEACHER" &&*/}
-                        {/*    <Route path="/dashboard" element={*/}
-                        {/*        <div className="role_text">hey:{role}</div>*/}
-                        {/*    }/>}*/}
-                        {/*{role === "STUDENT" &&*/}
-                        {/*    <Route path="/dashboard" element={StudentDashboard}>*/}
-                        {/*        <Route path="/:profile" element={StudentProfilePage}/>*/}
-                        {/*    </Route>*/}
-                        {/*}*/}
-                        <Route path="/" element={<StudentDashboard/>}>
-                            <Route path="/classes" element={<StudentClassesPage/>}/>
-                            <Route path="/messages" element={<MessagingPage/>}/>
-                            <Route path="/assignments" element={<AssignmentsPage/>}/>
-                            <Route path="/archive" element={<ArchivePage/>}/>
-                            <Route path="/:profile" element={<StudentProfilePage/>}/>
-                        </Route>
+                        <Route path="/" element={<HomePage/>}/>
+                        {
+                            role === '' &&
+                            <Route>
+                                <Route path="/login" element={<LogInPage/>}/>
+                                <Route path="/signup" element={<SignUpPage/>}/>
+                            </Route>
+                        }
+                        <Route path="*" element={<Page404/>}/>
+                        {role === "TEACHER" &&
+                            <Route path="/" element={<TeacherDashboard/>}>
+                                <Route path="/classes" element={<StudentClassesPage/>}/>
+                                <Route path="/studio" element={<MessagingPage/>}/>
+                                <Route path="/assignments" element={<AssignmentsPage/>}/>
+                                <Route path="/wallet" element={<ArchivePage/>}/>
+                                <Route path="/teacher" element={<StudentProfilePage/>}/>
+                            </Route>
+                        }
+                        {role === "STUDENT" &&
+                            <Route path="/" element={<StudentDashboard/>}>
+                                <Route path="/classes" element={<StudentClassesPage/>}/>
+                                <Route path="/messages" element={<MessagingPage/>}/>
+                                <Route path="/assignments" element={<AssignmentsPage/>}/>
+                                <Route path="/archive" element={<ArchivePage/>}/>
+                                <Route path="/student" element={<StudentProfilePage/>}/>
+                            </Route>
+                        }
+
                     </Routes>
                 </Suspense>
             </div>

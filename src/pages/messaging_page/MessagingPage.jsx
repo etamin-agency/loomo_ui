@@ -1,6 +1,7 @@
+import './MessagingPage.scss'
 const MessagingPage = () => {
     return (
-        <div>Welcome to Messages!</div>
+        <div className="MessagingPage">Welcome to Messages!</div>
     )
 }
 export default MessagingPage;

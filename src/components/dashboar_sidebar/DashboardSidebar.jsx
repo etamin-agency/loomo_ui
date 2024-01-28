@@ -1,0 +1,128 @@
+import {Link} from "react-router-dom";
+
+import profile_picture from "../../assets/profile.png"
+import class_logo from "../../assets/class-logo.png"
+import message_logo from "../../assets/messages-logo.png"
+import archive_logo from "../../assets/archive-logo.png"
+import home_logo from "../../assets/home-page-logo.png"
+import home_work_logo from "../../assets/homework-logo.png"
+import user_logo from "../../assets/user-logo.png"
+import studio_logo from "../../assets/studio-logo.png"
+import wallet_logo  from "../../assets/wallet-logo.png"
+
+import "./DashboarSidebar.scss"
+import {useSelector} from "react-redux";
+
+
+const DashboardSidebar = () => {
+    const role = useSelector(state => state.role);
+
+    const student = [
+        {
+            link: "classes",
+            src:class_logo,
+            alt:"class-logo",
+            name:"Classes"
+        },
+        {
+            link: "messages",
+            src:message_logo,
+            alt:"messages-logo",
+            name:"Messages"
+        },
+        {
+            link: "assignments",
+            src:home_work_logo,
+            alt:"homework-logo",
+            name:"Assignments"
+        },
+        {
+            link: "archive",
+            src:archive_logo,
+            alt:"archive-logo",
+            name:"Archive"
+        },
+
+    ];
+
+    const teacher = [
+        {
+            link: "classes",
+            src:class_logo,
+            alt:"class-logo",
+            name:"Classes"
+        },
+        {
+            link: "studio",
+            src:studio_logo,
+            alt:"studio-logo",
+            name:"Teacher's Studio"
+        },
+        {
+            link: "assignments",
+            src:home_work_logo,
+            alt:"homework-logo",
+            name:"Assignments"
+        },
+        {
+            link: "wallet",
+            src:wallet_logo,
+            alt:"archive-logo",
+            name:"Wallet"
+        },
+
+    ];
+    return (
+        <aside className="student-dashboard">
+
+            <div className="user-photo">
+                <img className="student_picture" src={profile_picture} alt="profile-picture"/>
+            </div>
+            <div className="home-link">
+                <Link to="/">
+                    <div className="loomo">Loomo</div>
+                    <img className="student-logo home-logo" src={home_logo} alt="profile-picture"/>
+                </Link>
+            </div>
+            <div className="wrapper">
+                {
+                    role === "STUDENT" && student.map(({link, src, alt, name},id)=>{
+                        return (
+                            <div className="dashboard-block" key={id}>
+                                <Link to={`/${link}`} className="student-link">
+                                    <img src={src} className="student-logo" alt={alt}/>
+                                    <div>{name}</div>
+                                </Link>
+                            </div>
+                        )
+                    })
+                }
+                {
+                    role === "TEACHER" && teacher.map(({link, src, alt, name},id)=>{
+                        return (
+                            <div className="dashboard-block" key={id}>
+                                <Link to={`/${link}`} className="student-link">
+                                    <img src={src} className="student-logo" alt={alt}/>
+                                    <div>{name}</div>
+                                </Link>
+                            </div>
+                        )
+                    })
+                }
+
+            </div>
+
+            <div className="dashboard-block profile-link">
+                <Link to={role==="TEACHER"?"/teacher":"/student"} className="student-link">
+                    <img src={user_logo} className="student-logo" alt="user-logo"/>
+                    <div>Profile</div>
+                </Link>
+            </div>
+
+        </aside>
+    )
+}
+
+export default DashboardSidebar;
+
+
