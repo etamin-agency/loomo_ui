@@ -10,7 +10,7 @@ import handleLogin from "../../utils/auth/authUtils";
 
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
-import {setStudent, setTeacher} from "../../tmp/actions";
+import {setStudent, setTeacher} from "../../actions";
 import {useDispatch} from "react-redux";
 
 

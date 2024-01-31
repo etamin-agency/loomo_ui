@@ -15,7 +15,7 @@ import {useSelector} from "react-redux";
 
 
 const DashboardSidebar = () => {
-    const role = useSelector(state => state.role);
+    const {role} = useSelector(state => state.role);
 
     const student = [
         {
@@ -75,9 +75,9 @@ const DashboardSidebar = () => {
     return (
         <aside className="student-dashboard">
 
-            <div className="user-photo">
-                <img className="student_picture" src={profile_picture} alt="profile-picture"/>
-            </div>
+            {/*<div className="user-photo">*/}
+            {/*    <img className="student_picture" src={profile_picture} alt="profile-picture"/>*/}
+            {/*</div>*/}
             <div className="home-link">
                 <Link to="/">
                     <div className="loomo">Loomo</div>
@@ -86,7 +86,7 @@ const DashboardSidebar = () => {
             </div>
             <div className="wrapper">
                 {
-                    role === "STUDENT" && student.map(({link, src, alt, name},id)=>{
+                    role === "student" && student.map(({link, src, alt, name},id)=>{
                         return (
                             <div className="dashboard-block" key={id}>
                                 <Link to={`/${link}`} className="student-link">
@@ -98,7 +98,7 @@ const DashboardSidebar = () => {
                     })
                 }
                 {
-                    role === "TEACHER" && teacher.map(({link, src, alt, name},id)=>{
+                    role === "teacher" && teacher.map(({link, src, alt, name},id)=>{
                         return (
                             <div className="dashboard-block" key={id}>
                                 <Link to={`/${link}`} className="student-link">

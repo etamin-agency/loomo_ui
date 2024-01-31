@@ -2,7 +2,7 @@ import {useState, useEffect, useRef} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 
 import pcman from '../../assets/pcman.png';
@@ -16,7 +16,7 @@ import handleLogin from "../../utils/auth/authUtils";
 import './LoginPage.scss';
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
-import {setStudent, setTeacher} from "../../tmp/actions";
+import {setStudent, setTeacher} from "../../actions";
 import {useDispatch} from "react-redux";
 
 const LogInPage = () => {
@@ -47,28 +47,28 @@ const LogInPage = () => {
             try {
                 if (formik.isValid) {
                     formik.setSubmitting(true);
-                        const loginResponse = await handleLogin({
-                            email: values.email,
-                            password: values.password
-                        });
-                        if (loginResponse){
-                            const token = Cookie.get("access_token");
-                            if (token != null) {
-                                const tokeRole = jwtDecode(token)?.role;
-                                switch (tokeRole) {
-                                    case "TEACHER":
-                                        dispatch(setTeacher());
-                                        break;
-                                    case "STUDENT":
-                                        dispatch(setStudent());
-                                        break;
-                                }
+                    const loginResponse = await handleLogin({
+                        email: values.email,
+                        password: values.password
+                    });
+                    if (loginResponse) {
+                        const token = Cookie.get("access_token");
+                        if (token != null) {
+                            const tokeRole = jwtDecode(token)?.role;
+                            switch (tokeRole) {
+                                case "TEACHER":
+                                    dispatch(setTeacher());
+                                    break;
+                                case "STUDENT":
+                                    dispatch(setStudent());
+                                    break;
                             }
-                            navigate('/classes');
-                        }else {
-                            setLoginError('Incorrect email or password');
                         }
+                        navigate('/classes');
+                    } else {
+                        setLoginError('Incorrect email or password');
                     }
+                }
             } catch (error) {
                 console.error(error);
             } finally {

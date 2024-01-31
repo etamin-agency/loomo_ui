@@ -8,7 +8,7 @@ import profile_picture from "../../assets/profile.png"
 import './HomePage.scss'
 
 const HomePage = () => {
-    const role = useSelector(state => state.role);
+    const {role} = useSelector(state => state.role);
 
     return (
         <div className="HomePage">

@@ -1,7 +1,7 @@
 import { Outlet} from "react-router-dom";
 import DashboardSidebar from "../../components/dashboar_sidebar/DashboardSidebar";
 
-const TeacherDashboard = () => {
+const Dashboard = () => {
     return (
         <div>
             <DashboardSidebar/>
@@ -9,4 +9,4 @@ const TeacherDashboard = () => {
         </div>
     )
 }
-export default TeacherDashboard;
+export default Dashboard;
