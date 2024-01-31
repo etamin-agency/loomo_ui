@@ -9,7 +9,7 @@ const handleLogin = async (data) => {
             email: data.email,
             password: data.password,
         });
-        if (+loginResponse.status == 401 || loginResponse.data === "INCORRECT_EMAIL_OR_PASSWORD") {
+        if (+loginResponse.status === 401 || loginResponse.data === "INCORRECT_EMAIL_OR_PASSWORD") {
             return false;
         }
         const {access_token, refresh_token} = loginResponse;
