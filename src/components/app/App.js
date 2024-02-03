@@ -16,6 +16,7 @@ import ArchivePage from "../../pages/archive_page/ArchivePage";
 import TeacherStudioPage from "../../pages/teacher_studio_page/TeacherStudioPage";
 import WalletPage from "../../pages/wallet_page/WalletPage";
 import Dashboard from "../../pages/dashboard/Dashboard";
+import ProfilePictureUpload from "../profile_puctire_upload/ProfilePictureUpload";
 
 const HomePage = lazy(() => import("../../pages/home_page/HomePage"))
 const LogInPage = lazy(() => import("../../pages/login_page/LogInPage"));
