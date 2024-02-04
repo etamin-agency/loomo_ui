@@ -1,4 +1,4 @@
-import {setStudentProfile} from '../actions'
+import {setStudentProfile,setStudentProfileImage} from '../actions'
 import {createReducer} from "@reduxjs/toolkit";
 
 const initialState = {profile: {}};
@@ -8,9 +8,15 @@ const profile = createReducer(initialState, builder => {
             firstName: action.payload.firstName,
             lastName: action.payload.lastName,
             userName: action.payload.userName,
-            profilePictureUrl: action.payload.profilePictureUrl,
+            profilePicture: action.payload.profilePicture,
             bio: action.payload.bio
         }
+    })
+    builder.addCase(setStudentProfileImage, (state, action) => {
+        state.profile = {
+            ...state.profile,
+            profilePicture: action.payload.profilePicture,
+        };
     })
         .addDefaultCase(() => {
         });

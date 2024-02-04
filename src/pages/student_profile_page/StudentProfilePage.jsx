@@ -52,33 +52,33 @@ const StudentProfilePage = () => {
         setShowUploadView(!showUploadView);
     };
     return (
-       <div>
-           {showUploadView && <ProfilePictureUpload setShowUploadView={setShowUploadView}/>}
-           <div className="StudentProfilePage">
-               <div className="student-wrapper">
-                   <div className="user-image-container"
-                        onMouseOver={handleMouseOver}
-                        onMouseOut={handleMouseOut}
-                        onClick={handleContainerClick}
-                   >
-                       <img
-                           src={profile?.profilePictureUrl == null || profile?.profilePictureUrl === '' ? user_image : profile?.profilePictureUrl}
-                           alt="user-image" className={"user-image"}/>
-                       <img src={camera_image} alt="camera-image" className={"camera-image"}/>
-                   </div>
-                   <div className="student-name-wrapper">
-                       <div className="student-username">{profile?.userName}</div>
-                       <div className="student-name">{profile?.firstName} {profile?.lastName}</div>
-                   </div>
-                   <Link to="/account/settings">
-                       <img src={settings_icon} alt="settings-icon" className="settings-icon"/>
-                   </Link>
-               </div>
-               <div className="student-bio">
-                   {profile?.bio}
-               </div>
-           </div>
-       </div>
+        <div>
+            {showUploadView && <ProfilePictureUpload setShowUploadView={setShowUploadView}/>}
+            <div className="StudentProfilePage">
+                <div className="student-wrapper">
+                    <div className="user-image-container"
+                         onMouseOver={handleMouseOver}
+                         onMouseOut={handleMouseOut}
+                         onClick={handleContainerClick}
+                    >
+                        <img
+                            src={profile?.profilePicture == null || profile?.profilePicture === '' ? user_image : `data:image/jpeg;base64,${profile?.profilePicture}`}
+                            alt="user-image" className={"user-image"}/>
+                        <img src={camera_image} alt="camera-image" className={"camera-image"}/>
+                    </div>
+                    <div className="student-name-wrapper">
+                        <div className="student-username">{profile?.userName}</div>
+                        <div className="student-name">{profile?.firstName} {profile?.lastName}</div>
+                    </div>
+                    <Link to="/account/settings">
+                        <img src={settings_icon} alt="settings-icon" className="settings-icon"/>
+                    </Link>
+                </div>
+                <div className="student-bio">
+                    {profile?.bio}
+                </div>
+            </div>
+        </div>
 
     );
 }
