@@ -1,6 +1,6 @@
 import {useState} from "react";
-import SignUp from "../../components/signup/SignUp";
-import ConfirmEmail from "../../components/confirm_email/ConfirmEmail";
+import SignUp from "../../../components/signup/SignUp";
+import ConfirmEmail from "../../../components/confirm_email/ConfirmEmail";
 
 
 const SignUpPage = () => {

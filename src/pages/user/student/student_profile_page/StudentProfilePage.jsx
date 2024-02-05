@@ -1,16 +1,16 @@
 import {useEffect, useState} from "react";
-import settingService from "../../services/settingService";
+import settingService from "../../../../services/settingService";
 import {jwtDecode} from "jwt-decode";
 import Cookie from "js-cookie";
-import user_image from '../../assets/student_image.png';
-import settings_icon from '../../assets/settings.png';
+import user_image from '../../../../assets/student_image.png';
+import settings_icon from '../../../../assets/settings.png';
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setStudentProfile} from "../../actions";
-import camera_image from '../../assets/photo-camera.png'
+import {setStudentProfile} from "../../../../actions";
+import camera_image from '../../../../assets/photo-camera.png'
 
 import "./StudentProfilePage.scss"
-import ProfilePictureUpload from "../../components/profile_puctire_upload/ProfilePictureUpload";
+import ProfilePictureUpload from "../../../../components/profile_puctire_upload/ProfilePictureUpload";
 
 
 const StudentProfilePage = () => {
@@ -70,7 +70,7 @@ const StudentProfilePage = () => {
                         <div className="student-username">{profile?.userName}</div>
                         <div className="student-name">{profile?.firstName} {profile?.lastName}</div>
                     </div>
-                    <Link to="/account/settings">
+                    <Link to="/account/edit">
                         <img src={settings_icon} alt="settings-icon" className="settings-icon"/>
                     </Link>
                 </div>

@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
-import SearchBar from "../../components/searchbar/SearchBar";
+import SearchBar from "../../../components/searchbar/SearchBar";
 import Button from "react-bootstrap/Button";
-import Loomo from "../../assets/loomo.png"
+import Loomo from "../../../assets/loomo.png"
 import {useSelector} from "react-redux";
-import profile_picture from "../../assets/profile.png"
+import profile_picture from "../../../assets/profile.png"
 
 import './HomePage.scss'
 
