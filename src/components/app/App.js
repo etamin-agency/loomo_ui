@@ -19,6 +19,7 @@ import Dashboard from "../dashboard/Dashboard";
 import ProfilePictureUpload from "../profile_puctire_upload/ProfilePictureUpload";
 import SettingsPage from "../../pages/settings/settings_page/SettingsPage";
 import AccountEditPage from "../../pages/settings/account_edit_page/AccountEditPage";
+import LogoutComponent from "../logout/LogoutComponent";
 
 const HomePage = lazy(() => import("../../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../../pages/auth/login_page/LogInPage"));
@@ -46,12 +47,13 @@ function App() {
     return (
         <Router>
             <div className="App">
-                {/*<nav>*/}
-                {/*    <Link to="/"> <img className={"loomo-home"} src={loomo_home} alt="loomo-home"/> </Link>*/}
-                {/*</nav>*/}
                 <Suspense fallback={<Spinner/>}>
                     <Routes>
                         <Route path="/" element={<HomePage/>}/>
+                        {
+                            role !== '' &&
+                           <Route path="/logout" element={<LogoutComponent/>}/>
+                        }
                         {
                             role === '' &&
                             <Route>
@@ -59,7 +61,6 @@ function App() {
                                 <Route path="/signup" element={<SignUpPage/>}/>
                             </Route>
                         }
-                        <Route path="*" element={<Page404/>}/>
                         {role === "teacher" &&
                             <Route>
                                 <Route path="/" element={<Dashboard/>}>

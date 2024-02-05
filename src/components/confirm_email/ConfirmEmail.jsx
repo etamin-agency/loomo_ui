@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 
 import authService from "../../services/authService";
-import handleLogin from "../../utils/auth/authUtils";
+import {handleLogin} from "../../utils/auth/authUtils";
 
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";

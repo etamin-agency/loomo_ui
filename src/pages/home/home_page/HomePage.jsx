@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Loomo from "../../../assets/loomo.png"
 import {useSelector} from "react-redux";
 import profile_picture from "../../../assets/profile.png"
+import logout_icon from "../../../assets/logout.png"
 
 import './HomePage.scss'
 
@@ -28,11 +29,14 @@ const HomePage = () => {
                             </Button>
                         </Link>
                     </div>:
-                    <div className="header__btn">
-                        <Link to="/classes">
-                            <img className="profile_picture" src={profile_picture} alt="profile-picture"/>
-                        </Link>
-                    </div>
+                        <div className="home__wrapper">
+                            <Link to="/classes">
+                                <img className="profile_picture" src={profile_picture} alt="profile-picture"/>
+                            </Link>
+                            <Link to="/logout">
+                                <img className="logout_icon" src={logout_icon} alt="profile-picture"/>
+                            </Link>
+                        </div>
                 }
             </div>
             <div className="home-intro">

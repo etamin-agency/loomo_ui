@@ -21,4 +21,15 @@ const handleLogin = async (data) => {
     }
 };
 
-export default handleLogin;
+const handleLogout = () => {
+    try {
+        Cookie.remove("access_token", {secure: true, sameSite: "strict"});
+        Cookie.remove("refresh_token", {secure: true, sameSite: "strict"});
+
+    } catch (error) {
+        console.error("Logout failed:", error);
+    }
+};
+
+
+export {handleLogin, handleLogout};

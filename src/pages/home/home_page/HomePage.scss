@@ -20,8 +20,17 @@
   }
 }
 .profile_picture{
-  position: absolute;
   display: block;
   right: 10%;
   width: 60px;
+}
+.home__wrapper{
+  margin-left:150px;
+  width: 130px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logout_icon{
+  width: 30px;
 }

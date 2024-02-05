@@ -11,7 +11,7 @@ import facebook_icon from '../../../assets/face.svg';
 import google_icon from '../../../assets/google.svg';
 import github_icon from '../../../assets/github.svg';
 
-import handleLogin from "../../../utils/auth/authUtils";
+import {handleLogin} from "../../../utils/auth/authUtils";
 
 import './LoginPage.scss';
 import Cookie from "js-cookie";
