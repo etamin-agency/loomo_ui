@@ -92,7 +92,7 @@ const LogInPage = () => {
                             id="email"
                             ref={userRef}
                             name="email"
-                            placeholder="Username or Email"
+                            placeholder="Email"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.email}

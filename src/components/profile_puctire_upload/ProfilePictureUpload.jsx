@@ -8,7 +8,7 @@ import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import user_image from "../../assets/student_image.png";
 import {useDispatch, useSelector} from "react-redux";
-import {setStudentProfile, setStudentProfileImage} from "../../actions";
+import {setStudentProfileImage} from "../../actions";
 
 const ProfilePictureUpload = (props) => {
     const {profile} = useSelector(state => state.profile);
@@ -37,11 +37,12 @@ const ProfilePictureUpload = (props) => {
         const formData = new FormData();
         formData.append("file", file)
         const userName = jwtDecode(Cookie.get('access_token')).sub;
-        settingService.updateProfileImage(userName, formData).then(data => {
-            console.log(data)
-        })
+        settingService.updateProfileImage(userName, formData).catch((err) => console.log(err));
         props.setShowUploadView(false)
-        dispatch(setStudentProfileImage(userImage))
+        settingService.getUserProfileImage(userName).then(data => {
+            dispatch(setStudentProfileImage(data))
+        })
+
     }
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
     return (

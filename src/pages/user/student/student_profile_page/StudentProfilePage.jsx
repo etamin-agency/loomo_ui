@@ -47,7 +47,6 @@ const StudentProfilePage = () => {
             wrapper.classList.remove("wrapper-cursor");
         }
     };
-
     const handleContainerClick = () => {
         setShowUploadView(!showUploadView);
     };

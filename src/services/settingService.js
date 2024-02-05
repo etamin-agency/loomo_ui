@@ -57,7 +57,7 @@ const settingService = {
             return axiosErrorHandler(error);
         }
     },
-    getUserProfileImage: async (username)=>{
+    getUserProfileImage: async (username) => {
         const token = Cookie.get('access_token');
         const axiosInstance = axios.create({
             baseURL: API_BASE_URL,
@@ -75,6 +75,23 @@ const settingService = {
             return axiosErrorHandler(error);
         }
     },
+    updateProfile: async (username,bio) => {
+        const token = Cookie.get('access_token');
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': "application/json"
+            },
+        });
+
+        try {
+            const response = await axiosInstance.put(`/settings/${username}/profile`,{bio});
+            return response.data;
+        } catch (error) {
+            return axiosErrorHandler(error);
+        }
+    }
 
 };
 
