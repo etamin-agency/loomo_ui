@@ -5,11 +5,11 @@ const initialState = {profile: {}};
 const profile = createReducer(initialState, builder => {
     builder.addCase(setStudentProfile, (state, action) => {
         state.profile = {
-            firstName: action.payload.firstName,
-            lastName: action.payload.lastName,
-            userName: action.payload.userName,
-            profilePicture: action.payload.profilePicture,
-            bio: action.payload.bio
+            firstName: action.payload?.firstName,
+            lastName: action.payload?.lastName,
+            userName: action.payload?.userName,
+            profilePicture: action.payload?.profilePicture,
+            bio: action.payload?.bio
         }
     })
     builder.addCase(setStudentProfileImage, (state, action) => {

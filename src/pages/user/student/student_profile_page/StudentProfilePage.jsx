@@ -14,6 +14,8 @@ import ProfilePictureUpload from "../../../../components/profile_puctire_upload/
 
 
 const StudentProfilePage = () => {
+    const {role} = useSelector(state => state.role);
+
     const {profile} = useSelector(state => state.profile);
     const dispatch = useDispatch();
     const [showUploadView, setShowUploadView] = useState(false);
@@ -21,10 +23,16 @@ const StudentProfilePage = () => {
     useEffect(() => {
         const token = Cookie.get("access_token");
         const username = jwtDecode(token).sub;
-        settingService.getStudentProfile(username).then(data => {
-            console.log(data)
-            dispatch(setStudentProfile(data))
-        });
+        if (role === "teacher") {
+            settingService.getTeacherProfile(username).then(data => {
+                dispatch(setStudentProfile(data))
+            });
+        } else {
+            settingService.getStudentProfile(username).then(data => {
+                dispatch(setStudentProfile(data))
+            });
+        }
+
     }, [dispatch]);
 
     const handleMouseOver = () => {
