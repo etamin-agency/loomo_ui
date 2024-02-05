@@ -20,6 +20,7 @@ import ProfilePictureUpload from "../profile_puctire_upload/ProfilePictureUpload
 import SettingsPage from "../../pages/settings/settings_page/SettingsPage";
 import AccountEditPage from "../../pages/settings/account_edit_page/AccountEditPage";
 import LogoutComponent from "../logout/LogoutComponent";
+import PublishClassPage from "../../pages/user/teacher/publish_class_page/PublishClassPage";
 
 const HomePage = lazy(() => import("../../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../../pages/auth/login_page/LogInPage"));
@@ -73,6 +74,7 @@ function App() {
                                 <Route path="/account" element={<SettingsPage/>}>
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>
                                 </Route>
+                                <Route path="/publish-class" element={<PublishClassPage/>}/>
                             </Route>
 
                         }
