@@ -8,16 +8,21 @@ import {
     setPostStudentNum,
     setPostPrice,
     setPostCourseToWho,
-    setPostReq
+    setPostReq,
+    setPostDemoDay,
+    setPostClassTime
 } from "../../../../actions"
 
 import EditLanguage from "../../../../components/edit_post_page_items/EditLanguage";
 import EditNumber from "../../../../components/edit_post_page_items/EditNumber";
 
-import './CreateEditPage.scss';
 import EditPrice from "../../../../components/edit_post_page_items/EditPrice";
 import EditList from "../../../../components/edit_post_page_items/EditList";
+import EditDemoDate from "../../../../components/edit_post_page_items/EditDemoDate";
 
+
+import './CreateEditPage.scss';
+import EditCourseDays from "../../../../components/edit_post_page_items/EditCourseDays";
 const CreateEditPage = () => {
     const {post} = useSelector(state => state.classPost);
 
@@ -27,6 +32,8 @@ const CreateEditPage = () => {
     const [showNumberEdit, setShowNumberEdit] = useState(false);
     const [showPriceEdit, setShowPriceEdit] = useState(false);
     const [showListEdit, setShowListEdit] = useState(false);
+    const [showDemoDateEdit, setShowDemoDateEdit] = useState(false);
+    const [showCourseDateEdit, setShowCourseDateEdit] = useState(false);
     const [setter, setSetter] = useState("");
 
     const handleSetterChange = (text, num) => {
@@ -34,12 +41,15 @@ const CreateEditPage = () => {
         setMaxChars(num)
         setShowEditItem(true);
     };
-    const handleArrChange = (text, num) => {
+    const handleArrChange = (text) => {
         setSetter(text)
         setShowListEdit(true);
     };
     const handleNumberChange = () => {
         setShowNumberEdit(true);
+    };
+    const handleCourseDayChange = () => {
+        setShowCourseDateEdit(true);
     };
     const handlePriceChange = () => {
         setShowPriceEdit(true);
@@ -49,6 +59,9 @@ const CreateEditPage = () => {
         setShowLanguageBar(true);
     };
 
+    const handleDemoDayChange = () => {
+        setShowDemoDateEdit(true);
+    };
 
     return (
         <div className={'CreateEditPage'}>
@@ -62,6 +75,8 @@ const CreateEditPage = () => {
             {showListEdit && <EditList setter={setter === 'req' ? setPostReq : setPostCourseToWho}
                                        items={setter === 'req' ? post.req : post.courseToWho}
                                        close={() => setShowListEdit(false)}/>}
+            {showDemoDateEdit && <EditDemoDate setter={setPostDemoDay}  close={() => setShowDemoDateEdit(false)}/>}
+            {showCourseDateEdit && <EditCourseDays setter={setPostClassTime}  close={() => setShowCourseDateEdit(false)}/>}
             <div className="wrapper">
                 <div className="left">
                     <div className="video-player-block">
@@ -69,8 +84,11 @@ const CreateEditPage = () => {
                     </div>
                     <div className="class-lang-wrapper">
                         <div className="class-time text_32">
+                            <img className="edit-text" src={edit_text_icon} alt="edit-text"
+                                 onClick={() => handleCourseDayChange()}/>
                             Class
-                            time: class days and time
+                            time:{post.classTime.year}/{post.classTime.month}/{post.classTime.day} {post.classTime.hour}:{post.classTime.minute}  GMT({post.classTime.gmt})
+                           <br/> Days: {post.classTime.days.map(item=>(item+"   "))}
                         </div>
                         <div className="class-language text_32">
                             <img className="edit-text" src={edit_text_icon} alt="edit-text"
@@ -89,8 +107,10 @@ const CreateEditPage = () => {
                         Students: {post.studentNum}
                     </div>
                     <div className="demo-day text_32">
+                        <img className="edit-text" src={edit_text_icon} alt="edit-text"
+                             onClick={() => handleDemoDayChange()}/>
                         Demo
-                        day: time an day
+                        day: {post.demoDay.year}/{post.demoDay.month}/{post.demoDay.day} {post.demoDay.hour}:{post.demoDay.minute}  GMT({post.demoDay.gmt})
                     </div>
                 </div>
 
@@ -114,7 +134,7 @@ const CreateEditPage = () => {
                     <div className="class-to-who ">
                         <div>
                             <img className="edit-text" src={edit_text_icon} alt="edit-text"
-                                 onClick={() => handleArrChange('cours_eto_who')}/>
+                                 onClick={() => handleArrChange('course_to_who')}/>
                             Course to who:
                         </div>
                         {post.courseToWho.map((text, i) => (<li key={i}>{text}</li>))}

@@ -21,10 +21,25 @@ const initialState = {
         courseToWho: ["write here about course to who"],
         req: ["write requirements here"],
         price: 180,
-        classTime: null,
+        classTime: {
+            year: 0,
+            month: 0,
+            day: 0,
+            hour: 0,
+            minute: 0,
+            gmt: 0,
+            days:[]
+        },
         videoImg: null,
         studentNum: 12,
-        demoDay: null,
+        demoDay: {
+            year: 0,
+            month: 0,
+            day: 0,
+            hour: 0,
+            minute: 0,
+            gmt: 0
+        },
         language: "English"
     }
 };
@@ -51,13 +66,13 @@ const classPost = createReducer(initialState, builder => {
             state.post.price = action?.payload?.num
         })
         .addCase(setPostClassTime, (state, action) => {
-            state.post.classTime = action.payload?.text
+            state.post.classTime = action.payload
         })
         .addCase(setPostVideImg, (state, action) => {
             state.post.videoImg = action.payload?.text
         })
         .addCase(setPostDemoDay, (state, action) => {
-            state.post.demoDay = action.payload?.text
+            state.post.demoDay = action.payload;
         })
         .addCase(setPostLanguage, (state, action) => {
             console.log(action.payload)

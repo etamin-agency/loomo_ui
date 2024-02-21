@@ -193,7 +193,8 @@
   .btn-close {
     cursor: pointer;
   }
-  .add-btn{
+
+  .add-btn {
     width: 70px;
     margin-left: 10px;
     border-radius: 8px;
@@ -201,5 +202,111 @@
     background-color: #bc57de;
     border: none;
     color: aliceblue;
+  }
+}
+
+.EditDemoDate {
+  position: absolute;
+  width: 350px;
+  height: 400px;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #508ce7;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.EditCourseDays {
+  position: absolute;
+  width: 350px;
+  min-height: 200px;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #508ce7;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+
+  .day {
+    display: inline-block;
+    background-color: white;
+    margin: 5px 10px;
+    height: 30px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.5s all ease-in-out;
+
+    &:hover {
+      background-color: purple;
+      color: white;
+    }
+  }
+
+  .days-wrapper {
+    margin-top: 60px;
+  }
+
+  .selected {
+    background-color: purple;
+    color: white;
+  }
+
+  .selected-days {
+    display: block;
+  }
+
+  .selected-day {
+    position: relative;
+    display: inline-block;
+    background-color: white;
+    padding: 0 5px;
+    border-radius: 5px;
+    justify-content: space-between;
+    width: 110px;
+    vertical-align: center;
+    margin: 5px;
+  }
+
+  .btn-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
+  .selected-day-text {
+    display: inline-block;
+    padding-right: 40px;
+  }
+
+  .text-button {
+    margin-top: 20px;
+    width: 70px;
+    right: 30px;
+    bottom: 10px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+
+  }
+
+  .button-cancel {
+    background-color: white;
+    color: black;
+    border: none;
+    margin-top: 20px;
+    width: 70px;
+    right: 30px;
+    bottom: 10px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+  .btn-wrapper{
+    display: flex;
+    justify-content: space-between;
   }
 }

@@ -21,6 +21,8 @@ import AccountEditPage from "../../pages/settings/account_edit_page/AccountEditP
 import LogoutComponent from "../logout/LogoutComponent";
 import PublishClassPage from "../../pages/user/teacher/publish_class_page/PublishClassPage";
 import CreateEditPage from "../../pages/user/teacher/create-edit_page/CreateEditPage";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
 const HomePage = lazy(() => import("../../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../../pages/auth/login_page/LogInPage"));
@@ -53,7 +55,7 @@ function App() {
                         <Route path="/" element={<HomePage/>}/>
                         {
                             role !== '' &&
-                           <Route path="/logout" element={<LogoutComponent/>}/>
+                            <Route path="/logout" element={<LogoutComponent/>}/>
                         }
                         {
                             role === '' &&
@@ -76,7 +78,11 @@ function App() {
                                 </Route>
                                 <Route path="/edit">
                                     {/*<Route path="/edit"/>*/}
-                                    <Route path="/edit" element={<CreateEditPage/>}/>
+                                    <Route path="/edit" element={
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <CreateEditPage/>
+                                        </LocalizationProvider>
+                                    }/>
                                 </Route>
                                 <Route path="/publish-class" element={<PublishClassPage/>}/>
                             </Route>
