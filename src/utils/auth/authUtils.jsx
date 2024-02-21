@@ -1,9 +1,7 @@
 import Cookie from "js-cookie";
 import authService from "../../services/authService";
 
-
 const handleLogin = async (data) => {
-
     try {
         const loginResponse = await authService.authenticate({
             email: data.email,
@@ -31,5 +29,4 @@ const handleLogout = () => {
     }
 };
 
-
-export {handleLogin, handleLogout};
+export { handleLogin, handleLogout };

@@ -2,13 +2,13 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
-import {setStudent, setTeacher} from "../../../actions";
-import {useCallback, useState} from "react";
+import {useCallback} from "react";
 import Button from "react-bootstrap/Button";
+import {useSelector} from "react-redux";
+
+import settingService from "../../../services/settingService";
 
 import './AccountEditPage.scss'
-import {useSelector} from "react-redux";
-import settingService from "../../../services/settingService";
 
 const AccountEditPage = () => {
     const {profile} = useSelector(state => state.profile);
@@ -64,7 +64,6 @@ const AccountEditPage = () => {
 
                 <div className="form-group">
                     <Button type="submit" size="lg" disabled={isButtonDisabled}>
-
                         Update
                     </Button>
                 </div>

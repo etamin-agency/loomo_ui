@@ -16,11 +16,11 @@ import ArchivePage from "../../pages/user/student/archive_page/ArchivePage";
 import TeacherStudioPage from "../../pages/user/teacher/teacher_studio_page/TeacherStudioPage";
 import WalletPage from "../../pages/user/teacher/wallet_page/WalletPage";
 import Dashboard from "../dashboard/Dashboard";
-import ProfilePictureUpload from "../profile_puctire_upload/ProfilePictureUpload";
 import SettingsPage from "../../pages/settings/settings_page/SettingsPage";
 import AccountEditPage from "../../pages/settings/account_edit_page/AccountEditPage";
 import LogoutComponent from "../logout/LogoutComponent";
 import PublishClassPage from "../../pages/user/teacher/publish_class_page/PublishClassPage";
+import CreateEditPage from "../../pages/user/teacher/create-edit_page/CreateEditPage";
 
 const HomePage = lazy(() => import("../../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../../pages/auth/login_page/LogInPage"));
@@ -73,6 +73,10 @@ function App() {
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>
+                                </Route>
+                                <Route path="/edit">
+                                    {/*<Route path="/edit"/>*/}
+                                    <Route path="/edit" element={<CreateEditPage/>}/>
                                 </Route>
                                 <Route path="/publish-class" element={<PublishClassPage/>}/>
                             </Route>

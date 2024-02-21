@@ -1,4 +1,4 @@
-import {setStudentProfile,setStudentProfileImage} from '../actions'
+import {setStudentProfile, setStudentProfileImage} from '../actions'
 import {createReducer} from "@reduxjs/toolkit";
 
 const initialState = {profile: {}};
