@@ -19,7 +19,7 @@ const PublishClassPage = () => {
     }, []);
     return (
         <div className="PublishClassPage">
-            {totalElements == 0 ?
+            {totalElements === 0 ?
                 <div className="first-class">
                     <div className="wrapper-new-class">
                         <div className="first-class-text">

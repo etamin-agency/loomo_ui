@@ -11,6 +11,7 @@ const handleLogin = async (data) => {
             return false;
         }
         const {access_token, refresh_token} = loginResponse;
+        console.log(loginResponse)
         Cookie.set("access_token", access_token, {secure: true, sameSite: "strict"});
         Cookie.set("refresh_token", refresh_token, {secure: true, sameSite: "strict"});
         return true;

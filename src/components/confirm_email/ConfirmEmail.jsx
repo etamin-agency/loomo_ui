@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect, useRef, useCallback} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Button from "react-bootstrap/Button";
 import {useFormik} from "formik";
@@ -15,6 +15,7 @@ import {useDispatch} from "react-redux";
 
 
 import './ConfirmEmail.scss';
+
 const ConfirmEmail = (props) => {
     const userRef = useRef();
     const [errorText, setErrorText] = useState("");
@@ -33,6 +34,14 @@ const ConfirmEmail = (props) => {
             setErrorText("Too many attempts, please try again later.");
         }
     }
+    const countryName = async () => {
+        return await fetch("https://ipapi.co/json/")
+            .then((response) => response.json())
+            .then(data => {
+                return data?.country_name;
+            })
+    }
+
 
     const formik = useFormik({
         initialValues: {
@@ -44,10 +53,13 @@ const ConfirmEmail = (props) => {
         onSubmit: async (values, {setSubmitting}) => {
             try {
                 if (formik.isValid) {
+
                     const data = {
                         ...props.data,
                         verificationNumber: values.code,
+                        country: await countryName()
                     };
+                    console.log(data)
                     formik.setSubmitting(true);
                     const registerResponse = await authService.register(data);
                     console.log(registerResponse)
@@ -72,7 +84,6 @@ const ConfirmEmail = (props) => {
                             navigate('/classes');
                         }
                     } else {
-                        console.log(registerResponse)
                         switch (registerResponse) {
                             case "INCORRECT_NUMBER":
                                 setErrorText("Wrong Code");
@@ -86,6 +97,7 @@ const ConfirmEmail = (props) => {
                                 break;
 
                             default:
+                                console.log(registerResponse)
                                 setErrorText("Please try again later.");
                         }
                     }

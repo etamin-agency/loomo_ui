@@ -10,7 +10,8 @@ const EditLanguage = (props) => {
     const [selectedLanguage, setSelectedLanguage] = useState('');
     const dispatch = useDispatch();
     useEffect(() => {
-        setSelectedLanguage(props.langauge)
+        // setSelectedLanguage(props.langauge)
+        console.log("heeeeey")
         publishService.getLanguages().then(data => setLanguages(data));
     }, []);
 

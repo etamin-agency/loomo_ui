@@ -15,8 +15,8 @@
 
       .video-player-block {
         display: block;
-        width: 700px;
-        height: 400px;
+        width: 630px;
+        height: 340px;
         background-color: #ffffff;
         border-radius: 30px;
         border: #0564f5 2px solid;
@@ -25,25 +25,30 @@
         align-items: center;
         align-content: center;
         vertical-align: center;
-        padding-top: 180px;
+        padding-top: 150px;
         font-size: 28px;
       }
-      .class-language{
+
+      .class-language {
         margin-right: 20px;
       }
+
       .class-lang-wrapper {
         display: flex;
-        padding-right:80px;
+        padding-right: 80px;
         margin-top: 40px;
         justify-content: space-between;
       }
-      .price{
+
+      .price {
         margin-top: 20px;
       }
-      .student-amount{
+
+      .student-amount {
         margin-top: 20px;
       }
-      .demo-day{
+
+      .demo-day {
         margin-top: 20px;
       }
     }
@@ -51,40 +56,50 @@
     .right {
       width: 50%;
       padding-left: 40px;
-      .class-title{
+
+      .class-title {
         display: inline;
         color: #1f1f17;
         font-size: 40px;
         line-height: 32px;
         font-weight: 600;
-        div{
+
+        div {
           margin-top: 10px;
           font-size: 32px;
           font-weight: 400;
         }
       }
-      .class-dec{
-        div{
+
+      .class-dec {
+        div {
           font-size: 34px;
           font-weight: 600;
         }
+
         margin-top: 20px;
         font-size: 22px;
       }
-      .class-to-who{
+
+      .class-to-who {
         margin-top: 40px;
-        div{
+
+        div {
           font-size: 34px;
           font-weight: 600;
         }
+
         font-size: 24px;
       }
-      .requirements{
+
+      .requirements {
         margin-top: 40px;
-        div{
+
+        div {
           font-size: 34px;
           font-weight: 600;
         }
+
         font-size: 24px;
       }
 
@@ -96,7 +111,8 @@
       font-weight: 600;
     }
   }
-  .edit-text{
+
+  .edit-text {
     width: 25px;
     height: 25px;
     cursor: pointer;
@@ -104,4 +120,29 @@
     margin-right: -25px;
   }
 
+  .dropzone-video {
+    display: block;
+    cursor: pointer;
+  }
+
+  .react-player {
+    position: absolute;
+    display: block;
+    width: 1280px;
+    height: 720px;
+    top: 80px;
+    left: 30px;
+    background-color: black;
+  }
+
+  .save-button {
+    margin-top: 50px;
+    background-color: white;
+    color: black;
+    border: none;
+    font-weight: 600;
+    width: 100px;
+    height: 40px;
+    font-size: 18px;
+  }
 }

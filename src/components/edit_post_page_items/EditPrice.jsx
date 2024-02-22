@@ -19,7 +19,7 @@ const EditNumber = (props) => {
             num: '',
         },
         validationSchema: Yup.object({
-            num: Yup.number().required('Required').max(100000),
+            num: Yup.number().required('Required').max(1000000).min(15),
         }),
         onSubmit:  (values) => {
             dispatch(props.setter(values));

@@ -1,11 +1,12 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
+import {jwtDecode} from "jwt-decode";
 
 const API_BASE_URL = 'http://localhost:8082/api/v1';
 
 
 const publishService = {
-    getPublishedClasses: async (offset=0,num=6,username) => {
+    getPublishedClasses: async (offset = 0, num = 6, username) => {
         const token = Cookie.get('access_token');
         const axiosInstance = axios.create({
             baseURL: API_BASE_URL,
@@ -39,6 +40,25 @@ const publishService = {
             console.log(error)
         }
     },
+    createUpdatePost: async (id,formData) => {
+        console.log("hereeeeee")
+        const token = Cookie.get('access_token');
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        const userName = jwtDecode(Cookie.get('access_token')).sub;
+
+
+        try {
+            await axiosInstance.post(`/publish-class/${userName}/create-edit`,formData);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 };
 

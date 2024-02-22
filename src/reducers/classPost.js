@@ -15,7 +15,7 @@ import {
 
 const initialState = {
     post: {
-        postVideo: null,
+        postVideo: '',
         title: "Write title of Your Course",
         desc: "Write your course Description here",
         courseToWho: ["write here about course to who"],
@@ -30,7 +30,7 @@ const initialState = {
             gmt: 0,
             days:[]
         },
-        videoImg: null,
+        videoImg: '',
         studentNum: 12,
         demoDay: {
             year: 0,
@@ -47,7 +47,7 @@ const initialState = {
 const classPost = createReducer(initialState, builder => {
     builder
         .addCase(setPostVideo, (state, action) => {
-            state.post.postVideo = action.payload?.text
+            state.post.postVideo = action.payload
         })
         .addCase(setPostTitle, (state, action) => {
             state.post.title = action.payload?.text
@@ -59,7 +59,6 @@ const classPost = createReducer(initialState, builder => {
             state.post.courseToWho = action.payload
         })
         .addCase(setPostReq, (state, action) => {
-            console.log(action.payload)
             state.post.req = action.payload
         })
         .addCase(setPostPrice, (state, action) => {
@@ -69,13 +68,13 @@ const classPost = createReducer(initialState, builder => {
             state.post.classTime = action.payload
         })
         .addCase(setPostVideImg, (state, action) => {
-            state.post.videoImg = action.payload?.text
+            console.log(action.payload)
+            state.post.videoImg = action.payload
         })
         .addCase(setPostDemoDay, (state, action) => {
             state.post.demoDay = action.payload;
         })
         .addCase(setPostLanguage, (state, action) => {
-            console.log(action.payload)
             state.post.language = action.payload
         })
         .addCase(setPostStudentNum, (state, action) => {
