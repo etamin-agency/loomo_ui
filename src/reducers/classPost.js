@@ -10,12 +10,19 @@ import {
     setPostVideImg,
     setPostStudentNum,
     setPostDemoDay,
-    setPostLanguage
+    setPostLanguage, setPost
 } from "../actions";
 
 const initialState = {
     post: {
-        postVideo: '',
+        postVideo: {
+            changed:false,
+            data:''
+        },
+        videoImg: {
+            changed:false,
+            data:''
+        },
         title: "Write title of Your Course",
         desc: "Write your course Description here",
         courseToWho: ["write here about course to who"],
@@ -30,7 +37,6 @@ const initialState = {
             gmt: 0,
             days:[]
         },
-        videoImg: '',
         studentNum: 12,
         demoDay: {
             year: 0,
@@ -68,7 +74,6 @@ const classPost = createReducer(initialState, builder => {
             state.post.classTime = action.payload
         })
         .addCase(setPostVideImg, (state, action) => {
-            console.log(action.payload)
             state.post.videoImg = action.payload
         })
         .addCase(setPostDemoDay, (state, action) => {
@@ -79,6 +84,9 @@ const classPost = createReducer(initialState, builder => {
         })
         .addCase(setPostStudentNum, (state, action) => {
             state.post.studentNum = action.payload?.num
+        })
+        .addCase(setPost,(state,action)=>{
+            state.post=action.payload
         })
         .addDefaultCase(() => {
         });

@@ -77,13 +77,18 @@ function App() {
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>
                                 </Route>
                                 <Route path="/edit">
-                                    {/*<Route path="/edit"/>*/}
+                                    <Route path="/edit/:id" element={
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <CreateEditPage/>
+                                        </LocalizationProvider>
+                                    }/>
                                     <Route path="/edit" element={
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                                             <CreateEditPage/>
                                         </LocalizationProvider>
                                     }/>
                                 </Route>
+
                                 <Route path="/publish-class" element={<PublishClassPage/>}/>
                             </Route>
 

@@ -4,17 +4,20 @@ import {useDropzone} from "react-dropzone";
 import {useDispatch, useSelector} from "react-redux";
 import {useCallback, useEffect, useState} from "react";
 import any_image from "../../assets/loomo.png"
+
 const EditPostImg = ({close, setter}) => {
     const {post} = useSelector(state => state.classPost);
     const [file, setFile] = useState();
-    const [userImage, setUserImage] = useState();
-    const dispatch=useDispatch();
+    const [userImage, setUserImage] = useState(any_image);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (post.videoImg) {
-            convertFileToImage(post.videoImg);
-        }else {
-            setUserImage(any_image)
+        if (typeof post?.videoImg?.data === 'string' && post?.videoImg?.data !== '') {
+            setUserImage(`data:image/jpeg;base64,${post?.videoImg?.data}`)
+        } else if (typeof post?.videoImg?.data === 'file') {
+            convertFileToImage(post?.videoImg?.data);
+        } else {
+
         }
     }, []);
 
@@ -28,7 +31,6 @@ const EditPostImg = ({close, setter}) => {
     };
 
     const onDrop = useCallback(acceptedFiles => {
-        console.log(acceptedFiles)
         try {
             setFile(acceptedFiles[0])
             const reader = new FileReader();
@@ -42,7 +44,7 @@ const EditPostImg = ({close, setter}) => {
     }, []);
 
     const handleSaveData = () => {
-        dispatch(setter(file))
+        dispatch(setter({changed:true,data:file}))
         close()
     };
     const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
@@ -62,7 +64,7 @@ const EditPostImg = ({close, setter}) => {
                     }
                 </div>
                 <div className="btn-wrapper">
-                    <Button className="button-cancel" type="button" size="sm"  onClick={()=>close()}>
+                    <Button className="button-cancel" type="button" size="sm" onClick={() => close()}>
                         Cancel
                     </Button>
                     <Button className="text-button" type="button" size="sm" onClick={handleSaveData}>

@@ -14,6 +14,7 @@
       width: 50%;
 
       .video-player-block {
+        position: relative;
         display: block;
         width: 630px;
         height: 340px;
@@ -130,8 +131,8 @@
     display: block;
     width: 1280px;
     height: 720px;
-    top: 80px;
-    left: 30px;
+    top:-5px;
+    left:-5px;
     background-color: black;
   }
 
@@ -144,5 +145,12 @@
     width: 100px;
     height: 40px;
     font-size: 18px;
+  }
+  .close-react-player{
+    position: absolute;
+    display: block;
+    top: -30px;
+    right: -50px ;
+    cursor: pointer;
   }
 }

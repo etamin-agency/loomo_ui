@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import EditText from "../../../../components/edit_post_page_items/EditText";
 import edit_text_icon from "../../../../assets/edit-text.png";
@@ -11,8 +11,10 @@ import {
     setPostReq,
     setPostDemoDay,
     setPostClassTime,
-    setPostVideImg, setPostVideo
+    setPostVideImg, setPostVideo, setPost
 } from "../../../../actions"
+
+import any_image from "../../../../assets/loomo.png"
 
 import EditLanguage from "../../../../components/edit_post_page_items/EditLanguage";
 import EditNumber from "../../../../components/edit_post_page_items/EditNumber";
@@ -29,6 +31,8 @@ import ReactPlayer from "react-player";
 import EditPostImg from "../../../../components/edit_post_page_items/EditPostImg";
 import Button from "react-bootstrap/Button";
 import publishService from "../../../../services/publishService";
+import {useNavigate, useParams} from "react-router-dom";
+import Loading from "../../../../components/loading/Loading";
 
 const CreateEditPage = () => {
     const {post} = useSelector(state => state.classPost);
@@ -44,8 +48,11 @@ const CreateEditPage = () => {
     const [showPhotoEdit, setShowPhotoEdit] = useState(false);
     const [setter, setSetter] = useState("");
     const [file, setFile] = useState();
+    const [loading, setLoading] = useState(true);
     const [showVideo, setShowVideo] = useState(false);
-    const isButtonDisabled = post.postVideo === '' || post.postVideo == null || post.price == '' || post.price < 15 || post.title === '' || post.title == null
+    const navigate = useNavigate();
+    const isButtonDisabled = post.postVideo?.data == null || post?.postVideo?.data === '' || post?.price == '' || post?.price < 15 || post?.title === '' || post?.title == null
+    let {id} = useParams();
 
     const handleSetterChange = (text, num) => {
         setSetter(text)
@@ -77,6 +84,116 @@ const CreateEditPage = () => {
     const handleDemoDayChange = () => {
         setShowDemoDateEdit(true);
     };
+    const handleVideoChange = () => {
+        setShowVideo(false);
+        dispatch(setPostVideo({changed: true, data: ''}))
+    };
+    useEffect(() => {
+        setLoading(true)
+        if (id && isValidUUID(id)) {
+            publishService.getPostData(id).then(data => {
+                const demoDay=new Date(data.demoTime)
+                const classTime=new Date(data.classTime)
+                const demoDayObj = {
+                    year: demoDay.getFullYear(),
+                    month: demoDay.getMonth() + 1,
+                    day: demoDay.getDate(),
+                    hour: demoDay.getHours(),
+                    minute:demoDay.getMinutes(),
+                    gmt:demoDay.getTimezoneOffset() / 60 * -1
+                };
+                const classTimeObj = {
+                    year: classTime.getFullYear(),
+                    month: classTime.getMonth() + 1,
+                    day: classTime.getDate(),
+                    hour: classTime.getHours(),
+                    minute: classTime.getMinutes(),
+                    gmt: classTime.getTimezoneOffset() / 60 * -1
+                };
+                const obj = {
+                    postVideo: '',
+                    videoImg: '',
+                    title: data?.title,
+                    desc: data?.description,
+                    courseToWho: data?.courseTarget,
+                    req: data?.requirements,
+                    price: data?.price,
+                    classTime: {
+                        ...classTimeObj,
+                        days: data?.classDays
+                    },
+                    studentNum: data?.maxStudents,
+                    demoDay: demoDayObj,
+                    language: data?.language
+                }
+                dispatch(setPost(obj))
+                return data;
+            }).then(data => {
+                publishService.getFile(data?.introVideoLink).then(data => {
+                    setFile(`data:video/mp4;base64,${data}`)
+                    dispatch(setPostVideo({changed: false, data: data}))
+
+                })
+                return data;
+            }).then(data => {
+                publishService.getFile(data?.introVideoImgLink).then(img => {
+                    dispatch(setPostVideImg(
+                        {
+                            changed: false,
+                            data: img
+                        }
+                    ))
+                })
+            }).finally(() => {
+                setShowVideo(true);
+                setLoading(false)
+            });
+        } else {
+            const obj = {
+                postVideo: {
+                    changed: false,
+                    data: ''
+                },
+                videoImg: {
+                    changed: false,
+                    data: ''
+                },
+                title: "Write title of Your Course",
+                desc: "Write your course Description here",
+                courseToWho: ["write here about course to who"],
+                req: ["write requirements here"],
+                price: 180,
+                classTime: {
+                    year: 0,
+                    month: 0,
+                    day: 0,
+                    hour: 0,
+                    minute: 0,
+                    gmt: 0,
+                    days: []
+                },
+                studentNum: 12,
+                demoDay: {
+                    year: 0,
+                    month: 0,
+                    day: 0,
+                    hour: 0,
+                    minute: 0,
+                    gmt: 0
+                },
+                language: "English"
+            }
+            dispatch(setPost(obj))
+            setLoading(false)
+        }
+    }, [])
+
+    function isValidUUID(uuid) {
+        const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        return uuidRegex.test(uuid);
+    }
+
+
     const onDrop = useCallback(acceptedFiles => {
         try {
             const file = acceptedFiles[0];
@@ -85,14 +202,12 @@ const CreateEditPage = () => {
                 const video = document.createElement('video');
                 video.preload = 'metadata';
                 video.onloadedmetadata = () => {
-                    const duration = Math.round(video.duration);
-                    console.log('Video duration:', duration, 'seconds');
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload = () => {
                         setFile(reader.result);
                         setShowVideo(true);
-                        dispatch(setPostVideo(file))
+                        dispatch(setPostVideo({changed: true, data: file}))
                     };
                 };
                 video.src = URL.createObjectURL(file);
@@ -108,33 +223,82 @@ const CreateEditPage = () => {
         accept: 'video/*'
     });
 
-    const handleEditCreateClass = () => {
-        const formData = new FormData();
-        formData.append("photoFile", post.videoImg);
-        formData.append("videoFile", post.postVideo);
+    const handleEditCreateClass = async () => {
+        setLoading(true)
+        if (id && isValidUUID(id)) {
+            const formData = new FormData();
+            if (post.videoImg?.changed) {
+                formData.append("photoFile", post.videoImg?.data);
+            }
+            if (post.postVideo?.changed) {
+                formData.append("videoFile", post.postVideo?.data);
+            }
+            const {year, month, day, hour, minute, gmt} = post.classTime;
+            const demoDay = post.demoDay;
+            const obj = {
+                title: post.title,
+                description: post.desc,
+                courseTarget: post.courseToWho,
+                requirements: post.req,
+                language: post.language,
+                price: post.price,
+                maxStudents: post.studentNum,
+                demoTime: new Date(year, month - 1, day, hour - gmt, minute),
+                classDays: post.classTime.days,
+                classTime: new Date(demoDay.year, demoDay.month - 1, demoDay.day, demoDay.hour - demoDay.gmt, demoDay.minute),
+                category: "some category",
+                tags: ["some", 'tags']
+            };
 
-        const obj = {
-            title: post.title,
-            description: post.desc,
-            courseTarget: post.courseToWho,
-            requirements: post.req,
-            language: post.language,
-            price: post.price,
-            maxStudents: post.studentNum,
-            demoTime: new Date(),
-            classDays: post.classTime.days,
-            classTime: new Date(),
-            category: "some category",
-            tags: ["some", 'tags']
-        };
+            formData.append("classDto", JSON.stringify(obj));
+            publishService.editPost(id, formData).then(data => {
+                if (data) {
+                    setLoading(false)
+                    navigate("/publish-class");
+                }
+            })
+        } else {
+            const formData = new FormData();
+            if (post.videoImg?.data === null || post.videoImg?.data === '') {
+                await fetch(any_image)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const file = new File([blob], "loomo.png", {type: "image/png"});
+                        formData.append("photoFile", file);
+                    });
+            } else {
+                formData.append("photoFile", post.videoImg?.data);
+            }
 
-        formData.append("classDto", JSON.stringify(obj));
-
-        publishService.createUpdatePost('',formData).then(data => console.log("hellooo"))
+            formData.append("videoFile", post.postVideo?.data);
+            const {year, month, day, hour, minute, gmt} = post.classTime;
+            const demoDay = post.demoDay;
+            const obj = {
+                title: post.title,
+                description: post.desc,
+                courseTarget: post.courseToWho,
+                requirements: post.req,
+                language: post.language,
+                price: post.price,
+                maxStudents: post.studentNum,
+                demoTime: new Date(year, month - 1, day, hour - gmt, minute),
+                classDays: post.classTime.days,
+                classTime: new Date(demoDay.year, demoDay.month - 1, demoDay.day, demoDay.hour - demoDay.gmt, demoDay.minute),
+                category: "some category",
+                tags: ["some", 'tags']
+            };
+            formData.append("classDto", JSON.stringify(obj));
+            publishService.createPost(formData).then(data => {
+                if (data) {
+                    setLoading(false)
+                    navigate("/publish-class");
+                }
+            })
+        }
     };
-
     return (
         <div className={'CreateEditPage'}>
+            {loading ? <Loading/> : ''}
             {showEditItem &&
                 <EditText setter={setter === 'title' ? setPostTitle : setPostDesc}
                           num={maxChars}
@@ -169,12 +333,15 @@ const CreateEditPage = () => {
                         }
                         {
                             showVideo &&
-                            <ReactPlayer
-                                url={file}
-                                controls
-                                className="react-player"
-                                config={{file: {attributes: {controlsList: 'nodownload'}}}}
-                            />
+                            <div className="player-wrapper">
+                                <ReactPlayer
+                                    url={file}
+                                    controls
+                                    className="react-player"
+                                    config={{file: {attributes: {controlsList: 'nodownload'}}}}
+                                />
+                                <div className="btn-close close-react-player" onClick={handleVideoChange}></div>
+                            </div>
                         }
 
                     </div>
@@ -184,7 +351,7 @@ const CreateEditPage = () => {
                                  onClick={() => handleCourseDayChange()}/>
                             Class
                             time:{post.classTime.year}/{post.classTime.month}/{post.classTime.day} {post.classTime.hour}:{post.classTime.minute} GMT({post.classTime.gmt})
-                            <br/> Days: {post.classTime.days.map(item => (item + "   "))}
+                            <br/> Days: {post?.classTime?.days?.map(item => (item + "   "))}
                         </div>
                         <div className="class-language text_32">
                             <img className="edit-text" src={edit_text_icon} alt="edit-text"
@@ -233,7 +400,7 @@ const CreateEditPage = () => {
                                  onClick={() => handleArrChange('course_to_who')}/>
                             Course to who:
                         </div>
-                        {post.courseToWho.map((text, i) => (<li key={i}>{text}</li>))}
+                        {post?.courseToWho?.map((text, i) => (<li key={i}>{text}</li>))}
                     </div>
                     <div className="requirements">
                         <div>
@@ -241,7 +408,7 @@ const CreateEditPage = () => {
                                  onClick={() => handleArrChange('req')}/>
                             Requirements:
                         </div>
-                        {post.req.map((text, i) => (<li key={i}>{text}</li>))}
+                        {post?.req?.map((text, i) => (<li key={i}>{text}</li>))}
                     </div>
                     <Button className="save-button" type="submit" size="sm" disabled={isButtonDisabled}
                             onClick={handleEditCreateClass}>
