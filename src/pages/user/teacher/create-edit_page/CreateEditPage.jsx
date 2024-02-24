@@ -33,6 +33,7 @@ import Button from "react-bootstrap/Button";
 import publishService from "../../../../services/publishService";
 import {useNavigate, useParams} from "react-router-dom";
 import Loading from "../../../../components/loading/Loading";
+import adjustDateByHour from "../../../../utils/helper/math";
 
 const CreateEditPage = () => {
     const {post} = useSelector(state => state.classPost);
@@ -92,13 +93,14 @@ const CreateEditPage = () => {
         setLoading(true)
         if (id && isValidUUID(id)) {
             publishService.getPostData(id).then(data => {
+                console.log(data)
                 const demoDay=new Date(data.demoTime)
                 const classTime=new Date(data.classTime)
                 const demoDayObj = {
                     year: demoDay.getFullYear(),
                     month: demoDay.getMonth() + 1,
                     day: demoDay.getDate(),
-                    hour: demoDay.getHours(),
+                    hour: demoDay.getHours() +demoDay.getTimezoneOffset() / 60 * -1,
                     minute:demoDay.getMinutes(),
                     gmt:demoDay.getTimezoneOffset() / 60 * -1
                 };
@@ -106,7 +108,7 @@ const CreateEditPage = () => {
                     year: classTime.getFullYear(),
                     month: classTime.getMonth() + 1,
                     day: classTime.getDate(),
-                    hour: classTime.getHours(),
+                    hour: classTime.getHours() + demoDay.getTimezoneOffset() / 60 * -1,
                     minute: classTime.getMinutes(),
                     gmt: classTime.getTimezoneOffset() / 60 * -1
                 };
@@ -243,13 +245,12 @@ const CreateEditPage = () => {
                 language: post.language,
                 price: post.price,
                 maxStudents: post.studentNum,
-                demoTime: new Date(year, month - 1, day, hour - gmt, minute),
+                classTime : adjustDateByHour(year, month , day, hour ,minute,-gmt) ,
                 classDays: post.classTime.days,
-                classTime: new Date(demoDay.year, demoDay.month - 1, demoDay.day, demoDay.hour - demoDay.gmt, demoDay.minute),
+                demoTime : adjustDateByHour(demoDay.year, demoDay.month , demoDay.day, demoDay.hour , demoDay.minute,-gmt),
                 category: "some category",
                 tags: ["some", 'tags']
             };
-
             formData.append("classDto", JSON.stringify(obj));
             publishService.editPost(id, formData).then(data => {
                 if (data) {
@@ -281,9 +282,9 @@ const CreateEditPage = () => {
                 language: post.language,
                 price: post.price,
                 maxStudents: post.studentNum,
-                demoTime: new Date(year, month - 1, day, hour - gmt, minute),
+                classTime : adjustDateByHour(year, month , day, hour , minute,-gmt) ,
                 classDays: post.classTime.days,
-                classTime: new Date(demoDay.year, demoDay.month - 1, demoDay.day, demoDay.hour - demoDay.gmt, demoDay.minute),
+                demoTime : adjustDateByHour(demoDay.year, demoDay.month , demoDay.day, demoDay.hour , demoDay.minute,-gmt),
                 category: "some category",
                 tags: ["some", 'tags']
             };

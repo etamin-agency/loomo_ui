@@ -15,7 +15,7 @@ const EditDemoDate = ({ setter, close }) => {
         const gmtOffset = timezoneOffset >= 0 ? `+${timezoneOffset}` : `${timezoneOffset}`;
         const plainDateObject = {
             year: dateObject.getFullYear(),
-            month: dateObject.getMonth(),
+            month: dateObject.getMonth()+1,
             day: dateObject.getDate(),
             hour: dateObject.getHours(),
             minute: dateObject.getMinutes(),

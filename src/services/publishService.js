@@ -53,7 +53,6 @@ const publishService = {
 
         try {
             const response =    await axiosInstance.post(`/publish-class/${userName}/create`,formData);
-            console.log(response)
             return response.data;
         } catch (error) {
             console.log(error)
