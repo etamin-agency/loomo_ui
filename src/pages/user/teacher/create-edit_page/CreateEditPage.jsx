@@ -94,15 +94,15 @@ const CreateEditPage = () => {
         if (id && isValidUUID(id)) {
             publishService.getPostData(id).then(data => {
                 console.log(data)
-                const demoDay=new Date(data.demoTime)
-                const classTime=new Date(data.classTime)
+                const demoDay = new Date(data.demoTime)
+                const classTime = new Date(data.classTime)
                 const demoDayObj = {
                     year: demoDay.getFullYear(),
                     month: demoDay.getMonth() + 1,
                     day: demoDay.getDate(),
-                    hour: demoDay.getHours() +demoDay.getTimezoneOffset() / 60 * -1,
-                    minute:demoDay.getMinutes(),
-                    gmt:demoDay.getTimezoneOffset() / 60 * -1
+                    hour: demoDay.getHours() + demoDay.getTimezoneOffset() / 60 * -1,
+                    minute: demoDay.getMinutes(),
+                    gmt: demoDay.getTimezoneOffset() / 60 * -1
                 };
                 const classTimeObj = {
                     year: classTime.getFullYear(),
@@ -186,9 +186,18 @@ const CreateEditPage = () => {
                 language: "English"
             }
             dispatch(setPost(obj))
+            setImageHandle()
             setLoading(false)
         }
     }, [])
+    const setImageHandle = async () => {
+        await fetch(any_image)
+            .then(response => response.blob())
+            .then(blob => {
+                const file = new File([blob], "loomo.png", {type: "image/png"});
+                dispatch(setPostVideImg({data:file,changed:true}))
+            });
+    };
 
     function isValidUUID(uuid) {
         const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
@@ -245,9 +254,9 @@ const CreateEditPage = () => {
                 language: post.language,
                 price: post.price,
                 maxStudents: post.studentNum,
-                classTime : adjustDateByHour(year, month , day, hour ,minute,-gmt) ,
+                classTime: adjustDateByHour(year, month, day, hour, minute, -gmt),
                 classDays: post.classTime.days,
-                demoTime : adjustDateByHour(demoDay.year, demoDay.month , demoDay.day, demoDay.hour , demoDay.minute,-gmt),
+                demoTime: adjustDateByHour(demoDay.year, demoDay.month, demoDay.day, demoDay.hour, demoDay.minute, -gmt),
                 category: "some category",
                 tags: ["some", 'tags']
             };
@@ -260,17 +269,7 @@ const CreateEditPage = () => {
             })
         } else {
             const formData = new FormData();
-            if (post.videoImg?.data === null || post.videoImg?.data === '') {
-                await fetch(any_image)
-                    .then(response => response.blob())
-                    .then(blob => {
-                        const file = new File([blob], "loomo.png", {type: "image/png"});
-                        formData.append("photoFile", file);
-                    });
-            } else {
-                formData.append("photoFile", post.videoImg?.data);
-            }
-
+            formData.append("photoFile", post.videoImg?.data);
             formData.append("videoFile", post.postVideo?.data);
             const {year, month, day, hour, minute, gmt} = post.classTime;
             const demoDay = post.demoDay;
@@ -282,9 +281,9 @@ const CreateEditPage = () => {
                 language: post.language,
                 price: post.price,
                 maxStudents: post.studentNum,
-                classTime : adjustDateByHour(year, month , day, hour , minute,-gmt) ,
+                classTime: adjustDateByHour(year, month, day, hour, minute, -gmt),
                 classDays: post.classTime.days,
-                demoTime : adjustDateByHour(demoDay.year, demoDay.month , demoDay.day, demoDay.hour , demoDay.minute,-gmt),
+                demoTime: adjustDateByHour(demoDay.year, demoDay.month, demoDay.day, demoDay.hour, demoDay.minute, -gmt),
                 category: "some category",
                 tags: ["some", 'tags']
             };
