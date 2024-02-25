@@ -1,32 +1,34 @@
 import {Route, BrowserRouter as Router, Routes, Link} from "react-router-dom";
 import {lazy, Suspense, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import Spinner from "../spinner/Spinner";
-import Page404 from "../error/Page404";
+import Spinner from "../components/spinner/Spinner";
+import Page404 from "../components/error/Page404";
 
 import './App.scss';
 import {jwtDecode} from "jwt-decode";
 import Cookie from "js-cookie";
-import {setStudent, setTeacher} from "../../actions";
-import StudentProfilePage from "../../pages/user/student/student_profile_page/StudentProfilePage";
-import StudentClassesPage from "../../pages/user/student/student_classes_page/StudentClassesPage";
-import MessagingPage from "../../pages/user/student/messaging_page/MessagingPage";
-import AssignmentsPage from "../../pages/user/teacher/assignments_page/AssignmentsPage";
-import ArchivePage from "../../pages/user/student/archive_page/ArchivePage";
-import TeacherStudioPage from "../../pages/user/teacher/teacher_studio_page/TeacherStudioPage";
-import WalletPage from "../../pages/user/teacher/wallet_page/WalletPage";
-import Dashboard from "../dashboard/Dashboard";
-import SettingsPage from "../../pages/settings/settings_page/SettingsPage";
-import AccountEditPage from "../../pages/settings/account_edit_page/AccountEditPage";
-import LogoutComponent from "../logout/LogoutComponent";
-import PublishClassPage from "../../pages/user/teacher/publish_class_page/PublishClassPage";
-import CreateEditPage from "../../pages/user/teacher/create-edit_page/CreateEditPage";
+import {setStudent, setTeacher} from "../actions";
+import StudentProfilePage from "../pages/user/student/student_profile_page/StudentProfilePage";
+import StudentClassesPage from "../pages/user/student/student_classes_page/StudentClassesPage";
+import MessagingPage from "../pages/user/student/messaging_page/MessagingPage";
+import AssignmentsPage from "../pages/user/teacher/assignments_page/AssignmentsPage";
+import ArchivePage from "../pages/user/student/archive_page/ArchivePage";
+import TeacherStudioPage from "../pages/user/teacher/teacher_studio_page/TeacherStudioPage";
+import WalletPage from "../pages/user/teacher/wallet_page/WalletPage";
+import Dashboard from "../components/dashboard/Dashboard";
+import SettingsPage from "../pages/settings/settings_page/SettingsPage";
+import AccountEditPage from "../pages/settings/account_edit_page/AccountEditPage";
+import LogoutComponent from "../components/logout/LogoutComponent";
+import PublishClassPage from "../pages/user/teacher/publish_class_page/PublishClassPage";
+import CreateEditPage from "../pages/user/teacher/create-edit_page/CreateEditPage";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import SearchPage from "../pages/home/search_page/SearchPage";
+import Loomo from "../assets/loomo.png";
 
-const HomePage = lazy(() => import("../../pages/home/home_page/HomePage"))
-const LogInPage = lazy(() => import("../../pages/auth/login_page/LogInPage"));
-const SignUpPage = lazy(() => import("../../pages/auth/signup_page/SignUpPage"));
+const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
+const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
+const SignUpPage = lazy(() => import("../pages/auth/signup_page/SignUpPage"));
 
 
 function App() {
@@ -52,7 +54,10 @@ function App() {
             <div className="App">
                 <Suspense fallback={<Spinner/>}>
                     <Routes>
-                        <Route path="/" element={<HomePage/>}/>
+                        <Route path="/" element={<HomePage/>}>
+                            <Route path="/" element={<img src={Loomo} alt="loomo-img"/>}/>
+                            <Route path="/classes/search" element={<SearchPage/>}/>
+                        </Route>
                         {
                             role !== '' &&
                             <Route path="/logout" element={<LogoutComponent/>}/>

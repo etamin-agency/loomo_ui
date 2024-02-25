@@ -1,7 +1,6 @@
-import {Link} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 import SearchBar from "../../../components/searchbar/SearchBar";
 import Button from "react-bootstrap/Button";
-import Loomo from "../../../assets/loomo.png"
 import {useSelector} from "react-redux";
 import profile_picture from "../../../assets/profile.png"
 import logout_icon from "../../../assets/logout.png"
@@ -14,7 +13,7 @@ const HomePage = () => {
     return (
         <div className="HomePage">
             <div className="header">
-                <SearchBar className="header__search"/>
+                <SearchBar />
                 {role ==='' ?
                     <div className="header__btn">
                         <Link to="/login">
@@ -40,7 +39,7 @@ const HomePage = () => {
                 }
             </div>
             <div className="home-intro">
-                <img src={Loomo} alt="loomo-img"/>
+                <Outlet/>
             </div>
         </div>
 

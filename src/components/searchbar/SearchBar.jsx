@@ -1,22 +1,28 @@
 
 import React, { useState } from 'react';
 
+import search_icon from '../../assets/search.png'
+
 import './SearchBar.scss'
-const SearchBar = ({ onSearch }) => {
+import searchService from "../../services/searchService";
+
+const SearchBar = () => {
     const [searchText, setSearchText] = useState('');
 
     const handleSearch = () => {
-        onSearch(searchText);
+        searchService.searchPosts(searchText).then(data=>{
+            console.log(data)
+        })
     };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            onSearch(searchText);
+           handleSearch()
         }
     };
 
     return (
-        <div>
+        <div className="SearchBar">
             <input
                 className="search-bar"
                 type="text"
@@ -25,6 +31,7 @@ const SearchBar = ({ onSearch }) => {
                 onChange={(e) => setSearchText(e.target.value)}
                 onKeyPress={handleKeyPress}
             />
+            <img className="search-icon" src={search_icon} alt="search-icon" onClick={handleSearch}/>
         </div>
     );
 };
