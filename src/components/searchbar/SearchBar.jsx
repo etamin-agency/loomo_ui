@@ -1,18 +1,17 @@
-
 import React, { useState } from 'react';
+import {useNavigate} from "react-router-dom";
 
 import search_icon from '../../assets/search.png'
 
 import './SearchBar.scss'
-import searchService from "../../services/searchService";
+
 
 const SearchBar = () => {
     const [searchText, setSearchText] = useState('');
+    const navigate = useNavigate();
 
     const handleSearch = () => {
-        searchService.searchPosts(searchText).then(data=>{
-            console.log(data)
-        })
+        navigate(`/classes/search?query=${searchText}`)
     };
 
     const handleKeyPress = (e) => {

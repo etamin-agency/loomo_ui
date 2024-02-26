@@ -1,0 +1,43 @@
+.SearchPage{
+  width: 100%;
+  height: 100%;
+  .results-number{
+    font-size: 36px;
+    text-align: left;
+    margin-left: 100px;
+  }
+  .post-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 900px;
+    margin: 50px auto 0;
+  }
+  .post{
+    width: 420px;
+    background-color: #cccccc;
+    border-radius: 20px;
+    margin-top: 20px;
+    padding-bottom: 10px;
+  }
+  .post-image{
+    display: block;
+    max-width: 380px;
+    max-height: 260px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 20px auto 0;
+  }
+  .post-text{
+    text-align: left;
+    font-size: 28px;
+    margin-left: 20px;
+  }
+  .post-price{
+    text-align: right;
+    margin-right: 30px;
+    font-weight: 600;
+    font-size: 24px;
+  }
+}
