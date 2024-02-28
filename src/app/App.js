@@ -25,6 +25,7 @@ import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import SearchPage from "../pages/home/search_page/SearchPage";
 import Loomo from "../assets/loomo.png";
+import Post from "../pages/home/post_page/Post";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
@@ -54,6 +55,7 @@ function App() {
             <div className="App">
                 <Suspense fallback={<Spinner/>}>
                     <Routes>
+                        <Route path="/post/:uuid" element={<Post/>}/>
                         <Route path="/" element={<HomePage/>}>
                             <Route path="/" element={<img src={Loomo} alt="loomo-img"/>}/>
                             <Route path="/classes/search" element={<SearchPage/>}/>

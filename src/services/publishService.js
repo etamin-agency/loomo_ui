@@ -87,7 +87,7 @@ const publishService = {
             },
         });
         try {
-            const response = await axiosInstance.get(`/publish-class/post/file/${userName}/${uuid}`);
+            const response = await axiosInstance.get(`/publish-class/post/image/${uuid}`);
             return response.data;
         } catch (error) {
             console.log(error)

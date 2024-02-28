@@ -46,47 +46,57 @@ const initialState = {
             minute: 0,
             gmt: 0
         },
-        language: "English"
+        language: "English",
+        changed:false
     }
 };
 
 const classPost = createReducer(initialState, builder => {
     builder
         .addCase(setPostVideo, (state, action) => {
-            state.post.postVideo = action.payload
+            state.post.postVideo = action.payload;
         })
         .addCase(setPostTitle, (state, action) => {
             state.post.title = action.payload?.text
+            state.post.changed=true;
         })
         .addCase(setPostDesc, (state, action) => {
             state.post.desc = action.payload?.text
+            state.post.changed=true;
         })
         .addCase(setPostCourseToWho, (state, action) => {
-            state.post.courseToWho = action.payload
+            state.post.courseToWho = action.payload;
+            state.post.changed=true;
         })
         .addCase(setPostReq, (state, action) => {
-            state.post.req = action.payload
+            state.post.req = action.payload;
+            state.post.changed=true;
         })
         .addCase(setPostPrice, (state, action) => {
-            state.post.price = action?.payload?.num
+            state.post.price = action?.payload?.num;
+            state.post.changed=true;
         })
         .addCase(setPostClassTime, (state, action) => {
-            state.post.classTime = action.payload
+            state.post.classTime = action.payload;
+            state.post.changed=true;
         })
         .addCase(setPostVideImg, (state, action) => {
-            state.post.videoImg = action.payload
+            state.post.videoImg = action.payload;
         })
         .addCase(setPostDemoDay, (state, action) => {
             state.post.demoDay = action.payload;
+            state.post.changed=true;
         })
         .addCase(setPostLanguage, (state, action) => {
-            state.post.language = action.payload
+            state.post.language = action.payload;
+            state.post.changed=true;
         })
         .addCase(setPostStudentNum, (state, action) => {
-            state.post.studentNum = action.payload?.num
+            state.post.studentNum = action.payload?.num;
+            state.post.changed=true;
         })
         .addCase(setPost,(state,action)=>{
-            state.post=action.payload
+            state.post=action.payload;
         })
         .addDefaultCase(() => {
         });

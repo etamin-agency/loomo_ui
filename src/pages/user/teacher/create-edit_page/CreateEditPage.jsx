@@ -52,9 +52,8 @@ const CreateEditPage = () => {
     const [loading, setLoading] = useState(true);
     const [showVideo, setShowVideo] = useState(false);
     const navigate = useNavigate();
-    const isButtonDisabled = post.postVideo?.data == null || post?.postVideo?.data === '' || post?.price == '' || post?.price < 15 || post?.title === '' || post?.title == null
+    const isButtonDisabled =  post?.postVideo?.data === '' || post?.price ==='' || post?.price < 15 || post?.title === '' || (!post?.changed && !post?.postVideo?.changed &&  !post?.videoImg?.changed)
     let {id} = useParams();
-
     const handleSetterChange = (text, num) => {
         setSetter(text)
         setMaxChars(num)
@@ -93,7 +92,6 @@ const CreateEditPage = () => {
         setLoading(true)
         if (id && isValidUUID(id)) {
             publishService.getPostData(id).then(data => {
-                console.log(data)
                 const demoDay = new Date(data.demoTime)
                 const classTime = new Date(data.classTime)
                 const demoDayObj = {
@@ -126,16 +124,15 @@ const CreateEditPage = () => {
                     },
                     studentNum: data?.maxStudents,
                     demoDay: demoDayObj,
-                    language: data?.language
+                    language: data?.language,
+                    changed: false,
                 }
                 dispatch(setPost(obj))
                 return data;
             }).then(data => {
-                publishService.getFile(data?.introVideoLink).then(data => {
-                    setFile(`data:video/mp4;base64,${data}`)
-                    dispatch(setPostVideo({changed: false, data: data}))
-
-                })
+                const url=`https://d1oxvzb6zdyzdk.cloudfront.net/${data?.introVideoLink}`;
+                setFile(url)
+                dispatch(setPostVideo({changed: false, data: url}));
                 return data;
             }).then(data => {
                 publishService.getFile(data?.introVideoImgLink).then(img => {
@@ -181,21 +178,36 @@ const CreateEditPage = () => {
                     day: 0,
                     hour: 0,
                     minute: 0,
-                    gmt: 0
+                    gmt: 0,
                 },
-                language: "English"
+                language: "English",
+                changed: false,
             }
             dispatch(setPost(obj))
             setImageHandle()
             setLoading(false)
         }
     }, [])
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            const message = 'Are you sure you want to leave? The video upload process is not complete yet.';
+            event.returnValue = message;
+            return message;
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
     const setImageHandle = async () => {
         await fetch(any_image)
             .then(response => response.blob())
             .then(blob => {
                 const file = new File([blob], "loomo.png", {type: "image/png"});
-                dispatch(setPostVideImg({data:file,changed:true}))
+                dispatch(setPostVideImg({data: file, changed: true}))
             });
     };
 
@@ -339,6 +351,7 @@ const CreateEditPage = () => {
                                     controls
                                     className="react-player"
                                     config={{file: {attributes: {controlsList: 'nodownload'}}}}
+
                                 />
                                 <div className="btn-close close-react-player" onClick={handleVideoChange}></div>
                             </div>
