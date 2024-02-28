@@ -1,0 +1,161 @@
+.Post {
+  padding: 20px 20px 40px;
+  .react-player {
+    background-color: black;
+  }
+
+  .post_wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .post-title {
+    width: 450px;
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+    margin: 20px auto 0;
+    text-align: left;
+  }
+
+  .title-desc-wrapper {
+    display: block;
+    width: 500px;
+    margin: 0 auto;
+    background-color: #9748c9;
+    border-radius: 25px;
+    padding: 10px;
+  }
+  .post-desc{
+    margin: 20px auto 0;
+    width: 450px;
+    font-size: 18px;
+    color: white;
+    text-align: left;
+  }
+  .wrapper-second-part{
+    display: block;
+    width: 500px;
+    margin: 0 auto;
+  }
+  .post-req{
+    display: block;
+    width: 500px;
+    margin: 20px auto;
+    background-color: #a29595;
+    border-radius: 25px;
+    padding: 10px;
+    text-align: left;
+    .req-text{
+      margin-left: 20px;
+      font-size: 24px;
+
+    }
+    div{
+      display: block;
+      margin-left: 35px;
+      max-width: 360px;
+      word-wrap: break-word;
+      margin-bottom: 5px;
+    }
+  }
+  .post-time{
+    width: 800px;
+    background-color: #c04848;
+    margin: 20px auto 0;
+    padding: 20px;
+    font-size: 24px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+  }
+  .post-days{
+    width: 800px;
+    background-color: #9748c9;
+    margin: 20px auto 0;
+    padding: 20px;
+    font-size: 24px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    div{
+      display: inline-block;
+      margin: 0  10px;
+    }
+  }
+  .post-info-price{
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 54px 55px, rgba(0, 0, 0, 0.6) 0px -12px 30px, rgba(0, 0, 0, 0.6) 0px 4px 6px, rgba(0, 0, 0, 0.7) 0px 12px 13px, rgba(0, 0, 0, 0.5) 0px -3px 5px;
+    background-color: black;
+    border-radius: 20px;
+    color: white;
+    padding: 20px;
+  }
+  .post-price-wrapper{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .post-price{
+    text-align: right;
+    div{
+      display: inline-block;
+      color: #dab51e;
+      font-weight: 700;
+      font-size: 24px;
+    }
+  }
+  .post-students{
+    div{
+      display: inline-block;
+      color: #0564f5;
+      font-weight: 700;
+      font-size: 18px;
+
+    }
+    text-align: left;
+  }
+  .post-demo-day{
+    div{
+      display: inline-block;
+      color: #0564f5;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    text-align: left;
+  }
+  .post-price-text-wrapper{
+    display: flex;
+    justify-content: space-between;
+  }
+  .post-language{
+    div{
+      display: inline-block;
+      color: #0564f5;
+      font-weight: 600;
+      font-size: 18px;
+    }
+  }
+  .parent-block {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .post-attend {
+    cursor: pointer;
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+    background-color: #0564f5;
+    border-radius: 20px;
+    text-align: center;
+    padding-top: 10px;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: all 0.5s ease-in-out;
+    &:hover{
+      box-shadow: rgba(0, 0, 255, 0.8) 0px 54px 55px, rgba(0, 0, 255, 0.6) 0px -12px 30px, rgba(0, 0, 255, 0.6) 0px 4px 6px, rgba(0, 0, 255, 0.7) 0px 12px 13px, rgba(0, 0, 255, 0.5) 0px -3px 5px;
+
+    }
+  }
+}

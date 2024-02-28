@@ -102,10 +102,9 @@ const publishService = {
                 'Content-Type': 'multipart/form-data',
             },
         });
-        const userName = jwtDecode(Cookie.get('access_token')).sub;
 
         try {
-            const response =  await axiosInstance.post(`/publish-class/${userName}/edit/${uuid}`,formData);
+            const response =  await axiosInstance.post(`/publish-class/edit/${uuid}`,formData);
             console.log(response)
             return response.data;
         } catch (error) {

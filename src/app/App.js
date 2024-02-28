@@ -55,10 +55,10 @@ function App() {
             <div className="App">
                 <Suspense fallback={<Spinner/>}>
                     <Routes>
-                        <Route path="/post/:uuid" element={<Post/>}/>
                         <Route path="/" element={<HomePage/>}>
                             <Route path="/" element={<img src={Loomo} alt="loomo-img"/>}/>
                             <Route path="/classes/search" element={<SearchPage/>}/>
+                            <Route path="/post/:uuid" element={<Post/>}/>
                         </Route>
                         {
                             role !== '' &&

@@ -1,13 +1,13 @@
-import {useSearchParams} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import searchService from "../../../services/searchService";
 
 import Loading from "../../../components/loading/Loading";
 
+import postService from "../../../services/postService";
 
 
 import './SearchPage.scss'
-import postService from "../../../services/postService";
 
 const SearchPage = () => {
     const [searchParams] = useSearchParams();
@@ -51,15 +51,24 @@ const SearchPage = () => {
             {loading && <Loading/>}
             <div className="results-number">
                 Number of Results: {totalNum}
-                <div className="post-wrapper">
-                    {posts?.map(post => (
-                        <div className="post" key={post.id}>
-                            <img className="post-image" src={`data:image/jpeg;base64, ${post?.image}`} alt="post-image"/>
+            </div>
+            <div className="post-wrapper">
+                {posts?.map(post => (
+
+                    <div className="post" key={post.id}>
+                        <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <img className="post-image" src={`data:image/jpeg;base64, ${post?.image}`}
+                                 alt="post-image"/>
+
                             <div className="post-text">{post?.title}</div>
-                            <div className="post-price">{post?.price}$</div>
-                        </div>
-                    ))}
-                </div>
+                            <div className="post-wrapper">
+                                <div className="post-language">{post?.language}</div>
+                                <div className="post-price">{post?.price}$</div>
+                            </div>
+                        </Link>
+                    </div>
+
+                ))}
             </div>
         </div>
     )
