@@ -3,10 +3,11 @@ import {useEffect, useState} from "react";
 import searchService from "../../../services/searchService";
 
 import Loading from "../../../components/loading/Loading";
-import publishService from "../../../services/publishService";
+
+
 
 import './SearchPage.scss'
-
+import postService from "../../../services/postService";
 
 const SearchPage = () => {
     const [searchParams] = useSearchParams();
@@ -22,7 +23,7 @@ const SearchPage = () => {
         try {
             const data = await searchService.searchPosts(queryParam, page);
             const posts = await Promise.all(data?.posts?.map(async (post) => {
-                const file = await publishService.getFile(post?.imageId);
+                const file = await postService.getImage(post?.imageId);
                 return {
                     ...post,
                     image: file
