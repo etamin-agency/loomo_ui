@@ -91,7 +91,23 @@ const settingService = {
         } catch (error) {
             return axiosErrorHandler(error);
         }
-    }
+    },
+    getTeacherProfileById: async (uuid)=>{
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                'Content-Type': "application/json"
+            },
+        });
+
+        try {
+            const response = await axiosInstance.get(`/teacher/id/${uuid}`);
+            return response.data;
+        } catch (error) {
+            return axiosErrorHandler(error);
+        }
+    },
+
 
 };
 

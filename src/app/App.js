@@ -26,6 +26,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import SearchPage from "../pages/home/search_page/SearchPage";
 import Loomo from "../assets/loomo.png";
 import Post from "../pages/home/post_page/Post";
+import StudentDemoClassPage from "../pages/user/student/student_demo_class_page/StudentDemoClassPage";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
@@ -108,6 +109,7 @@ function App() {
                                     <Route path="/assignments" element={<AssignmentsPage/>}/>
                                     <Route path="/archive" element={<ArchivePage/>}/>
                                     <Route path="/student" element={<StudentProfilePage/>}/>
+                                    <Route path="/class-demo" element={<StudentDemoClassPage/>}/>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>

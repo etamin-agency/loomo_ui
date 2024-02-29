@@ -1,81 +1,11 @@
 import axios from 'axios';
-import Cookie from 'js-cookie';
+import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
-const API_BASE_URL = 'http://localhost:8082/api/v1';
+const API_BASE_URL = 'http://localhost:8085/api/v1/demo-class';
+const postService = {
 
-
-const publishService = {
-    getPublishedClasses: async (offset = 0, num = 6, username) => {
-        const token = Cookie.get('access_token');
-        const axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
-
-        try {
-            const response = await axiosInstance.get(`/publish-class/${username}?number=${num}&offset=${offset}`);
-            return response.data;
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    getLanguages: async () => {
-        const token = Cookie.get('access_token');
-        const axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
-
-        try {
-            const response = await axiosInstance.get(`/publish-class/languages`);
-            return response.data;
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    createPost: async (formData) => {
-        const token = Cookie.get('access_token');
-        const axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        const userName = jwtDecode(Cookie.get('access_token')).sub;
-
-        try {
-            const response =    await axiosInstance.post(`/publish-class/${userName}/create`,formData);
-            return response.data;
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    getPostData: async (uuid)=>{
-        const token = Cookie.get('access_token');
-        const axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
-
-        try {
-            const response = await axiosInstance.get(`/publish-class/post/${uuid}`);
-            return response.data;
-        } catch (error) {
-            console.log(error)
-        }
-    },
-    getFile: async (uuid)=>{
+    getDemoClasses: async (uuid) => {
         const token = Cookie.get('access_token');
 
         const axiosInstance = axios.create({
@@ -86,25 +16,74 @@ const publishService = {
             },
         });
         try {
-            const response = await axiosInstance.get(`/publish-class/post/image/${uuid}`);
+            const response = await axiosInstance.get(`${API_BASE_URL}/classes/${uuid}`);
             return response.data;
         } catch (error) {
-            console.log(error)
+            throw error;
         }
     },
-    editPost: async (uuid,formData) => {
+    getDemoAppliedStudent: async (uuid) => {
         const token = Cookie.get('access_token');
         const axiosInstance = axios.create({
             baseURL: API_BASE_URL,
             headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data',
+                'Content-Type': 'application/json',
             },
         });
-
         try {
-            const response =  await axiosInstance.post(`/publish-class/edit/${uuid}`,formData);
-            console.log(response)
+            const response = await axiosInstance.get(`${API_BASE_URL}/students/${uuid}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    getDemoClassesPost: async () => {
+        const token = Cookie.get('access_token');
+        const username = jwtDecode(token).sub;
+
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        try {
+            const response = await axiosInstance.get(`${API_BASE_URL}/posts/${username}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    attendDemoClass: async (data) => {
+        const token = Cookie.get('access_token');
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        try {
+            const response = await axiosInstance.post(`/add`,data);
+            return response.data;
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    isStudentAttending: async (postId)=>{
+        const token = Cookie.get('access_token');
+        const username = jwtDecode(token).sub;
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        try {
+            const response = await axiosInstance.get(`/is-attending/${postId}/${username}`);
             return response.data;
         } catch (error) {
             console.log(error)
@@ -113,4 +92,4 @@ const publishService = {
 
 };
 
-export default publishService;
+export default postService;

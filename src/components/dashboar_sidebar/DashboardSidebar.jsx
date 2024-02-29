@@ -8,14 +8,17 @@ import home_work_logo from "../../assets/homework-logo.png"
 import user_logo from "../../assets/user-logo.png"
 import studio_logo from "../../assets/studio-logo.png"
 import wallet_logo from "../../assets/wallet-logo.png"
+import demo_day from "../../assets/demo.png"
 
 import "./DashboarSidebar.scss"
 import {useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+
 
 
 const DashboardSidebar = () => {
     const {role} = useSelector(state => state.role);
-
+    const [isDemoLessons,setIsDemoLessons]=useState(false);
     const student = [
         {
             link: "classes",
@@ -71,6 +74,12 @@ const DashboardSidebar = () => {
         },
 
     ];
+    useEffect(()=>{
+        if (role==='STUDENT'){
+
+        }
+
+    },[])
     return (
         <aside className="student-dashboard">
             <div className="home-link">
@@ -80,6 +89,14 @@ const DashboardSidebar = () => {
                 </Link>
             </div>
             <div className="wrapper">
+                {(role === "student" && isDemoLessons) &&(
+                    <div className="dashboard-block">
+                        <Link to={`/class-demo`} className="student-link">
+                            <img src={demo_day} className="student-logo" alt="demo-day"/>
+                            <div>Demo Classes</div>
+                        </Link>
+                    </div>
+                ) }
                 {
                     role === "student" && student.map(({link, src, alt, name}, id) => {
                         return (

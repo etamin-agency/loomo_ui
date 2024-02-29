@@ -1,0 +1,28 @@
+.SwitchToLoginView{
+  position: absolute;
+  width: 380px;
+  min-height: 150px;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  padding: 50px 30px 30px;
+  font-size: 18px;
+  .logout-login{
+    display: inline-block;
+    cursor: pointer;
+    color: #0564f5;
+  }
+  .switch-close-button{
+    position: absolute;
+    top: -20px;
+    right: -40px;
+    cursor: pointer;
+    color: black;
+    background-color: #0564f5;
+    opacity: 1;
+  }
+}

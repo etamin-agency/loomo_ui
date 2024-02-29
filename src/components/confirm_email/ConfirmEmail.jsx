@@ -124,8 +124,7 @@ const ConfirmEmail = (props) => {
                 </div>
                 <div className="email-info">
                     Enter the confirmation code that we sent to the email address {props.email}
-                    <div className="code-request" onClick={() => requestNewConfirmationCode(props.email)}>Request
-                        code.
+                    <div className="code-request" onClick={() => requestNewConfirmationCode(props.email)}> Request code.
                     </div>
                 </div>
                 <form onSubmit={formik.handleSubmit}>
