@@ -32,6 +32,7 @@ const EditDemoDate = ({ setter, close }) => {
                     <StaticDateTimePicker
                         onAccept={handleSetDateAndClose}
                         onClose={close}
+                        disablePast
                     />
                 </DemoItem>
             </div>

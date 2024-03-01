@@ -90,6 +90,7 @@ const Post = () => {
                     teacherId: teacher?.teacherId,
                     postId: uuid
                 });
+                setAlreadyAttending(true)
             }
         } else {
             navigate('/login')

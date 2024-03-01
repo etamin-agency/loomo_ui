@@ -7,4 +7,48 @@
   text-align: center;
   padding: 100px;
   font-size: 36px;
+  .demo-class-wrapper{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+  }
+  .demo-class{
+    width: 320px;
+    padding:  20px;
+    background-color: #cccccc;
+    border-radius: 20px;
+    margin-bottom: 40px;
+  }
+  .demo-class-image{
+    width: 280px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 20px;
+  }
+  .demo-class-title{
+    font-size: 20px;
+    line-height: 20px;
+    width: 280px;
+    margin: 5px auto 0;
+    font-weight: 600;
+    color: #0e100e;
+  }
+  .demo-class-image-wrapper{
+    position: relative;
+  }
+  .timer-wrapper{
+    position: absolute;
+    top: 0;
+    width: 280px;
+    height: 200px;
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 20px;
+    z-index: 5;
+    color: white;
+    font-size: 22px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 60px;
+  }
 }

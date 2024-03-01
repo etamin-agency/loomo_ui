@@ -16,7 +16,7 @@ const postService = {
             },
         });
         try {
-            const response = await axiosInstance.get(`${API_BASE_URL}/classes/${uuid}`);
+            const response = await axiosInstance.get(`${API_BASE_URL}/posts/${uuid}`);
             return response.data;
         } catch (error) {
             throw error;
@@ -50,7 +50,7 @@ const postService = {
             },
         });
         try {
-            const response = await axiosInstance.get(`${API_BASE_URL}/posts/${username}`);
+            const response = await axiosInstance.get(`${API_BASE_URL}/classes/${username}`);
             return response.data;
         } catch (error) {
             throw error;
@@ -84,6 +84,23 @@ const postService = {
         });
         try {
             const response = await axiosInstance.get(`/is-attending/${postId}/${username}`);
+            return response.data;
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    isStudentAttendingToAnyClass: async ()=>{
+        const token = Cookie.get('access_token');
+        const username = jwtDecode(token).sub;
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        try {
+            const response = await axiosInstance.get(`/is-attending/${username}`);
             return response.data;
         } catch (error) {
             console.log(error)

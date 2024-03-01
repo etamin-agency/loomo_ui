@@ -13,6 +13,7 @@ import demo_day from "../../assets/demo.png"
 import "./DashboarSidebar.scss"
 import {useSelector} from "react-redux";
 import {useEffect, useState} from "react";
+import demoService from "../../services/demoService";
 
 
 
@@ -75,7 +76,10 @@ const DashboardSidebar = () => {
 
     ];
     useEffect(()=>{
-        if (role==='STUDENT'){
+        if (role==='student'){
+           demoService.isStudentAttendingToAnyClass().then(data=>{
+                setIsDemoLessons(data);
+            });
 
         }
 

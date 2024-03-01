@@ -56,6 +56,7 @@ const EditCourseDays = ({close, setter}) => {
                         <StaticDateTimePicker
                             onAccept={handleSetDate}
                             onClose={() => setCalendarPage(false)}
+                            disablePast
                         />
                     </DemoItem> :
                     (
