@@ -5,8 +5,9 @@ import {jwtDecode} from "jwt-decode";
 const API_BASE_URL = 'http://localhost:8085/api/v1/demo-class';
 const postService = {
 
-    getDemoClasses: async (uuid) => {
+    getDemoClasses: async () => {
         const token = Cookie.get('access_token');
+        const username = jwtDecode(token).sub;
 
         const axiosInstance = axios.create({
             baseURL: API_BASE_URL,
@@ -16,7 +17,7 @@ const postService = {
             },
         });
         try {
-            const response = await axiosInstance.get(`${API_BASE_URL}/posts/${uuid}`);
+            const response = await axiosInstance.get(`${API_BASE_URL}/posts/${username}`);
             return response.data;
         } catch (error) {
             throw error;

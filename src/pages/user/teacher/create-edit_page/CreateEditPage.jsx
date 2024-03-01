@@ -34,6 +34,7 @@ import publishService from "../../../../services/publishService";
 import {useNavigate, useParams} from "react-router-dom";
 import Loading from "../../../../components/loading/Loading";
 import adjustDateByHour from "../../../../utils/helper/math";
+import {isValidUUID} from "../../../../utils/helper/validation";
 
 const CreateEditPage = () => {
     const {post} = useSelector(state => state.classPost);
@@ -211,10 +212,7 @@ const CreateEditPage = () => {
             });
     };
 
-    function isValidUUID(uuid) {
-        const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-        return uuidRegex.test(uuid);
-    }
+
 
 
     const onDrop = useCallback(acceptedFiles => {

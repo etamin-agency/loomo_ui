@@ -27,10 +27,14 @@ import SearchPage from "../pages/home/search_page/SearchPage";
 import Loomo from "../assets/loomo.png";
 import Post from "../pages/home/post_page/Post";
 import StudentDemoClassPage from "../pages/user/student/student_demo_class_page/StudentDemoClassPage";
+import TeacherDemoPage from "../pages/user/teacher/student_demo_page/TeacherDemoPage";
+import DemoViewStudentPage from "../pages/user/teacher/student_demo_page/DemoViewStudentPage";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
 const SignUpPage = lazy(() => import("../pages/auth/signup_page/SignUpPage"));
+
+
 
 
 function App() {
@@ -80,6 +84,10 @@ function App() {
                                     <Route path="/assignments" element={<AssignmentsPage/>}/>
                                     <Route path="/wallet" element={<WalletPage/>}/>
                                     <Route path="/teacher" element={<StudentProfilePage/>}/>
+                                    <Route path="/teacher-demo" >
+                                        <Route path="/teacher-demo" element={<TeacherDemoPage/>}/>
+                                        <Route path="/teacher-demo/:postId" element={<DemoViewStudentPage/>}/>
+                                    </Route>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>
