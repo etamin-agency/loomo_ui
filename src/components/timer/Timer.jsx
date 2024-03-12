@@ -5,7 +5,10 @@ const Timer = ({ demoTime }) => {
     function calculateTimeRemaining() {
         const endTime = new Date(demoTime).getTime();
         const currentTime = new Date().getTime();
-        const timeDiff = endTime - currentTime;
+        const userGMTOffsetInMilliseconds = new Date().getTimezoneOffset() * 60 * 1000;
+        const adjustedEndTime = endTime - userGMTOffsetInMilliseconds; // Adjusted end time based on user's GMT offset
+        const timeDiff = adjustedEndTime - currentTime;
+
         return {
             days: Math.floor(timeDiff / (1000 * 60 * 60 * 24)),
             hours: Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
