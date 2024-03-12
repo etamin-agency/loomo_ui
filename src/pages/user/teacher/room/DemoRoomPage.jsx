@@ -4,7 +4,7 @@ import demoRoomService from "../../../../services/demoRoomService";
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import Participant from "../../../../components/demo_room/Participant";
-
+import './DemoRoomPage.scss'
 
 const DemoRoomPage = () => {
     const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -70,7 +70,6 @@ const DemoRoomPage = () => {
 
 
     const onExistingParticipants = (msg) => {
-        console.log("onExistingParticipants --------------------------")
         console.log(userName.current + " registered in room " + roomId);
         participantsView.current.set(userName.current, <Participant name={userName.current}
                                                                     isOwnCamera={true}
@@ -86,6 +85,8 @@ const DemoRoomPage = () => {
     }
 
     const onNewParticipant = (request) => {
+        console.log("rrrrrrrrrrrrrrrrrrrrrr-------------------------")
+        console.log(request)
         receiveVideo(request.name);
     }
 
@@ -126,12 +127,14 @@ const DemoRoomPage = () => {
     }
 
     return (
-        <div>
-            {Array.from(participantsView.current.values()).map((participant, index) => (
-                <div key={index}>
-                    {participant}
-                </div>
-            ))}
+        <div className="DemoRoomPage">
+           <div className="students-video-wrapper">
+               {Array.from(participantsView.current.values()).map((participant, index) => (
+                   <div className="demo-video-item" key={index}>
+                       {participant}
+                   </div>
+               ))}
+           </div>
         </div>
     )
 }

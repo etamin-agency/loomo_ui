@@ -1,0 +1,16 @@
+.DemoRoomPage{
+  .demo-video-item{
+    margin: 0 20px;
+    min-width: 240px;
+    min-height: 180px;
+    cursor: pointer;
+  }
+  .students-video-wrapper{
+    width: 900px;
+    margin: 30px auto 0;
+    display: flex;
+    justify-content: space-evenly;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}

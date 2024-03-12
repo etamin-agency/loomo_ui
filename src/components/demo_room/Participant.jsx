@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react";
 import kurentoUtils from 'kurento-utils';
-
+import './Participant.scss'
 const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => {
     const rtcPeer = useRef(null);
     const videoRef = useRef(null);
@@ -8,7 +8,6 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
 
     useEffect(() => {
         if (sdpAnswer) {
-            console.log("sdp answer-----------------------")
             rtcPeer.current.processAnswer(sdpAnswer, function (error) {
                 if (error) return console.error(error);
             });
@@ -17,7 +16,6 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
 
     useEffect(() => {
         if (candidate) {
-            console.log("on candidate -----------------------")
             rtcPeer.current.addIceCandidate(candidate, function (error) {
                 if (error) {
                     console.error("Error adding candidate: " + error);
@@ -30,7 +28,6 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
     useEffect(() => {
        if (!rtcPeer.current){
            if (isOwnCamera) {
-               console.log("hereeeeeeeeeeeee -------------------- isOwnCamera true")
                let constraints = {
                    audio: true,
                    video: {
@@ -54,7 +51,6 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
                        this.generateOffer(offerToReceiveVideo);
                    });
            } else {
-               console.log("hereeeeeeeeeeeee -------------------- isOwnCamera false "+name)
 
                let options = {
                    remoteVideo: videoRef.current,
@@ -70,7 +66,6 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
            }
        }
     }, []);
-    console.log("inside of partisipation block ------------- "+name)
     const offerToReceiveVideo = (error, offerSdp, wp) => {
         if (error) return console.error("sdp offer error")
         console.log('Invoking SDP offer callback function');
@@ -91,8 +86,8 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
         sendMessage(message);
     }
     return (
-        <div>
-            <video ref={videoRef} autoPlay width="640px" height="480px"></video>
+        <div className="student-video-item">
+            <video className="student-video" ref={videoRef} autoPlay width="640px" height="480px"></video>
         </div>
     )
 }
