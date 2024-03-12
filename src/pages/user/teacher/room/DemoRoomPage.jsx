@@ -5,6 +5,7 @@ import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import Participant from "../../../../components/demo_room/Participant";
 import './DemoRoomPage.scss'
+import hang_up_icon from "../../../../assets/red-hang-up-icon.png";
 
 const DemoRoomPage = () => {
     const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -13,6 +14,7 @@ const DemoRoomPage = () => {
     const ws = useRef(new WebSocket('ws://localhost:8086/demo-room'));
     const participantsView = useRef(new Map());
     const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
+    const [teacherName, setTeacherName] = useState('');
 
 
     useEffect(() => {
@@ -28,7 +30,7 @@ const DemoRoomPage = () => {
                 room: roomId,
             });
 
-            ws.current.onmessage =  (message) => {
+            ws.current.onmessage = (message) => {
                 let parsedMessage = JSON.parse(message.data);
                 console.info('Received message: ' + message.data);
                 switch (parsedMessage.id) {
@@ -60,7 +62,6 @@ const DemoRoomPage = () => {
     }, []);
 
 
-
     const checkIfExistence = async (roomId) => {
         const isExists = await demoRoomService.isRoomExists(roomId);
         if (!isExists) {
@@ -74,6 +75,7 @@ const DemoRoomPage = () => {
         participantsView.current.set(userName.current, <Participant name={userName.current}
                                                                     isOwnCamera={true}
                                                                     sendMessage={sendMessage}/>)
+        setTeacherName(msg.teacherName)
         msg.data.forEach(receiveVideo);
         triggerRender();
     }
@@ -85,8 +87,6 @@ const DemoRoomPage = () => {
     }
 
     const onNewParticipant = (request) => {
-        console.log("rrrrrrrrrrrrrrrrrrrrrr-------------------------")
-        console.log(request)
         receiveVideo(request.name);
     }
 
@@ -119,22 +119,43 @@ const DemoRoomPage = () => {
         participantsView.current.set(sender, <Participant name={sender}
                                                           sendMessage={sendMessage}
         />)
+
         triggerRender();
+    }
+    const handleLeaveRoom = () => {
+        participantsView.current.clear();
+        sendMessage({
+            id: 'leaveRoom'
+        });
+        ws.current.close();
+        navigate("/classes");
+        window.location.reload()
     }
     const onParticipantLeft = (request) => {
         participantsView.current.delete(request.name)
         triggerRender();
     }
-
+    console.log(teacherName)
     return (
         <div className="DemoRoomPage">
-           <div className="students-video-wrapper">
-               {Array.from(participantsView.current.values()).map((participant, index) => (
-                   <div className="demo-video-item" key={index}>
-                       {participant}
-                   </div>
-               ))}
-           </div>
+            <div className="students-video-wrapper">
+                {Array.from(participantsView.current.values()).map((participant, index) => {
+                    if (participant.props.name === teacherName) return;
+                    return (
+                        <div className="demo-video-item" key={index}>
+                            {participant}
+                        </div>
+                    )
+                })}
+            </div>
+            <div className="teacher-video">
+                {
+                    participantsView.current.get(teacherName)
+                }
+                <div className="hang-up-button">
+                    <img onClick={handleLeaveRoom} src={hang_up_icon} alt="hang-up-icon" className="hang-up-icon"/>
+                </div>
+            </div>
         </div>
     )
 }

@@ -6,6 +6,7 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
     const videoRef = useRef(null);
 
 
+
     useEffect(() => {
         if (sdpAnswer) {
             rtcPeer.current.processAnswer(sdpAnswer, function (error) {

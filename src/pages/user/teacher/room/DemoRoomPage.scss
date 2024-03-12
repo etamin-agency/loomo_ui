@@ -3,6 +3,8 @@
     margin: 0 20px;
     min-width: 240px;
     min-height: 180px;
+    max-width: 240px;
+    max-height: 180px;
     cursor: pointer;
   }
   .students-video-wrapper{
@@ -13,4 +15,19 @@
     overflow-x: auto;
     overflow-y: hidden;
   }
+  .teacher-video{
+    position: relative;
+    margin: 20px auto 0;
+    width: 720px;
+    height: 480px;
+  }
+  .hang-up-icon{
+    position: absolute;
+    bottom: 20px;
+    width: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+
 }
