@@ -94,7 +94,7 @@ const DemoRoomPage = () => {
 
         if (participant) {
             const updatedParticipant = React.cloneElement(participant, {
-                sdpOffer: result.sdpOffer,
+                sdpAnswer: result.sdpAnswer,
             });
             participantsView.current.set(result.name, updatedParticipant);
             triggerRender();
