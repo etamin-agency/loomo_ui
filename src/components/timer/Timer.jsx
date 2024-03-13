@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import {useSelector} from "react-redux";
 
 const Timer = ({ demoTime }) => {
     const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
+    const {role} = useSelector(state => state.role);
+
     function calculateTimeRemaining() {
         const endTime = new Date(demoTime).getTime();
         const currentTime = new Date().getTime();
@@ -24,10 +27,28 @@ const Timer = ({ demoTime }) => {
 
         return () => clearInterval(timerInterval);
     }, []);
-
+    const checkIsPositiveTime=()=>{
+        if (timeRemaining.days<0||timeRemaining.hours<0||timeRemaining.minutes<0){
+            return false;
+        }
+        return true;
+    }
+    const teacherStudentText=()=>{
+        if (role === "teacher" ){
+            return (<div>Please delete <br/> or update a date</div>);
+        }
+        else {
+            return (<div>Buy Course
+                    <button className="btn btn-light btn-lg"></button>
+            </div>);
+        }
+    }
     return (
         <div className="timer-wrapper">
-            {timeRemaining.days} days {timeRemaining.hours} hours {timeRemaining.minutes} minutes {timeRemaining.seconds} seconds left to demo
+            {checkIsPositiveTime()?
+                (<div>{timeRemaining.days} days {timeRemaining.hours} hours {timeRemaining.minutes} minutes {timeRemaining.seconds} seconds left to demo </div>):
+                teacherStudentText()
+            }
         </div>
     );
 };
