@@ -67,4 +67,18 @@
     display: block;
     margin: 90px auto 0;
   }
+  .studio-link{
+    position: absolute;
+    display: block;
+    color: white;
+    top: 30px;
+    left: 30px;
+    font-size: 40px;
+    font-weight: 600;
+    span{
+      color: #1066e8;
+      font-size: 46px;
+      font-weight: 600;
+    }
+  }
 }

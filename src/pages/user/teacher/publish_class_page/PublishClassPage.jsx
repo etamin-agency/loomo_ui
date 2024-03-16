@@ -7,8 +7,9 @@ import {Link} from "react-router-dom";
 import create_icon from "../../../../assets/create-icon.png"
 import publishService from "../../../../services/publishService";
 
-import './PublishClassPage.scss'
 import Loading from "../../../../components/loading/Loading";
+
+import './PublishClassPage.scss'
 
 const PublishClassPage = () => {
     const [data, setData] = useState({});
@@ -24,9 +25,11 @@ const PublishClassPage = () => {
     }, []);
     return (
         <div className="PublishClassPage">
+
             {loading ? <Loading/> :
                 totalElements === 0 ?
                     <div className="first-class">
+                        <Link to="/studio"><div className="studio-link"><span>L</span>oomo</div></Link>
                         <div className="wrapper-new-class">
                             <div className="first-class-text">
                                 Create new class
@@ -38,6 +41,7 @@ const PublishClassPage = () => {
 
                     </div> :
                     <div className="classes-wrapper">
+                        <Link to="/studio"><div className="studio-link"><span>L</span>oomo</div></Link>
                         {data.map((item) => (
                             <div className="published-post" key={item?.postId}>
                                 <Link to={`/edit/${item.postId}`}>
