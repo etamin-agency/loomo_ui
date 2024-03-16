@@ -17,8 +17,8 @@ const PublishClassPage = () => {
     useEffect(() => {
         const userName = jwtDecode(Cookie.get('access_token')).sub;
         publishService.getPublishedClasses(0, 25, userName).then(obj => {
-            setData(obj.data)
-            setTotalElements(obj.totalElements)
+            setData(obj?.data)
+            setTotalElements(obj?.totalElements)
             setLoading(false)
         })
     }, []);
