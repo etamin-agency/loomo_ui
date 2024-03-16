@@ -4,8 +4,17 @@ import demoRoomService from "../../../../services/demoRoomService";
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import Participant from "../../../../components/demo_room/Participant";
-import './DemoRoomPage.scss'
 import hang_up_icon from "../../../../assets/red-hang-up-icon.png";
+import audioOn from "../../../../assets/audio-on.png";
+import audioOff from "../../../../assets/audio-off.png";
+import videoOn from "../../../../assets/video-on.png";
+import videoOff from "../../../../assets/video-off.png";
+import showIcon from "../../../../assets/show.png";
+import hideIcon from "../../../../assets/hide.png";
+
+import Loading from "../../../../components/loading/Loading";
+
+import './DemoRoomPage.scss'
 
 const DemoRoomPage = () => {
     const [updateTrigger, setUpdateTrigger] = useState(false);
@@ -15,10 +24,13 @@ const DemoRoomPage = () => {
     const participantsView = useRef(new Map());
     const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
     const [teacherName, setTeacherName] = useState('');
-
+    const [isAudioOn, setAudioOn] = useState(true);
+    const [isVideoOn, setVideoOn] = useState(true);
+    const [loading, setLoading] = useState(true);
+    const [showStudents, setShowStudents] = useState(true);
 
     useEffect(() => {
-        checkIfExistence(roomId).then(r => console.log("heeey"));
+        checkIfExistence(roomId).then(r => console.log("hey"));
         ws.current = new WebSocket('ws://localhost:8086/demo-room');
         console.log("Page Loaded - Opened WebSocket");
         triggerRender();
@@ -46,6 +58,9 @@ const DemoRoomPage = () => {
                     case 'receiveVideoAnswer':
                         receiveVideoResponse(parsedMessage);
                         break;
+                    case 'roomClosed':
+                        handleLeaveRoom()
+                        break;
                     case 'iceCandidate':
                         console.info(parsedMessage.candidate)
                         onIceCandidate(parsedMessage)
@@ -55,6 +70,11 @@ const DemoRoomPage = () => {
                 }
             }
         };
+        ws.current.onclose = () => {
+            if (participantsView.current.size != 0) {
+                window.location.reload()
+            }
+        }
         return () => {
             console.log("Page unloaded - Close WebSocket");
             ws.current.close();
@@ -100,6 +120,8 @@ const DemoRoomPage = () => {
             participantsView.current.set(result.name, updatedParticipant);
             triggerRender();
         }
+        setLoading(false);
+
     }
     const triggerRender = () => {
         setUpdateTrigger(prev => !prev);
@@ -138,22 +160,51 @@ const DemoRoomPage = () => {
     console.log(teacherName)
     return (
         <div className="DemoRoomPage">
-            <div className="students-video-wrapper">
-                {Array.from(participantsView.current.values()).map((participant, index) => {
-                    if (participant.props.name === teacherName) return;
-                    return (
-                        <div className="demo-video-item" key={index}>
-                            {participant}
+            {loading && <Loading/>}
+                <div className= {`students-video-wrapper ${!showStudents&&'hide-students'}`}>
+                    {Array.from(participantsView.current.values()).map((participant, index) => {
+                        if (participant.props.name === teacherName) return;
+                        return (
+                            <div className="demo-video-item" key={index}>
+                                {participant}
+                            </div>
+                        )
+                    })}
+                </div>
+            <div className="teacher-video-wrapper">
+                <div className="teacher-video">
+                    {
+                        participantsView.current.get(teacherName)
+                    }
+                </div>
+                <div className="tool-wrapper">
+                    <div className="tool-center-wrapper">
+                        <div className="student-show-button">
+                            {showStudents ? <img src={showIcon} alt="show-on-icon" className="student-show"
+                                              onClick={() => setShowStudents(false)}/> :
+                                <img src={hideIcon} alt="show-off-icon" className="student-show"
+                                     onClick={() => setShowStudents(true)}/>}
                         </div>
-                    )
-                })}
-            </div>
-            <div className="teacher-video">
-                {
-                    participantsView.current.get(teacherName)
-                }
-                <div className="hang-up-button">
-                    <img onClick={handleLeaveRoom} src={hang_up_icon} alt="hang-up-icon" className="hang-up-icon"/>
+                        <div className="audio-button">
+                            {isAudioOn ? <img src={audioOn} alt="audio-on-icon" className="audio"
+                                              onClick={() => setAudioOn(false)}/> :
+                                <img src={audioOff} alt="audio-off-icon" className="audio"
+                                     onClick={() => setAudioOn(true)}/>}
+                        </div>
+                        <div className="hang-up-button">
+                            <img onClick={handleLeaveRoom} src={hang_up_icon} alt="hang-up-icon"
+                                 className="hang-up-icon"/>
+                        </div>
+                        <div className="video-button">
+                            {isVideoOn ? <img src={videoOn} alt="video-on-icon" className="video"
+                                              onClick={() => setVideoOn(false)}/> :
+                                <img src={videoOff} alt="video-off-icon" className="video"
+                                     onClick={() => setVideoOn(true)}/>}
+                        </div>
+                        <div className="empty-block">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
