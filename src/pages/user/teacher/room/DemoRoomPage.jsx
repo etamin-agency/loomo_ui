@@ -15,10 +15,14 @@ import hideIcon from "../../../../assets/hide.png";
 import Loading from "../../../../components/loading/Loading";
 
 import './DemoRoomPage.scss'
+import {useSelector} from "react-redux";
+import CreateClassView from "../../../../components/creeate_class/CreateClassView";
+import classService from "../../../../services/classService";
 
 const DemoRoomPage = () => {
     const [updateTrigger, setUpdateTrigger] = useState(false);
     const {roomId} = useParams();
+    const {role} = useSelector(state => state.role);
     const navigate = useNavigate()
     const ws = useRef(new WebSocket('ws://localhost:8086/demo-room'));
     const participantsView = useRef(new Map());
@@ -28,6 +32,7 @@ const DemoRoomPage = () => {
     const [isVideoOn, setVideoOn] = useState(true);
     const [loading, setLoading] = useState(true);
     const [showStudents, setShowStudents] = useState(true);
+    const [showCreateClass, setShowCreateClass] = useState(false);
 
     useEffect(() => {
         checkIfExistence(roomId).then(r => console.log("hey"));
@@ -80,6 +85,16 @@ const DemoRoomPage = () => {
             ws.current.close();
         };
     }, []);
+
+    const createClassAndClose=(nameOfClass)=>{
+        setLoading(true);
+        classService.createClass(nameOfClass,roomId).then(isCreated=> {
+            if(isCreated){
+                leaveTeacher();
+            }
+        })
+    }
+
 
 
     const checkIfExistence = async (roomId) => {
@@ -144,23 +159,42 @@ const DemoRoomPage = () => {
 
         triggerRender();
     }
-    const handleLeaveRoom = () => {
+    const handleLeaveRoom =async () => {
+       if (role==="teacher"){
+            const isClassCreated=await classService.isClassExists(roomId);
+            if (isClassCreated){
+                leaveTeacher();
+            }else {
+                setShowCreateClass(true);
+            }
+        }else {
+            participantsView.current.clear();
+            sendMessage({
+                id: 'leaveRoom'
+            });
+            ws.current.close();
+            navigate("/class-demo");
+            window.location.reload()
+        }
+
+    }
+    const leaveTeacher=()=>{
         participantsView.current.clear();
         sendMessage({
             id: 'leaveRoom'
         });
         ws.current.close();
-        navigate("/classes");
+        navigate("/studio");
         window.location.reload()
     }
     const onParticipantLeft = (request) => {
         participantsView.current.delete(request.name)
         triggerRender();
     }
-    console.log(teacherName)
     return (
         <div className="DemoRoomPage">
             {loading && <Loading/>}
+            {showCreateClass&&<CreateClassView createClass={createClassAndClose} close={()=>setShowCreateClass(false)}/>}
                 <div className= {`students-video-wrapper ${!showStudents&&'hide-students'}`}>
                     {Array.from(participantsView.current.values()).map((participant, index) => {
                         if (participant.props.name === teacherName) return;

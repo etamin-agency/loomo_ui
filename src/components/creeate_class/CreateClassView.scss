@@ -1,0 +1,35 @@
+.CreateClassView {
+  position: absolute;
+  display: block;
+  width: 350px;
+  height: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #d9c4c4;
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+
+  .create-class-button {
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+    background-color: #8e0fe3;
+    border: 2px #8e0fe3 solid;
+  }
+  .error{
+    color: red;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .close-button{
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
+    color: black;
+    background-color: white;
+    border: 1px red solid;
+
+  }
+}

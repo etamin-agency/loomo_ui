@@ -1,4 +1,3 @@
-import './TeacherDemoPage.scss'
 import {useEffect, useState} from "react";
 import demoService from "../../../../services/demoService";
 import postService from "../../../../services/postService";
@@ -7,6 +6,8 @@ import Timer from "../../../../components/timer/Timer";
 import {Link, useNavigate} from "react-router-dom";
 import create_icon from "../../../../assets/white-create-icon.png";
 import demoRoomService from "../../../../services/demoRoomService";
+
+import './TeacherDemoPage.scss'
 
 const TeacherDemoPage = () => {
     const [demoClass, setDemoClass] = useState();
