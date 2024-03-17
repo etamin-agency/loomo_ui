@@ -35,7 +35,7 @@ const Timer = ({ demoTime }) => {
     }
     const teacherStudentText=()=>{
         if (role === "teacher" ){
-            if (timeRemaining.days>-8){
+            if (timeRemaining.days>-3){
                 return (<div className="accept-students">Please accept<br/> students to class</div>);
             }
             return (<div>Please delete <br/> or update a post</div>);

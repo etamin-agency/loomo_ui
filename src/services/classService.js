@@ -14,7 +14,7 @@ const classService = {
                 'Content-Type': 'application/json',
             },
         });
-        const data={
+        const data = {
             className: className,
             postId: postId
         };
@@ -25,7 +25,7 @@ const classService = {
             throw error;
         }
     },
-    isClassExists: async (classId)=>{
+    isClassExists: async (classId) => {
         const token = Cookie.get('access_token');
 
         const axiosInstance = axios.create({
@@ -37,6 +37,45 @@ const classService = {
         });
         try {
             const response = await axiosInstance.get(`/is-exists/${classId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+    getAcceptedStudents: async (classId) => {
+        const token = Cookie.get('access_token');
+
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        try {
+            const response = await axiosInstance.get(`/accepted-students/${classId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    acceptStudent: async (studentId, classId) => {
+        const token = Cookie.get('access_token');
+
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = {
+            classId: classId,
+            studentId: studentId
+        };
+        try {
+            const response = await axiosInstance.post(`/accept-student`, data);
             return response.data;
         } catch (error) {
             throw error;

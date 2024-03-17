@@ -3,6 +3,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 5;
   div {
     border: 3px solid hsla(185, 100%, 62%, 0.2);
     border-top-color: #3cefff;
