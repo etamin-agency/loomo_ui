@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap');
+@tailwind components;
+@tailwind utilities;
+@tailwind base;
+
+body {
+  width: 100%;
+}
+
+.ant-select-selector {
+  border: none !important;
+  border-color: none !important;
+}
+.ant-select-selector:focus {
+  border: none !important;
+}
+
+.link {
+  @apply w-[100px] !border-none font-bold;
+}
+.hamburger_btn {
+  @apply grid h-[35px] w-[35px] cursor-pointer place-items-center rounded-[5px] border-[1px] border-[#E9E9E9];
+}
+
+.nav {
+  width: 100%;
+  box-shadow: 0px 0px 8px 0px #33333333;
+}
