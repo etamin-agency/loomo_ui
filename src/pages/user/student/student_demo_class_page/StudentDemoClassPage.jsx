@@ -73,7 +73,7 @@ const StudentDemoClassPage = () => {
                                         <div className="plus" onClick={()=>handleOpenDemoRoom(data?.postId)}>
                                             <img src={create_icon} alt="create-class-icon" className="create-icon"/>
                                         </div>
-                                        : <Timer demoTime={data?.demoTime} classId={data?.postId}/>}
+                                        : <Timer demoTime={data?.demoTime} classId={data?.postId} teacherId={data?.teacherId}/>}
                                 </div>
                             </div>
                             <div className="demo-class-title">

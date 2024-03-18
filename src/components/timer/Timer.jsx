@@ -1,8 +1,10 @@
 import {useState, useEffect} from 'react';
 import {useSelector} from "react-redux";
 import classService from "../../services/classService";
+import {useNavigate} from "react-router-dom";
 
-const Timer = ({demoTime, classId}) => {
+const Timer = ({demoTime, classId, teacherId}) => {
+    const navigate = useNavigate();
     const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
     const {role} = useSelector(state => state.role);
     const [content, setContent] = useState(null);
@@ -14,7 +16,6 @@ const Timer = ({demoTime, classId}) => {
         const userGMTOffsetInMilliseconds = new Date().getTimezoneOffset() * 60 * 1000;
         const adjustedEndTime = endTime - userGMTOffsetInMilliseconds; // Adjusted end time based on user's GMT offset
         const timeDiff = adjustedEndTime - currentTime;
-
         return {
             days: Math.floor(timeDiff / (1000 * 60 * 60 * 24)),
             hours: Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
@@ -37,6 +38,12 @@ const Timer = ({demoTime, classId}) => {
         }
         return true;
     }
+    const handleBuyCourse = async () => {
+    const isTransactionFinished=await classService.buyClass(classId,teacherId)
+        if (isTransactionFinished){
+            navigate("/classes")
+        }
+    }
     const teacherStudentText = async () => {
         if (content) return;
         if (role === "teacher") {
@@ -50,8 +57,8 @@ const Timer = ({demoTime, classId}) => {
             const isStudentAccepted = await classService.isStudentAccepted(classId);
             if (isStudentAccepted) {
                 setContent(
-                    <div className="buy-course">You are accepted <br/> to Course <br/>
-                        <button className="buy-course-btn">Buy</button>
+                    <div className="buy-course">You are accepted <br/> to Class <br/>
+                        <button className="buy-course-btn" onClick={handleBuyCourse}>Buy</button>
                     </div>);
                 setLoading(false)
             } else {
