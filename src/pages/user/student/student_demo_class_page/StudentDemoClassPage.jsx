@@ -1,11 +1,11 @@
-import './StudentDemoClassPage.scss'
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import demoService from "../../../../services/demoService";
-import Loading from "../../../../components/loading/Loading";
 import postService from "../../../../services/postService";
 import Timer from "../../../../components/timer/Timer";
 import create_icon from "../../../../assets/white-create-icon.png";
+
+import './StudentDemoClassPage.scss'
 
 const StudentDemoClassPage = () => {
     const navigate = useNavigate();
@@ -50,7 +50,15 @@ const StudentDemoClassPage = () => {
     };
     return (
         <div className="StudentDemoClassPage">
-            {loading&&<Loading/>}
+            {loading&&
+                <div className="loading-to-center">
+                    <div className="Loading">
+                        <div>
+
+                        </div>
+                    </div>
+                </div>
+            }
             <div className="demo-class-wrapper">
                 {demoClass?.map(data=>{
                     const isDemoTime=isJoinDemoRoom(data?.demoTime)
