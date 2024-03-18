@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import {useSelector} from "react-redux";
+import classService from "../../services/classService";
 
-const Timer = ({ demoTime }) => {
+const Timer = ({demoTime, classId}) => {
     const [timeRemaining, setTimeRemaining] = useState(calculateTimeRemaining());
     const {role} = useSelector(state => state.role);
+    const [content, setContent] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     function calculateTimeRemaining() {
         const endTime = new Date(demoTime).getTime();
@@ -27,30 +30,53 @@ const Timer = ({ demoTime }) => {
 
         return () => clearInterval(timerInterval);
     }, []);
-    const checkIsPositiveTime=()=>{
-        if (timeRemaining.days<0||timeRemaining.hours<0||timeRemaining.minutes<0){
+    const checkIsPositiveTime = () => {
+        if (timeRemaining.days < 0 || timeRemaining.hours < 0 || timeRemaining.minutes < 0) {
+            teacherStudentText();
             return false;
         }
         return true;
     }
-    const teacherStudentText=()=>{
-        if (role === "teacher" ){
-            if (timeRemaining.days>-3){
-                return (<div className="accept-students">Please accept<br/> students to class</div>);
+    const teacherStudentText = async () => {
+        if (content) return;
+        if (role === "teacher") {
+            if (timeRemaining.days > -3) {
+                setContent(<div className="accept-students">Please accept<br/> students to class</div>);
+            } else {
+                setContent(<div>Please delete <br/> or update a post</div>)
             }
-            return (<div>Please delete <br/> or update a post</div>);
-        }
-        else {
-            return (<div>Buy Course
-                    <button className="btn btn-light btn-lg"></button>
-            </div>);
+            setLoading(false)
+        } else {
+            const isStudentAccepted = await classService.isStudentAccepted(classId);
+            if (isStudentAccepted) {
+                setContent(
+                    <div className="buy-course">You are accepted <br/> to Course <br/>
+                        <button className="buy-course-btn">Buy</button>
+                    </div>);
+                setLoading(false)
+            } else {
+                setContent(
+                    <div>
+                        You are not accepted yet
+                    </div>
+                )
+                setLoading(false)
+            }
+
         }
     }
     return (
         <div className="timer-wrapper">
-            {checkIsPositiveTime()?
-                (<div>{timeRemaining.days} days {timeRemaining.hours} hours {timeRemaining.minutes} minutes {timeRemaining.seconds} seconds left to demo </div>):
-                teacherStudentText()
+            {loading && <div className="Loading">
+                <div>
+
+                </div>
+            </div>}
+            {checkIsPositiveTime() ?
+                (
+                    <div>{timeRemaining.days} days {timeRemaining.hours} hours {timeRemaining.minutes} minutes {timeRemaining.seconds} seconds
+                        left to demo </div>) :
+                content
             }
         </div>
     );

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookie from "js-cookie";
+import {jwtDecode} from "jwt-decode";
 
 const API_BASE_URL = 'http://localhost:8087/api/v1/class';
 const classService = {
@@ -80,6 +81,31 @@ const classService = {
         } catch (error) {
             throw error;
         }
+    },
+    isStudentAccepted: async (classId)=>{
+        const token = Cookie.get('access_token');
+
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        const userName = jwtDecode(Cookie.get('access_token')).sub;
+        const data = {
+            "userName": userName,
+            "classId": classId
+        };
+
+        console.log(data)
+        try {
+            const response = await axiosInstance.post(`/is-student-accepted`,data);
+            return response?.data;
+        } catch (error) {
+            throw error;
+        }
+
     }
 
 };
