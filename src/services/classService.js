@@ -132,6 +132,25 @@ const classService = {
         }
 
     },
+    fetchAttendingClassesForStudent: async () => {
+        const token = Cookie.get('access_token');
+
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        const userName = jwtDecode(Cookie.get('access_token')).sub;
+
+        try {
+            const response = await axiosInstance.get(`/student-classes/${userName}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
 };
 

@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import demoService from "../../../../services/demoService";
 import postService from "../../../../services/postService";
-import Loading from "../../../../components/loading/Loading";
 import Timer from "../../../../components/timer/Timer";
 import {Link, useNavigate} from "react-router-dom";
 import create_icon from "../../../../assets/white-create-icon.png";

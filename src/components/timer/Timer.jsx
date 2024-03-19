@@ -25,6 +25,7 @@ const Timer = ({demoTime, classId, teacherId}) => {
     }
 
     useEffect(() => {
+        setLoading(false)
         const timerInterval = setInterval(() => {
             setTimeRemaining(calculateTimeRemaining());
         }, 1000);

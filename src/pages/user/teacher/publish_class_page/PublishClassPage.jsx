@@ -23,26 +23,15 @@ const PublishClassPage = () => {
             setLoading(false)
         })
     }, []);
+    console.log(totalElements)
     return (
         <div className="PublishClassPage">
+            <Link to="/studio"><div className="studio-link"><span>L</span>oomo</div></Link>
 
             {loading ? <Loading/> :
-                totalElements === 0 ?
-                    <div className="first-class">
-                        <Link to="/studio"><div className="studio-link"><span>L</span>oomo</div></Link>
-                        <div className="wrapper-new-class">
-                            <div className="first-class-text">
-                                Create new class
-                            </div>
-                            <Link to={`/edit`} className="user-link">
-                                <img src={create_icon} alt="create-class-icon"/>
-                            </Link>
-                        </div>
-
-                    </div> :
+                totalElements > 0 ?
                     <div className="classes-wrapper">
-                        <Link to="/studio"><div className="studio-link"><span>L</span>oomo</div></Link>
-                        {data.map((item) => (
+                        {data?.map((item) => (
                             <div className="published-post" key={item?.postId}>
                                 <Link to={`/edit/${item.postId}`}>
                                     <img className="post-image" src={`data:image/jpeg;base64,${item?.photoFile}`}
@@ -56,6 +45,17 @@ const PublishClassPage = () => {
                         <div className="published-post">
                             <Link to={`/edit/`}>
                                     <img src={create_icon} alt="create-class-icon" className="create-icon"/>
+                            </Link>
+                        </div>
+
+                    </div>:
+                    <div className="first-class">
+                        <div className="wrapper-new-class">
+                            <div className="first-class-text">
+                                Create new class
+                            </div>
+                            <Link to={`/edit`} className="user-link">
+                                <img src={create_icon} alt="create-class-icon"/>
                             </Link>
                         </div>
 
