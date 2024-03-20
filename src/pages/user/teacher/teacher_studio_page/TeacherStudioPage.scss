@@ -5,15 +5,16 @@
   width: 80%;
   max-height: 100%;
   text-align: center;
-  padding: 100px;
+  padding: 50px 100px 50px 100px;
   .wrapper{
     display: flex;
-    width: 80%;
+    width: 1000px;
     max-height: 300px;
     flex-direction: row;
-    margin-left: 100px;
-    margin-top: 100px;
+    margin-left: 50px;
+    margin-top: 80px;
     justify-content: space-between;
+    flex-wrap: wrap;
       .block{
         display: block;
         width: 350px;
@@ -23,6 +24,7 @@
         border-radius: 30px;
         border: #d3bde1 solid 1px;
         background-color: #cb4540;
+        margin: 50px 70px;
         color: white;
         cursor: pointer;
         font-weight: 600;

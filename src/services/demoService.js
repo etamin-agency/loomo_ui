@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
 const API_BASE_URL = 'http://localhost:8085/api/v1/demo-class';
-const postService = {
+const demoService = {
 
     getDemoClasses: async () => {
         const token = Cookie.get('access_token');
@@ -110,4 +110,4 @@ const postService = {
 
 };
 
-export default postService;
+export default demoService;

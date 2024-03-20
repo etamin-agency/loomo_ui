@@ -30,6 +30,7 @@ import StudentDemoClassPage from "../pages/user/student/student_demo_class_page/
 import TeacherDemoPage from "../pages/user/teacher/student_demo_page/TeacherDemoPage";
 import DemoViewStudentPage from "../pages/user/teacher/student_demo_page/DemoViewStudentPage";
 import DemoRoomPage from "../pages/user/teacher/room/DemoRoomPage";
+import EditClassListPage from "../pages/user/teacher/edit_class_page/EditClassListPage";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
@@ -89,6 +90,10 @@ function App() {
                                     <Route path="/teacher-demo">
                                         <Route path="/teacher-demo" element={<TeacherDemoPage/>}/>
                                         <Route path="/teacher-demo/:postId" element={<DemoViewStudentPage/>}/>
+                                    </Route>
+                                    <Route path="/edit-class">
+                                        <Route path="/edit-class" element={<EditClassListPage/>}/>
+                                        <Route path="/edit-class/:postId" element={<DemoViewStudentPage/>}/>
                                     </Route>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
