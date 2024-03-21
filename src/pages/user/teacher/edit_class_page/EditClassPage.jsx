@@ -1,17 +1,19 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import classService from "../../../../services/classService";
 import Button from "react-bootstrap/Button";
 
 import EditText from "../../../../components/edit_post_page_items/EditText";
-import {setPostClassTime, setPostDesc, setPostPrice, setPostTitle} from "../../../../actions";
 import edit_text_icon from "../../../../assets/edit-text.png";
 
 
-import './EditClassPage.scss'
 import EditCourseDays from "../../../../components/edit_post_page_items/EditCourseDays";
 import EditLanguage from "../../../../components/edit_post_page_items/EditLanguage";
 import EditPrice from "../../../../components/edit_post_page_items/EditPrice";
+
+
+import './EditClassPage.scss'
+import adjustDateByHour from "../../../../utils/helper/math";
 
 const EditClassPage = () => {
     let {classId} = useParams();
@@ -30,6 +32,9 @@ const EditClassPage = () => {
 
     const [isChanged, setIsChanged] = useState(false);
 
+    const [errorText, setErrorText] = useState('');
+    const navigate=useNavigate();
+
     useEffect(() => {
         classService.fetchClass(classId).then((data) => {
             const classTime = new Date(data?.classTime)
@@ -40,7 +45,8 @@ const EditClassPage = () => {
                 day: classTime.getDate(),
                 hour: classTime.getHours() + classTime.getTimezoneOffset() / 60 * -1,
                 minute: classTime.getMinutes(),
-                gmt: classTime.getTimezoneOffset() / 60 * -1
+                gmt: classTime.getTimezoneOffset() / 60 * -1,
+                classTime: classTime
             };
             setClassDays(data?.classDays);
             setClassTime(classTimeObj);
@@ -53,7 +59,29 @@ const EditClassPage = () => {
     }, []);
 
     const handleEditClass = () => {
+        const currentTime = new Date();
 
+        if (classTime.classTime < currentTime) {
+            setErrorText("Class time  has to be in present")
+        }
+        else if(classDays === null ||className===''||price===''||language===''  ){
+            setErrorText('items have to be filled')
+        }else {
+            const {year, month, day, hour, minute, gmt}=classTime;
+
+            const newObj = {
+                classTime: adjustDateByHour(year, month, day, hour, minute, -gmt),
+                classDays: classDays,
+                price:price,
+                language:language,
+                className:className,
+            }
+            classService.updateClass(classId,newObj).then(isUpdated=>{
+                if (isUpdated){
+                    navigate('/edit-class')
+                }
+            })
+        }
     }
     const handleClassEditDayAndTime = (data) => {
         setClassTime(data);
@@ -114,13 +142,17 @@ const EditClassPage = () => {
                     <div className="class-price">
                         <img className="edit-text" src={edit_text_icon} alt="edit-text"
                              onClick={() => setShowPriceEdit(true)}/>
-                        Class Price: {price}</div>
+                        Class Price: {price}$
+                    </div>
                     {/*<div className="class-max-students">Class Students: {maxStudents}</div>*/}
                 </div>
-                <Button className="save-button" type="submit" size="sm" disabled={!isChanged}
-                        onClick={handleEditClass}>
-                    Save
-                </Button>
+                <div className="button-wrapper">
+                    <div className="error-text">{errorText}</div>
+                    <Button className="save-button" type="submit" size="sm" disabled={!isChanged}
+                            onClick={handleEditClass}>
+                        Save
+                    </Button>
+                </div>
             </div>
         </div>
     )
