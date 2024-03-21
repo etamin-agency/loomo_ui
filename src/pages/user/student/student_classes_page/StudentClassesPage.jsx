@@ -8,20 +8,37 @@ import ClassTimer from "../../../../components/timer/ClassTimer";
 
 
 import './StudentClassesPage.scss'
+import {calculateTimeRemaining} from "../../../../utils/helper/math";
+import {useSelector} from "react-redux";
+import demoRoomService from "../../../../services/demoRoomService";
 
 const StudentClassesPage = () => {
     const navigate = useNavigate();
     const [classes, setClasses] = useState();
     const [loading, setLoading] = useState(true);
+    const {role} = useSelector(state => state.role);
+
     useEffect(() => {
-        classService.fetchAttendingClassesForStudent().then(data => {
-            if (!data) {
-                console.log("student attending to 0 classes")
-            }else {
-                console.log(data)
-                fetchImages(data)
-            }
-        })
+        if (role==='teacher'){
+            classService.fetchTeacherClasses().then(data => {
+                if (!data) {
+                    console.log("teacher has  0 classes")
+                }else {
+                    console.log(data)
+                    fetchImages(data)
+                }
+            })
+        }else {
+            classService.fetchAttendingClassesForStudent().then(data => {
+                if (!data) {
+                    console.log("student attending to 0 classes")
+                }else {
+                    console.log(data)
+                    fetchImages(data)
+                }
+            })
+        }
+
     }, [])
     const fetchImages = async (classes) => {
             const newData =await Promise.all(classes?.map( async(classData) => {
@@ -35,20 +52,36 @@ const StudentClassesPage = () => {
             setLoading(false)
 
     }
-    // console.log(demoClass)
 
-    const handleOpenDemoRoom = (classId) => {
-        // navigate(`/demo-room/${postId}`)
+    const handleOpenClass = (classId,teacherId) => {
+        if(isJoinClass){
+            if(role==='teacher'){
+                demoRoomService.createRoom(classId,teacherId).then((data)=>{
+                    navigate(`/demo-room/${data}`)
+                })
+            }
+            else{
+                navigate(`/demo-room/${classId}`)
+            }
 
+        }else {
+            navigate(`/classes`)
+
+        }
     }
-    const isJoinDemoRoom = (classTime) => {
-        const endTime = new Date(classTime).getTime();
-        const currentTime = new Date().getTime();
-        const userGMTOffsetInMilliseconds = new Date().getTimezoneOffset() * 60 * 1000;
-        const adjustedEndTime = endTime - userGMTOffsetInMilliseconds;
-        const timeDiff = adjustedEndTime - currentTime;
-        const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
-        return (timeDiff <= 0) && (Math.abs(timeDiff) <= twoHoursInMilliseconds);
+    const isJoinClass = (classDays,classTime) => {
+      const data=calculateTimeRemaining(classDays,classTime);
+      if (role==='teacher'){
+          if ((data?.hours>21&&data?.days===6)||(data?.hours<1&&data?.days===0)){
+              return true;
+          }
+      }
+     else {
+          if (data?.hours>21&&data?.days===6)
+              return true;
+      }
+        return false;
+
     };
 
 
@@ -65,16 +98,16 @@ const StudentClassesPage = () => {
             }
             <div className="class-wrapper">
                 {classes?.map(data=>{
-                    const isClassTime=isJoinDemoRoom(data?.classTime)
+                    const isClassTime=isJoinClass(data?.classDays,data?.classTime)
                     return(
-                        <div className="class" key={data?.postId}>
+                        <div className="class" key={data?.classId}>
                             <div className="class-image-wrapper">
                                 <img className="class-image" src={`data:image/jpeg;base64, ${data?.image}`}
                                      alt="post-image"/>
 
                                 <div className="timer-wrapper">
                                     {isClassTime ?
-                                        <div className="plus" onClick={()=>handleOpenDemoRoom(data?.postId)}>
+                                        <div className="plus" onClick={()=>handleOpenClass(data?.classId,data?.teacherId)}>
                                             <img src={create_icon} alt="create-class-icon" className="create-icon"/>
                                         </div>
                                         : <ClassTimer className={data?.className} classDays={data?.classDays} classTime={data?.classTime} classId={data?.classId} teacherId={data?.teacherId}/>}
