@@ -15,13 +15,18 @@ const EditText = (props) => {
     }, []);
     const formik = useFormik({
         initialValues: {
-            text: '',
+            text: props?.className,
         },
         validationSchema: Yup.object({
             text: Yup.string().required('Required'),
         }),
         onSubmit:  (values) => {
-            dispatch(props.setter(values));
+            if (props?.isEditClass){
+                props?.setter(values.text)
+                props?.setIsChanged(true)
+            }else {
+                dispatch(props.setter(values));
+            }
             props.close()
         }
     });

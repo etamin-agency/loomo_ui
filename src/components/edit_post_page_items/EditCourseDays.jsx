@@ -5,7 +5,7 @@ import {StaticDateTimePicker} from "@mui/x-date-pickers";
 import {useEffect, useState} from "react";
 import Button from "react-bootstrap/Button";
 
-const EditCourseDays = ({close, setter}) => {
+const EditCourseDays = ({close, setter,isEditClass,setIsChanged}) => {
 
     const dispatch = useDispatch();
     const [isCalendarPage, setCalendarPage] = useState(true);
@@ -44,7 +44,13 @@ const EditCourseDays = ({close, setter}) => {
             gmt: gmtOffset,
             days:days.filter((day,i)=>days[i][1]==true).map(day=>day[0])
         };
-        dispatch(setter(plainDateObject))
+        if (isEditClass){
+            setter(plainDateObject)
+            setIsChanged(true)
+        }else {
+            dispatch(setter(plainDateObject))
+        }
+
         close()
     };
 

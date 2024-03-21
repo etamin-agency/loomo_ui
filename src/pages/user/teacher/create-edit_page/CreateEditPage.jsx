@@ -93,8 +93,8 @@ const CreateEditPage = () => {
         setLoading(true)
         if (id && isValidUUID(id)) {
             publishService.getPostData(id).then(data => {
-                const demoDay = new Date(data.demoTime)
-                const classTime = new Date(data.classTime)
+                const demoDay = new Date(data?.demoTime)
+                const classTime = new Date(data?.classTime)
                 const demoDayObj = {
                     year: demoDay.getFullYear(),
                     month: demoDay.getMonth() + 1,

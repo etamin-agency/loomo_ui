@@ -22,7 +22,12 @@ const EditNumber = (props) => {
             num: Yup.number().required('Required').max(1000000).min(15),
         }),
         onSubmit:  (values) => {
-            dispatch(props.setter(values));
+            if (props.isEditClass){
+                props.setter(values?.num)
+                props?.setIsChanged(true)
+            }else {
+                dispatch(props.setter(values));
+            }
             props.close()
         }
     });

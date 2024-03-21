@@ -1,8 +1,10 @@
-import './EditClassListPage.scss'
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import classService from "../../../../services/classService";
 import postService from "../../../../services/postService";
+
+import './EditClassListPage.scss'
+
 const EditClassListPage=()=>{
     const [teacherClasses, setTeacherClasses] = useState();
     const [loading, setLoading] = useState(true);

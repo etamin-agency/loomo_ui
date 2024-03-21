@@ -189,6 +189,24 @@ const classService = {
             throw error;
         }
     },
+    fetchClass: async (classId) => {
+        const token = Cookie.get('access_token');
+
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        try {
+            const response = await axiosInstance.get(`/class/${classId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
 };
 

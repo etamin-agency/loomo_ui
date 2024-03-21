@@ -30,7 +30,8 @@ import StudentDemoClassPage from "../pages/user/student/student_demo_class_page/
 import TeacherDemoPage from "../pages/user/teacher/student_demo_page/TeacherDemoPage";
 import DemoViewStudentPage from "../pages/user/teacher/student_demo_page/DemoViewStudentPage";
 import DemoRoomPage from "../pages/user/teacher/room/DemoRoomPage";
-import EditClassListPage from "../pages/user/teacher/edit_class_page/EditClassListPage";
+import EditClassListPage from "../pages/user/teacher/edit_class_list_page/EditClassListPage";
+import EditClassPage from "../pages/user/teacher/edit_class_page/EditClassPage";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
@@ -93,7 +94,11 @@ function App() {
                                     </Route>
                                     <Route path="/edit-class">
                                         <Route path="/edit-class" element={<EditClassListPage/>}/>
-                                        <Route path="/edit-class/:postId" element={<DemoViewStudentPage/>}/>
+                                        <Route path="/edit-class/:classId" element={
+                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                                <EditClassPage/>
+                                            </LocalizationProvider>
+                                        }/>
                                     </Route>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>

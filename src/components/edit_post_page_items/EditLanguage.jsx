@@ -19,7 +19,12 @@ const EditLanguage = (props) => {
     };
 
     const handleSubmit = () => {
-        dispatch(setPostLanguage(selectedLanguage));
+        if (props?.isEditClass){
+            props?.setter(selectedLanguage)
+            props?.setIsChanged(true)
+        }else {
+            dispatch(setPostLanguage(selectedLanguage));
+        }
         props.close()
     };
     return (
@@ -31,7 +36,7 @@ const EditLanguage = (props) => {
                         {selectedLanguage}
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="dropdown-menu">
-                        {languages.map((language) => (
+                        {languages?.map((language) => (
                             <Dropdown.Item
                                 key={language.languageId}
                                 onClick={() => handleLanguageSelect(language.language)}
