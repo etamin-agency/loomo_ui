@@ -77,7 +77,7 @@ const StudentClassesPage = () => {
                                         <div className="plus" onClick={()=>handleOpenDemoRoom(data?.postId)}>
                                             <img src={create_icon} alt="create-class-icon" className="create-icon"/>
                                         </div>
-                                        : <ClassTimer classDays={data?.classDays} classTime={data?.classTime} classId={data?.classId} teacherId={data?.teacherId}/>}
+                                        : <ClassTimer className={data?.className} classDays={data?.classDays} classTime={data?.classTime} classId={data?.classId} teacherId={data?.teacherId}/>}
                                 </div>
                             </div>
                             <div className="class-title">
