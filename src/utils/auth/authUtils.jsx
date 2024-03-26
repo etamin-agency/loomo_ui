@@ -12,8 +12,8 @@ const handleLogin = async (data) => {
         }
         const {access_token, refresh_token} = loginResponse;
         console.log(loginResponse)
-        Cookie.set("access_token", access_token, {secure: true, sameSite: "strict"});
-        Cookie.set("refresh_token", refresh_token, {secure: true, sameSite: "strict"});
+        Cookie.set("access_token", access_token, {sameSite: "strict"});
+        Cookie.set("refresh_token", refresh_token, { sameSite: "strict"});
         return true;
     } catch (error) {
         console.error("Login failed:", error);
@@ -22,8 +22,8 @@ const handleLogin = async (data) => {
 
 const handleLogout = () => {
     try {
-        Cookie.remove("access_token", {secure: true, sameSite: "strict"});
-        Cookie.remove("refresh_token", {secure: true, sameSite: "strict"});
+        Cookie.remove("access_token", { sameSite: "strict"});
+        Cookie.remove("refresh_token", { sameSite: "strict"});
 
     } catch (error) {
         console.error("Logout failed:", error);
