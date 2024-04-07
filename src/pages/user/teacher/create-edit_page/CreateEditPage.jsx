@@ -131,7 +131,7 @@ const CreateEditPage = () => {
                 dispatch(setPost(obj))
                 return data;
             }).then(data => {
-                const url=`https://d1oxvzb6zdyzdk.cloudfront.net/${data?.introVideoLink}`;
+                const url=`https://d3pvu5wfhx0uzg.cloudfront.net/${data?.introVideoLink}`;
                 setFile(url)
                 dispatch(setPostVideo({changed: false, data: url}));
                 return data;

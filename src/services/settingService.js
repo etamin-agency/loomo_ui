@@ -1,7 +1,8 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
 
-const API_BASE_URL = 'http://13.51.205.110:8081/api/v1';
+// const API_BASE_URL = 'http://13.51.205.110:8081/api/v1';
+const API_BASE_URL = 'http://localhost:8081/api/v1';
 
 const axiosErrorHandler = (error) => error?.response?.data;
 
