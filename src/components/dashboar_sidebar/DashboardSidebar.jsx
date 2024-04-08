@@ -27,24 +27,24 @@ const DashboardSidebar = () => {
             alt: "class-logo",
             name: "Classes"
         },
-        // {
-        //     link: "messages",
-        //     src: message_logo,
-        //     alt: "messages-logo",
-        //     name: "Messages"
-        // },
-        // {
-        //     link: "assignments",
-        //     src: home_work_logo,
-        //     alt: "homework-logo",
-        //     name: "Assignments"
-        // },
-        // {
-        //     link: "archive",
-        //     src: archive_logo,
-        //     alt: "archive-logo",
-        //     name: "Archive"
-        // },
+        {
+            link: "messages",
+            src: message_logo,
+            alt: "messages-logo",
+            name: "Messages"
+        },
+        {
+            link: "assignments",
+            src: home_work_logo,
+            alt: "homework-logo",
+            name: "Assignments"
+        },
+        {
+            link: "archive",
+            src: archive_logo,
+            alt: "archive-logo",
+            name: "Archive"
+        },
 
     ];
 
@@ -61,18 +61,18 @@ const DashboardSidebar = () => {
             alt: "studio-logo",
             name: "Teacher's Studio"
         },
-        // {
-        //     link: "assignments",
-        //     src: home_work_logo,
-        //     alt: "homework-logo",
-        //     name: "Assignments"
-        // },
-        // {
-        //     link: "wallet",
-        //     src: wallet_logo,
-        //     alt: "archive-logo",
-        //     name: "Wallet"
-        // },
+        {
+            link: "assignments",
+            src: home_work_logo,
+            alt: "homework-logo",
+            name: "Assignments"
+        },
+        {
+            link: "wallet",
+            src: wallet_logo,
+            alt: "archive-logo",
+            name: "Wallet"
+        },
 
     ];
     useEffect(()=>{
