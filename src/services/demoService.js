@@ -2,7 +2,9 @@ import axios from 'axios';
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
-const API_BASE_URL = 'http://localhost:8085/api/v1/demo-class';
+// const API_BASE_URL = 'http://localhost:8085/api/v1/demo-class';
+const API_BASE_URL = 'http://demo.loomo.online:8085/api/v1/demo-class';
+
 const demoService = {
 
     getDemoClasses: async () => {
