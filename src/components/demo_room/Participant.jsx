@@ -27,45 +27,60 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
     }, [candidate]);
 
     useEffect(() => {
-       if (!rtcPeer.current){
-           if (isOwnCamera) {
-               let constraints = {
-                   audio: true,
-                   video: {
-                       mandatory: {
-                           maxWidth: 320,
-                           maxFrameRate: 30,
-                           minFrameRate: 30
-                       }
-                   }
-               };
-               let options = {
-                   localVideo: videoRef.current,
-                   mediaConstraints: constraints,
-                   onicecandidate: onIceCandidate
-               }
-               rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
-                   function (error) {
-                       if (error) {
-                           return console.error(error);
-                       }
-                       this.generateOffer(offerToReceiveVideo);
-                   });
-           } else {
+        let userMediaPermissionGranted = false; // Flag to track user media permission
 
-               let options = {
-                   remoteVideo: videoRef.current,
-                   onicecandidate: onIceCandidate
-               }
-               rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
-                   function (error) {
-                       if (error) {
-                           return console.error(error);
-                       }
-                       this.generateOffer(offerToReceiveVideo);
-                   });
-           }
-       }
+        const startUserMedia = () => {
+            let constraints = {
+                audio: true,
+                video: {
+                    mandatory: {
+                        maxWidth: 320,
+                        maxFrameRate: 30,
+                        minFrameRate: 30
+                    }
+                }
+            };
+            let options = {
+                localVideo: videoRef.current,
+                mediaConstraints: constraints,
+                onicecandidate: onIceCandidate
+            }
+            rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+                function (error) {
+                    if (error) {
+                        return console.error(error);
+                    }
+                    this.generateOffer(offerToReceiveVideo);
+                });
+        };
+
+        // Check if user media permission is granted
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+            .then(() => {
+                userMediaPermissionGranted = true; // Set flag to true when permission is granted
+            })
+            .catch((error) => {
+                console.error('Error accessing user media: ', error);
+            });
+
+        // Execute logic only if user media permission is granted
+        if (!rtcPeer.current && userMediaPermissionGranted) {
+            if (isOwnCamera) {
+                startUserMedia();
+            } else {
+                let options = {
+                    remoteVideo: videoRef.current,
+                    onicecandidate: onIceCandidate
+                }
+                rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
+                    function (error) {
+                        if (error) {
+                            return console.error(error);
+                        }
+                        this.generateOffer(offerToReceiveVideo);
+                    });
+            }
+        }
     }, []);
     const offerToReceiveVideo = (error, offerSdp, wp) => {
         if (error) return console.error("sdp offer error")
