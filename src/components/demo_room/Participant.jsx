@@ -54,14 +54,19 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
                 });
         };
 
-        // Check if user media permission is granted
-        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-            .then(() => {
-                userMediaPermissionGranted = true; // Set flag to true when permission is granted
-            })
-            .catch((error) => {
-                console.error('Error accessing user media: ', error);
-            });
+        // Check if navigator.mediaDevices and getUserMedia are available
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Execute logic only if user media permission is granted
+            navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+                .then(() => {
+                    userMediaPermissionGranted = true; // Set flag to true when permission is granted
+                })
+                .catch((error) => {
+                    console.error('Error accessing user media: ', error);
+                });
+        } else {
+            console.error('getUserMedia is not supported in this environment');
+        }
 
         // Execute logic only if user media permission is granted
         if (!rtcPeer.current && userMediaPermissionGranted) {
