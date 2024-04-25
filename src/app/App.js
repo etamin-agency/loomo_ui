@@ -19,7 +19,7 @@ import Dashboard from "../components/dashboard/Dashboard";
 import SettingsPage from "../pages/settings/settings_page/SettingsPage";
 import AccountEditPage from "../pages/settings/account_edit_page/AccountEditPage";
 import LogoutComponent from "../components/logout/LogoutComponent";
-import PublishClassPage from "../pages/user/teacher/publish_class_page/PublishClassPage";
+import PublishPostPage from "../pages/user/teacher/publish_post_page/PublishPostPage";
 import CreateEditPage from "../pages/user/teacher/create-edit_page/CreateEditPage";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
@@ -32,6 +32,7 @@ import DemoViewStudentPage from "../pages/user/teacher/student_demo_page/DemoVie
 import DemoRoomPage from "../pages/user/teacher/room/DemoRoomPage";
 import EditClassListPage from "../pages/user/teacher/edit_class_list_page/EditClassListPage";
 import EditClassPage from "../pages/user/teacher/edit_class_page/EditClassPage";
+import CreateEditPostPage from "../pages/user/teacher/create_edit_post_page/CreateEditPostPage";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
@@ -87,7 +88,6 @@ function App() {
                                     <Route path="/studio" element={<TeacherStudioPage/>}/>
                                     <Route path="/assignments" element={<AssignmentsPage/>}/>
                                     <Route path="/wallet" element={<WalletPage/>}/>
-                                    <Route path="/teacher" element={<StudentProfilePage/>}/>
                                     <Route path="/teacher-demo">
                                         <Route path="/teacher-demo" element={<TeacherDemoPage/>}/>
                                         <Route path="/teacher-demo/:postId" element={<DemoViewStudentPage/>}/>
@@ -100,24 +100,26 @@ function App() {
                                             </LocalizationProvider>
                                         }/>
                                     </Route>
+                                    <Route path="/teacher/:userName" element={<StudentProfilePage/>}/>
+                                    <Route path="/student/:userName" element={<StudentProfilePage/>}/>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>
                                 </Route>
                                 <Route path="/edit">
-                                    <Route path="/edit/:id" element={
+                                    <Route path="/edit/:postId" element={
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <CreateEditPage/>
+                                            <CreateEditPostPage/>
                                         </LocalizationProvider>
                                     }/>
                                     <Route path="/edit" element={
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                            <CreateEditPage/>
+                                            <CreateEditPostPage/>
                                         </LocalizationProvider>
                                     }/>
-                                </Route>
 
-                                <Route path="/publish-class" element={<PublishClassPage/>}/>
+                                </Route>
+                                <Route path="/publish-post" element={<PublishPostPage/>}/>
                             </Route>
 
                         }
@@ -128,8 +130,9 @@ function App() {
                                     <Route path="/messages" element={<MessagingPage/>}/>
                                     <Route path="/assignments" element={<AssignmentsPage/>}/>
                                     <Route path="/archive" element={<ArchivePage/>}/>
-                                    <Route path="/student" element={<StudentProfilePage/>}/>
                                     <Route path="/class-demo" element={<StudentDemoClassPage/>}/>
+                                    <Route path="/teacher/:userName" element={<StudentProfilePage/>}/>
+                                    <Route path="/student/:userName" element={<StudentProfilePage/>}/>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>

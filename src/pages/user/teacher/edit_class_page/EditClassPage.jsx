@@ -43,12 +43,13 @@ const EditClassPage = () => {
                 year: classTime.getFullYear(),
                 month: classTime.getMonth() + 1,
                 day: classTime.getDate(),
-                hour: classTime.getHours() + classTime.getTimezoneOffset() / 60 * -1,
+                hour: classTime.getHours() + classTime.getTimezoneOffset() / 60 ,
                 minute: classTime.getMinutes(),
                 gmt: classTime.getTimezoneOffset() / 60 * -1,
                 classTime: classTime
             };
             setClassDays(data?.classDays);
+            console.log(classTimeObj)
             setClassTime(classTimeObj);
             setClassName(data?.className);
             setLanguage(data?.language);

@@ -5,15 +5,14 @@ function adjustDateByHour(year, month, day, hour, minute, hours) {
     return date;
 }
 
-export function calculateTimeRemaining(classDays,classTime) {
+export function calculateTimeRemaining(classDays,classTime,now=new Date()) {
     if (!classDays) return {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0
+        days: -1,
+        hours: -1,
+        minutes: -1,
+        seconds: -1,
     }
     const endTime = new Date(classTime).getTime();
-    const now = new Date();
 
     const currentTime = now.getTime();
     const userGMTOffsetInMilliseconds = now.getTimezoneOffset() * 60 * 1000;
@@ -52,12 +51,12 @@ export function calculateTimeRemaining(classDays,classTime) {
     const minutesRemaining = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
     const secondsRemaining = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
-    if (secondsRemaining<0){
+    if (hoursRemaining<-2){
         return {
-            days: 0,
-            hours: 0,
-            minutes: 0,
-            seconds: 0
+            days: -1,
+            hours: -1,
+            minutes: -1,
+            seconds: -1
         }
     }
     return {

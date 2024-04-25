@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const API_BASE_URL = 'http://16.171.174.191:8080/api/v1/auth';
-const API_BASE_URL = 'http://registration.loomo.online:8080/api/v1/auth';
+// const API_BASE_URL = 'http://16.16.28.179:8080/api/v1/auth';
+const API_BASE_URL = 'http://localhost:8080/api/v1/auth';
 
 const authService = {
     register: async (request) => {

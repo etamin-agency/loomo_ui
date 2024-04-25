@@ -1,9 +1,9 @@
-import './EditPageItems.scss';
-import {useDispatch} from "react-redux";
-import {DemoItem} from "@mui/x-date-pickers/internals/demo";
-import {StaticDateTimePicker} from "@mui/x-date-pickers";
 import {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
+import {StaticDateTimePicker} from "@mui/x-date-pickers";
+import {DemoItem} from "@mui/x-date-pickers/internals/demo";
 import Button from "react-bootstrap/Button";
+import './EditPageItems.scss';
 
 const EditCourseDays = ({close, setter,isEditClass,setIsChanged}) => {
 
@@ -44,6 +44,7 @@ const EditCourseDays = ({close, setter,isEditClass,setIsChanged}) => {
             gmt: gmtOffset,
             days:days.filter((day,i)=>days[i][1]==true).map(day=>day[0])
         };
+        console.log(plainDateObject)
         if (isEditClass){
             setter(plainDateObject)
             setIsChanged(true)

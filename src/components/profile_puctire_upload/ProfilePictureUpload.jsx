@@ -8,7 +8,8 @@ import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import user_image from "../../assets/student_image.png";
 import {useDispatch, useSelector} from "react-redux";
-import {setStudentProfileImage} from "../../actions";
+import {setProfileImage} from "../../actions";
+import Loading from "../loading/Loading";
 
 const ProfilePictureUpload = (props) => {
     const {profile} = useSelector(state => state.profile);
@@ -17,6 +18,7 @@ const ProfilePictureUpload = (props) => {
     const [userImage, setUserImage] = useState(profile?.profilePicture == null || profile?.profilePicture === '' ? user_image : `data:image/jpeg;base64,${profile?.profilePicture}`);
     const [isButtonDisabled, setButtonDisabled] = useState(true);
     const [file, setFile] = useState();
+    const [loading, setLoading] = useState(false)
 
     const onDrop = useCallback(acceptedFiles => {
         console.log(acceptedFiles)
@@ -33,14 +35,16 @@ const ProfilePictureUpload = (props) => {
         }
     }, []);
 
-    const updateProfilePictureHandler = () => {
+    const updateProfilePictureHandler = async () => {
+        setLoading(true)
         const formData = new FormData();
         formData.append("file", file)
         const userName = jwtDecode(Cookie.get('access_token')).sub;
-        settingService.updateProfileImage(userName, formData).catch((err) => console.log(err));
+        await settingService.updateProfileImage(userName, formData).catch((err) => console.log(err));
         props.setShowUploadView(false)
-        settingService.getUserProfileImage(userName).then(data => {
-            dispatch(setStudentProfileImage(data))
+        await settingService.getUserProfileImage(userName).then(data => {
+            dispatch(setProfileImage(data))
+            setLoading(false)
         })
 
     }
@@ -48,9 +52,13 @@ const ProfilePictureUpload = (props) => {
     return (
         <div className="some-name">
             <div className="ProfilePictureUpload">
+
+                {loading && <Loading/>}
                 <img
                     src={userImage}
                     alt="user-image" className="user-image-icon"/>
+
+
                 <div className="dropzone-block" {...getRootProps()} >
                     <input {...getInputProps()} />
                     {

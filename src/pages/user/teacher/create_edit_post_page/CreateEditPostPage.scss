@@ -1,0 +1,135 @@
+.CreateEditPostPage {
+  display: block;
+  min-height: 300px;
+  width: 100%;
+  background-color: #F5F5FB;
+  padding: 90px 0;
+
+  .publish-post-link {
+    position: absolute;
+    display: block;
+    color: black;
+    top: 30px;
+    left: 30px;
+    font-size: 40px;
+    font-weight: 600;
+  }
+
+  .edit-post-container {
+    display: flex;
+    margin: 0 auto;
+    max-width: 80%;
+    height: 730px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 16px;
+    justify-content: space-between;
+  }
+
+  .post-media-wrapper {
+    display: flex;
+    padding: 0;
+    margin: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    width: 30%;
+  }
+
+  .media-block {
+    display: block;
+    width: 512px;
+    height: 288px;
+    background-color: rgba(217, 217, 217, 0.5);
+    border-radius: 10px;
+
+    .media-icons-wrapper {
+      display: flex;
+      max-width: 100px;
+      margin: 65px auto 0;
+      justify-content: center;
+
+      img {
+        display: block;
+        width: 50px;
+        height: 55px;
+        object-fit: cover;
+      }
+
+      .left-icon {
+        margin-top: 15px;
+        transform: rotate(-20deg) translateX(13px);
+      }
+
+      .right-icon {
+        margin-top: 15px;
+        transform: rotate(20deg) translateX(-13px);
+      }
+
+      .center-icon {
+        width: 60px;
+        height: 70px;
+        z-index: 10;
+      }
+    }
+
+    .shadow-block {
+      height: 5px;
+      width: 105px;
+      margin: -5px auto 0;
+      border-radius: 100%;
+      background: rgba(0, 0, 0, 0.2);
+
+    }
+
+    .upload-media-text {
+      display: block;
+      margin: 10px auto 0;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .upload-media-subtext {
+      display: block;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #818181;
+    }
+
+    .upload-btn-wrapper {
+      display: flex;
+      margin: 10px auto 0;
+      justify-content: center;
+
+      .tmp-memory-btn {
+        width: 200px;
+        height: 25px;
+        color: black;
+        background-color: white;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 400;
+        text-align: center;
+        padding: 2px;
+        cursor: pointer;
+      }
+
+      .local-memory-btn {
+        width: 100px;
+        height: 25px;
+        background-color: rgba(0, 122, 255, 1);
+        color: white;
+        border-radius: 10px;
+        font-size: 12px;
+        text-align: center;
+        font-weight: 300;
+        padding: 2px;
+        margin-left: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+}

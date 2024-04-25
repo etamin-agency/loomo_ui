@@ -1,7 +1,7 @@
 import {useEffect, useRef} from "react";
 import kurentoUtils from 'kurento-utils';
 import './Participant.scss'
-const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => {
+const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate,isAudioOn = true,isVideoOn=true}) => {
     const rtcPeer = useRef(null);
     const videoRef = useRef(null);
 
@@ -25,54 +25,34 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate}) => 
             });
         }
     }, [candidate]);
-
     useEffect(() => {
-        let userMediaPermissionGranted = false; // Flag to track user media permission
-
-        const startUserMedia = () => {
-            let constraints = {
-                audio: true,
-                video: {
-                    mandatory: {
-                        maxWidth: 320,
-                        maxFrameRate: 30,
-                        minFrameRate: 30
-                    }
-                }
-            };
-            let options = {
-                localVideo: videoRef.current,
-                mediaConstraints: constraints,
-                onicecandidate: onIceCandidate
-            }
-            rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
-                function (error) {
-                    if (error) {
-                        return console.error(error);
-                    }
-                    this.generateOffer(offerToReceiveVideo);
-                });
-        };
-
-        // Check if navigator.mediaDevices and getUserMedia are available
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // Execute logic only if user media permission is granted
-            navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-                .then(() => {
-                    userMediaPermissionGranted = true; // Set flag to true when permission is granted
-                })
-                .catch((error) => {
-                    console.error('Error accessing user media: ', error);
-                });
-        } else {
-            console.error('getUserMedia is not supported in this environment');
-        }
-
-        // Execute logic only if user media permission is granted
-        if (!rtcPeer.current && userMediaPermissionGranted) {
+        if (!rtcPeer.current){
             if (isOwnCamera) {
-                startUserMedia();
+                const constraints = {
+                    audio: isAudioOn,
+                    video: isVideoOn ? {
+                        mandatory: {
+                            maxWidth: 320,
+                            maxFrameRate: 30,
+                            minFrameRate: 30
+                        }
+                    } : false
+                };
+                console.log(constraints)
+                let options = {
+                    localVideo: videoRef.current,
+                    mediaConstraints: constraints,
+                    onicecandidate: onIceCandidate
+                }
+                rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+                    function (error) {
+                        if (error) {
+                            return console.error(error);
+                        }
+                        this.generateOffer(offerToReceiveVideo);
+                    });
             } else {
+
                 let options = {
                     remoteVideo: videoRef.current,
                     onicecandidate: onIceCandidate

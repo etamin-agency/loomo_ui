@@ -1,4 +1,12 @@
 import {Link} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {useEffect, useRef, useState} from "react";
+import Cookie from "js-cookie";
+import {jwtDecode} from "jwt-decode";
+
+
+import demoService from "../../services/demoService";
+
 
 import class_logo from "../../assets/class-logo.png"
 import message_logo from "../../assets/messages-logo.png"
@@ -10,15 +18,13 @@ import studio_logo from "../../assets/studio-logo.png"
 import wallet_logo from "../../assets/wallet-logo.png"
 import demo_day from "../../assets/demo.png"
 
-import "./DashboarSidebar.scss"
-import {useSelector} from "react-redux";
-import {useEffect, useState} from "react";
-import demoService from "../../services/demoService";
 
+import "./DashboarSidebar.scss"
 
 
 const DashboardSidebar = () => {
     const {role} = useSelector(state => state.role);
+    const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
     const [isDemoLessons,setIsDemoLessons]=useState(false);
     const student = [
         {
@@ -84,6 +90,7 @@ const DashboardSidebar = () => {
         }
 
     },[])
+    console.log(userName)
     return (
         <aside className="student-dashboard">
             <div className="home-link">
@@ -127,9 +134,8 @@ const DashboardSidebar = () => {
                 }
 
             </div>
-
             <div className="dashboard-block profile-link">
-                <Link to={role === "teacher" ? "/teacher" : "/student"} className="student-link">
+                <Link to={`${role === "teacher" ? "/teacher" : "/student"}/${userName.current}`} className="student-link">
                     <img src={user_logo} className="student-logo" alt="user-logo"/>
                     <div>Profile</div>
                 </Link>

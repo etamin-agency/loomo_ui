@@ -24,7 +24,7 @@ const DemoRoomPage = () => {
     const {roomId} = useParams();
     const {role} = useSelector(state => state.role);
     const navigate = useNavigate()
-    const ws = useRef(new WebSocket('ws://docker.loomo.online:8086/demo-room'));
+    const ws = useRef(new WebSocket('ws://localhost:8086/demo-room'));
     const participantsView = useRef(new Map());
     const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
     const [teacherName, setTeacherName] = useState('');
@@ -36,7 +36,7 @@ const DemoRoomPage = () => {
 
     useEffect(() => {
         checkIfExistence(roomId).then(r => console.log("hey"));
-        ws.current = new WebSocket('ws://docker.loomo.online:8086/demo-room');
+        ws.current = new WebSocket('ws://localhost:8086/demo-room');
         console.log("Page Loaded - Opened WebSocket");
         triggerRender();
         ws.current.onopen = () => {
@@ -115,6 +115,8 @@ const DemoRoomPage = () => {
         triggerRender();
     }
 
+
+
     const sendMessage = (message) => {
         let jsonMessage = JSON.stringify(message);
         console.log('Sending message: ' + jsonMessage);
@@ -191,6 +193,17 @@ const DemoRoomPage = () => {
         participantsView.current.delete(request.name)
         triggerRender();
     }
+    const handleAudioOnAndOff=(isAudioOn)=>{
+        const participant = participantsView.current.get(userName?.current);
+        if (participant) {
+            const updatedParticipant = React.cloneElement(participant, {
+                isAudioOn: isAudioOn
+            });
+            participantsView.current.set(userName?.current, updatedParticipant);
+        }
+            setAudioOn(isAudioOn);
+
+    }
     return (
         <div className="DemoRoomPage">
             {loading && <Loading/>}
@@ -221,9 +234,9 @@ const DemoRoomPage = () => {
                         </div>
                         <div className="audio-button">
                             {isAudioOn ? <img src={audioOn} alt="audio-on-icon" className="audio"
-                                              onClick={() => setAudioOn(false)}/> :
+                                              onClick={() => handleAudioOnAndOff(false)}/> :
                                 <img src={audioOff} alt="audio-off-icon" className="audio"
-                                     onClick={() => setAudioOn(true)}/>}
+                                     onClick={() => handleAudioOnAndOff(true)}/>}
                         </div>
                         <div className="hang-up-button">
                             <img onClick={handleLeaveRoom} src={hang_up_icon} alt="hang-up-icon"

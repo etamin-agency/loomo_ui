@@ -4,7 +4,8 @@ export const setTeacher = createAction("SET_TEACHER_ROLE");
 export const setStudent = createAction("SET_STUDENT_ROLE");
 
 export const setStudentProfile = createAction("SET_STUDENT_PROFILE");
-export const setStudentProfileImage = createAction("SET_STUDENT_PROFILE_IMAGE");
+export const setProfileImage = createAction("SET_PROFILE_IMAGE");
+export const setTeacherProfile = createAction("SET_TEACHER_PROFILE");
 export const setPostVideo = createAction("SET_POST_VIDEO");
 export const setPostTitle = createAction("SET_POST_TITLE");
 export const setPostDesc = createAction("SET_POST_DESCRIPTION");

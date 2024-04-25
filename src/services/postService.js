@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://post.loomo.online:8084/api/v1/post';
+// const API_BASE_URL = 'http://16.170.223.3:8084/api/v1/post';
+const API_BASE_URL = 'http://localhost:8084/api/v1/post';
 const postService = {
 
     getImage: async (uuid) => {

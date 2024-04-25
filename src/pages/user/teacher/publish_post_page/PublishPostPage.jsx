@@ -9,9 +9,9 @@ import publishService from "../../../../services/publishService";
 
 import Loading from "../../../../components/loading/Loading";
 
-import './PublishClassPage.scss'
+import './PublishPostPage.scss'
 
-const PublishClassPage = () => {
+const PublishPostsPage = () => {
     const [data, setData] = useState({});
     const [totalElements, setTotalElements] = useState(0);
     const [loading, setLoading] = useState(true)
@@ -23,9 +23,9 @@ const PublishClassPage = () => {
             setLoading(false)
         })
     }, []);
-    console.log(totalElements)
+
     return (
-        <div className="PublishClassPage">
+        <div className="PublishPostPage">
             <Link to="/studio"><div className="studio-link"><span>L</span>oomo</div></Link>
 
             {loading ? <Loading/> :
@@ -34,7 +34,7 @@ const PublishClassPage = () => {
                         {data?.map((item) => (
                             <div className="published-post" key={item?.postId}>
                                 <Link to={`/edit/${item.postId}`}>
-                                    <img className="post-image" src={`data:image/jpeg;base64,${item?.photoFile}`}
+                                    <img className="post-image" src={`https://d3d9es05pgt6o5.cloudfront.net/${item?.imageId}`}
                                          alt="post-photo"/>
                                 </Link>
                                 <div className="post-title">
@@ -65,4 +65,4 @@ const PublishClassPage = () => {
         </div>
     )
 }
-export default PublishClassPage;
+export default PublishPostsPage;

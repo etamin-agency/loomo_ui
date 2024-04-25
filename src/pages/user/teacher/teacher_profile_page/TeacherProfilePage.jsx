@@ -1,47 +1,54 @@
-import {useEffect, useState} from "react";
-import settingService from "../../../../services/settingService";
-import {jwtDecode} from "jwt-decode";
-import Cookie from "js-cookie";
-import user_image from '../../../../assets/student_image.png';
-import settings_icon from '../../../../assets/settings.png';
-import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setStudentProfile} from "../../../../actions";
-import camera_image from '../../../../assets/photo-camera.png'
+import {useEffect, useState} from "react";
+import {Link, useParams} from "react-router-dom";
 
+
+import Cookie from "js-cookie";
+import {jwtDecode} from "jwt-decode";
+import settingService from "../../../../services/settingService";
+import {setStudentProfile, setTeacherProfile} from "../../../../actions";
+import user_image from "../../../../assets/student_image.png";
+import camera_image from "../../../../assets/photo-camera.png";
+import settings_icon from "../../../../assets/settings.png";
 import ProfilePictureUpload from "../../../../components/profile_puctire_upload/ProfilePictureUpload";
 
-import "./StudentProfilePage.scss"
-import Loading from "../../../../components/loading/Loading";
+import './TeacherPofilePage.scss'
 
 
-const StudentProfilePage = () => {
+const TeacherProfilePage = () => {
+    const {profile} = useSelector(state => state.profile);
+    const dispatch = useDispatch();
     const [showUploadView, setShowUploadView] = useState(false);
     let {userName} = useParams();
     const [isProfileOfOwner, setOwnerProfile] = useState(false);
-    const [data,setData]=useState(null);
-    const [loading,setLoading]=useState(true);
 
-    useEffect(()=>{
-        console.log("heey")
+    const [data,setData]=useState(profile)
+
+    useEffect(() => {
         const token = Cookie.get("access_token");
         const accountUserName = jwtDecode(token).sub;
         if (accountUserName === userName) {
-            setOwnerProfile(true)
+            setOwnerProfile(true);
+            settingService.getTeacherProfile(userName).then(data => {
+                dispatch(setTeacherProfile(data))
+                setData(profile)
+            });
         }
-        settingService.getStudentProfile(userName).then(data => {
-            const  obj= {
-                firstName: data?.firstName,
-                lastName: data?.lastName,
-                userName: data?.userName,
-                profilePicture: data?.profilePicture,
-                bio: data?.bio
-            }
-            setData(obj)
-            setLoading(false)
-        });
-    },[])
+        else {
+            settingService.getStudentProfile(userName).then(data => {
+                const  obj= {
+                    firstName: data?.firstName,
+                    lastName: data?.lastName,
+                    userName: data?.userName,
+                    profilePicture: data?.profilePicture,
+                    bio: data?.bio
+                }
+                setData(obj)
+            });
+        }
 
+
+    }, [dispatch]);
 
 
     const handleMouseOver = () => {
@@ -76,10 +83,7 @@ const StudentProfilePage = () => {
     return (
         <div>
             {showUploadView && <ProfilePictureUpload setShowUploadView={setShowUploadView}/>}
-
-            <div className="StudentProfilePage">
-                {loading&&
-                   <Loading/>}
+            <div className="TeacherProfilePage">
                 <div className="student-wrapper">
                     <div className="user-image-container"
                          onMouseOver={handleMouseOver}
@@ -104,8 +108,6 @@ const StudentProfilePage = () => {
                     {data?.bio}
                 </div>
             </div>
-        </div>
-
-    );
+        </div>)
 }
-export default StudentProfilePage;
+export default TeacherProfilePage;
