@@ -37,7 +37,7 @@ import adjustDateByHour from "../../../../utils/helper/math";
 import {isValidUUID} from "../../../../utils/helper/validation";
 
 const CreateEditPage = () => {
-    const {post} = useSelector(state => state.classPost);
+    const [post,setPost] =useState('');
     const dispatch = useDispatch();
     const [showEditItem, setShowEditItem] = useState(false);
     const [maxChars, setMaxChars] = useState(30);

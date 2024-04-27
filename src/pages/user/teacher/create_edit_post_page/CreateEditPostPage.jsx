@@ -1,20 +1,26 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
 
 
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {isValidUUID} from "../../../../utils/helper/validation";
 
 import video_icon from '../../../../assets/video-icon.png'
 import image_icon from '../../../../assets/image-icon.png'
 import publishService from "../../../../services/publishService";
 
+import {useDropzone} from "react-dropzone";
+import ReactPlayer from "react-player";
+
 import './CreateEditPostPage.scss'
+
 
 const CreateEditPostPage = () => {
     let {postId} = useParams();
     const [loading, setLoading] = useState(true);
     const [image, setImage] = useState('');
+    const [imageFile, setImageFile] = useState('');
     const [video, setVideo] = useState('');
+    const [videoFile, setVideoFile] = useState('');
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [price, setPrice] = useState('');
@@ -31,6 +37,8 @@ const CreateEditPostPage = () => {
     const [courseRoadMap, setCourseRoadMap] = useState('');
     const [isCourseRoadMapExists, setCourseRoadMapExists] = useState(false);
     const [tags, setTags] = useState('');
+
+    const [videoLoading,setVideoLoading]=useState(false);
 
 
     const [isChanged, setChanged] = useState(false)
@@ -60,6 +68,58 @@ const CreateEditPostPage = () => {
 
     }, []);
 
+    const onDropVideo = useCallback(acceptedFiles => {
+        setVideoLoading(true);
+        try {
+            const file = acceptedFiles[0];
+            setVideoFile(file);
+            if (file.type.startsWith('video/')) {
+                const video = document.createElement('video');
+                video.preload = 'metadata';
+                video.onloadedmetadata = () => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => {
+                        setVideoLoading(false);
+                        setVideo(reader.result);
+                    };
+                };
+                video.src = URL.createObjectURL(file);
+            } else {
+                console.log('File is not a video.');
+            }
+        } catch (error) {
+            console.error("Error reading file:", error);
+        }
+    }, []);
+    const onDropImage = useCallback(acceptedFiles => {
+        try {
+            const imageFile = acceptedFiles[0];
+
+            if (!imageFile || !imageFile.type.startsWith('image/')) {
+                console.error("File is not an image.");
+                return false;
+            }
+            setImageFile(imageFile)
+            const reader = new FileReader();
+            reader.readAsDataURL(acceptedFiles[0]);
+            reader.onload = () => {
+                setImage(reader.result);
+            };
+        } catch (error) {
+            console.error("Error reading file:", error);
+        }
+    }, []);
+    const {getRootProps: getRootPropsForVideo,getInputProps: getInputPropsForVideo,isDragActive: isDragActiveForVideo} = useDropzone({
+        onDrop: onDropVideo,
+        accept: 'video/*'
+    });
+    const {getRootProps: getRootPropsForImage,getInputProps:  getInputPropsForImage,isDragActive:  isDragActiveForImage} = useDropzone({
+        onDrop: onDropImage,
+        accept: 'image/*'
+    })
+
+    console.log(videoLoading)
     return (
         <div className="CreateEditPostPage">
             <Link to="/publish-post">
@@ -68,35 +128,73 @@ const CreateEditPostPage = () => {
             <div>
                 <div className="edit-post-container">
                     <div className="post-media-wrapper">
-                        <div className="media-block">
-                            <div className="media-icons-wrapper">
-                                <img className="left-icon" src={video_icon} alt="video-icon"/>
-                                <img className="center-icon" src={video_icon} alt="video-icon"/>
-                                <img className="right-icon" src={video_icon} alt="video-icon"/>
-                            </div>
-                            <div className="shadow-block"></div>
-                            <div className="upload-media-text">Drug and drop your Introduction Video</div>
-                            <div className="upload-media-subtext"> or press Button </div>
-                            <div className="upload-btn-wrapper">
-                                <div className="tmp-memory-btn">Access from temporary memory</div>
-                                <div className="local-memory-btn">Select from File</div>
-                            </div>
-                        </div>
-                        <div className="media-block">
-                            <div className="media-icons-wrapper">
-                                <img className="left-icon" src={image_icon} alt="video-icon"/>
-                                <img className="center-icon" src={image_icon} alt="video-icon"/>
-                                <img className="right-icon" src={image_icon} alt="video-icon"/>
-                            </div>
-                            <div className="shadow-block"></div>
-                            <div className="upload-media-text">Drug and drop your Introduction Photo</div>
-                            <div className="upload-media-subtext"> or press Button </div>
-                            <div className="upload-btn-wrapper">
-                                <div className="tmp-memory-btn">Access from temporary memory</div>
-                                <div className="local-memory-btn">Select from File</div>
-                            </div>
-
-                        </div>
+                        {video ? (
+                                <div className="player-wrapper" >
+                                    <ReactPlayer
+                                        width="100%"
+                                        height="100%"
+                                        url={video}
+                                        controls
+                                        className={"react-player"}
+                                        config={{file: {attributes: {controlsList: 'nodownload'}}}}
+                                    />
+                                </div>
+                            ) :
+                            (
+                                <div className="media-block">
+                                    <div className="dropzone-video" {...getRootPropsForVideo()} >
+                                        <input type="file"   {...getInputPropsForVideo()} accept="video/*" />
+                                        {
+                                            isDragActiveForVideo ?
+                                                <p className="drag-active-center-text">Drop the files here ...</p> :
+                                                <>
+                                                    <div className="media-icons-wrapper">
+                                                        <img className="left-icon" src={video_icon} alt="video-icon"/>
+                                                        <img className="center-icon" src={video_icon} alt="video-icon"/>
+                                                        <img className="right-icon" src={video_icon} alt="video-icon"/>
+                                                    </div>
+                                                    <div className="shadow-block"></div>
+                                                    <div className="upload-media-text">Drag and drop your Introduction Video</div>
+                                                    <div className="upload-media-subtext"> or press Button</div>
+                                                    <div className="upload-btn-wrapper">
+                                                        <div className="tmp-memory-btn">Access from temporary memory</div>
+                                                        <div className="local-memory-btn">Select from File</div>
+                                                    </div>
+                                                </>
+                                        }
+                                    </div>
+                                </div>
+                            )}
+                        {image ? (
+                                <div className="picture-wrapper">
+                                    <img src={image} alt="course-image"/>
+                                </div>
+                            ) :
+                            (
+                                <div className="media-block">
+                                    <div className="dropzone-video" {...getRootPropsForImage()} >
+                                        <input   {...getInputPropsForImage()} accept="image/*"  />
+                                        {
+                                            isDragActiveForImage ?
+                                                <p className="drag-active-center-text">Drop the files here ...</p> :
+                                                <>
+                                                        <div className="media-icons-wrapper">
+                                                            <img className="left-icon" src={image_icon} alt="video-icon"/>
+                                                            <img className="center-icon" src={image_icon} alt="video-icon"/>
+                                                            <img className="right-icon" src={image_icon} alt="video-icon"/>
+                                                        </div>
+                                                        <div className="shadow-block"></div>
+                                                        <div className="upload-media-text">Drug and drop your Introduction Photo</div>
+                                                        <div className="upload-media-subtext"> or press Button</div>
+                                                        <div className="upload-btn-wrapper">
+                                                            <div className="tmp-memory-btn">Access from temporary memory</div>
+                                                            <div className="local-memory-btn">Select from File</div>
+                                                        </div>
+                                                </>
+                                        }
+                                    </div>
+                                </div>
+                            )}
                     </div>
                     <div className="post-input-wrapper">
 

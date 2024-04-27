@@ -35,13 +35,43 @@
     padding: 20px;
     width: 30%;
   }
-
+  .picture-wrapper{
+    display: block;
+    width: 512px;
+    height: 288px;
+    background-color: black;
+    border-radius: 10px;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+  .player-wrapper{
+    display: block;
+    width: 512px;
+    height: 288px;
+    background-color: black;
+    border-radius: 10px;
+  }
+  .react-player{
+    border-radius: 10px;
+    video{
+      border-radius: 10px;
+    }
+  }
   .media-block {
+    position: relative;
     display: block;
     width: 512px;
     height: 288px;
     background-color: rgba(217, 217, 217, 0.5);
     border-radius: 10px;
+    .drag-active-center-text{
+      margin-top: 150px;
+      text-align: center;
+    }
 
     .media-icons-wrapper {
       display: flex;
