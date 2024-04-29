@@ -250,6 +250,11 @@ const CreateEditPostPage = () => {
                                 <div className="edit-post-text">Course Duration</div>
                                 <CourseDuration duration={duration} setter={setDuration}/>
                             </div>
+                            <div className="schedule-wrapper">
+                                <div className="edit-post-schedule-text">
+
+                                </div>
+                            </div>
 
                         </div>
                         <div className="post-input-second-column">
