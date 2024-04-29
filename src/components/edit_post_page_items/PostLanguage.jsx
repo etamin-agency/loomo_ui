@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import publishService from "../../services/publishService";
 import Dropdown from "react-bootstrap/Dropdown";
-
+import arrow_down from '../../assets/down-arrow-svgrepo-com.svg'
 import './EditPageItems.scss'
 
 const PostLanguage = (props) => {
@@ -20,8 +20,11 @@ const PostLanguage = (props) => {
     return(
         <div className="PostLanguage">
             <Dropdown>
-                <Dropdown.Toggle variant="primary" id="dropdown-languages">
+                <Dropdown.Toggle variant="primary" id="dropdown-languages" className="custom-toggle">
                     {pickedLanguage}
+                    <div className="custom-toggle-container">
+                        <img className="custom-arrow" src={arrow_down} alt="arrow-down-svg"/>
+                    </div>
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="dropdown-menu">
                     {languages?.map((language) => (

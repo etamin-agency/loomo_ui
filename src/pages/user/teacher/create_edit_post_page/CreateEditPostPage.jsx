@@ -12,9 +12,11 @@ import publishService from "../../../../services/publishService";
 import {useDropzone} from "react-dropzone";
 import ReactPlayer from "react-player";
 
-import './CreateEditPostPage.scss'
-import PostLanguage from "../../../../components/edit_post_page_items/PostLanguage";
 
+import PostLanguage from "../../../../components/edit_post_page_items/PostLanguage";
+import CourseDuration from "../../../../components/edit_post_page_items/CourseDuration";
+
+import './CreateEditPostPage.scss'
 
 const CreateEditPostPage = () => {
     let {postId} = useParams();
@@ -29,7 +31,7 @@ const CreateEditPostPage = () => {
     const [language, setLanguage] = useState('');
     const [req, setReq] = useState('');
     const [numberOfStudents, setNumberOfStudents] = useState('');
-    const [duration, setDuration] = useState('');
+    const [duration, setDuration] = useState({startDate:'',endDate:''});
     const [days, setDays] = useState('');
     const [courseToWho, setCourseToWho] = useState('');
     const [demoDate, setDemoDate] = useState('');
@@ -243,6 +245,10 @@ const CreateEditPostPage = () => {
                             <div className="language-wrapper">
                                 <div className="edit-post-text">Language</div>
                                 <PostLanguage langauge={language} setter={setLanguage}/>
+                            </div>
+                            <div className="duration-wrapper">
+                                <div className="edit-post-text">Course Duration</div>
+                                <CourseDuration/>
                             </div>
 
                         </div>
