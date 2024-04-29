@@ -13,6 +13,7 @@ import {useDropzone} from "react-dropzone";
 import ReactPlayer from "react-player";
 
 import './CreateEditPostPage.scss'
+import PostLanguage from "../../../../components/edit_post_page_items/PostLanguage";
 
 
 const CreateEditPostPage = () => {
@@ -136,7 +137,6 @@ const CreateEditPostPage = () => {
     const handleDataChange = (event,setter) => {
       setter(event.target.value)
     }
-    console.log(title)
     return (
         <div className="CreateEditPostPage">
             <Link to="/publish-post">
@@ -242,13 +242,12 @@ const CreateEditPostPage = () => {
                             </div>
                             <div className="language-wrapper">
                                 <div className="edit-post-text">Language</div>
-
+                                <PostLanguage langauge={language} setter={setLanguage}/>
                             </div>
 
                         </div>
                         <div className="post-input-second-column">
                             <div className="post-list-inputs-wrapper">
-
                             </div>
                         </div>
                     </div>
