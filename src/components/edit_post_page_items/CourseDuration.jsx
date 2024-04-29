@@ -1,37 +1,40 @@
 import * as React from 'react';
-import {DemoContainer, DemoItem} from '@mui/x-date-pickers/internals/demo';
+import {DemoItem} from '@mui/x-date-pickers/internals/demo';
 import {LocalizationProvider} from '@mui/x-date-pickers-pro';
 import {AdapterDayjs} from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
-import './EditPageItems.scss'
 import {useState} from "react";
-import {StaticDateTimePicker} from "@mui/x-date-pickers";
 
-const CourseDuration = (props) => {
-    const [value, setValue] = useState()
-    const handleSetDateAndClose = (date) => {
+import './EditPageItems.scss'
+
+const CourseDuration = ({duration,setter}) => {
+    const handleSetDateAndClose = (date,isStartDate=true) => {
         const dateObject = date.toDate();
+        if (isStartDate){
+            setter({...duration,startDate:dateObject})
+        }else {
+            setter({...duration,endDate:dateObject})
+        }
     }
+    console.log(duration)
     return (
         <div className="CourseDuration">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoItem >
                     <div className="duration-picker-wrapper">
-                        <MobileDatePicker defaultValue={props?.startDate}
+                        <MobileDatePicker defaultValue={duration?.startDate}
                                           onAccept={handleSetDateAndClose}
                                           disablePast
                                           className="start-date-picker"
                                           format="DD-MM-YYYY"
-                                          style={{ height: '45px', fontSize: '10px' }}
                         />
-                        <div>-></div>
-                        <MobileDatePicker defaultValue={props?.startDate}
-                                          onAccept={handleSetDateAndClose}
+                        <div className="duration-picker-arrow">-></div>
+                        <MobileDatePicker defaultValue={duration?.endDate}
+                                          onAccept={(date)=>handleSetDateAndClose(date,false)}
                                           disablePast
                                           className="start-date-picker"
                                           format="DD-MM-YYYY"
-                                          style={{ height: '45px', fontSize: '10px' }}
                         />
                     </div>
                 </DemoItem>

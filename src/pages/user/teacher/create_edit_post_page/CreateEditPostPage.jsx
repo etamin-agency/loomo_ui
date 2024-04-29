@@ -248,7 +248,7 @@ const CreateEditPostPage = () => {
                             </div>
                             <div className="duration-wrapper">
                                 <div className="edit-post-text">Course Duration</div>
-                                <CourseDuration/>
+                                <CourseDuration duration={duration} setter={setDuration}/>
                             </div>
 
                         </div>
