@@ -6,6 +6,7 @@ import {isValidUUID} from "../../../../utils/helper/validation";
 
 import video_icon from '../../../../assets/video-icon.png'
 import image_icon from '../../../../assets/image-icon.png'
+import trash_icon from '../../../../assets/trash.svg'
 import publishService from "../../../../services/publishService";
 
 import {useDropzone} from "react-dropzone";
@@ -38,7 +39,7 @@ const CreateEditPostPage = () => {
     const [isCourseRoadMapExists, setCourseRoadMapExists] = useState(false);
     const [tags, setTags] = useState('');
 
-    const [videoLoading,setVideoLoading]=useState(false);
+    const [videoLoading, setVideoLoading] = useState(false);
 
 
     const [isChanged, setChanged] = useState(false)
@@ -110,16 +111,32 @@ const CreateEditPostPage = () => {
             console.error("Error reading file:", error);
         }
     }, []);
-    const {getRootProps: getRootPropsForVideo,getInputProps: getInputPropsForVideo,isDragActive: isDragActiveForVideo} = useDropzone({
+    const {
+        getRootProps: getRootPropsForVideo,
+        getInputProps: getInputPropsForVideo,
+        isDragActive: isDragActiveForVideo
+    } = useDropzone({
         onDrop: onDropVideo,
         accept: 'video/*'
     });
-    const {getRootProps: getRootPropsForImage,getInputProps:  getInputPropsForImage,isDragActive:  isDragActiveForImage} = useDropzone({
+    const {
+        getRootProps: getRootPropsForImage,
+        getInputProps: getInputPropsForImage,
+        isDragActive: isDragActiveForImage
+    } = useDropzone({
         onDrop: onDropImage,
         accept: 'image/*'
     })
 
-    console.log(videoLoading)
+    const handleDelete = (mediaSetter, fileSetter) => {
+        mediaSetter('')
+        fileSetter('')
+    }
+
+    const handleDataChange = (event,setter) => {
+      setter(event.target.value)
+    }
+    console.log(title)
     return (
         <div className="CreateEditPostPage">
             <Link to="/publish-post">
@@ -129,7 +146,7 @@ const CreateEditPostPage = () => {
                 <div className="edit-post-container">
                     <div className="post-media-wrapper">
                         {video ? (
-                                <div className="player-wrapper" >
+                                <div className="player-wrapper">
                                     <ReactPlayer
                                         width="100%"
                                         height="100%"
@@ -138,12 +155,14 @@ const CreateEditPostPage = () => {
                                         className={"react-player"}
                                         config={{file: {attributes: {controlsList: 'nodownload'}}}}
                                     />
+                                    <div onClick={() => handleDelete(setVideo, setVideoFile)} className="trash-icon"><img
+                                        src={trash_icon} alt="trash-icon"/></div>
                                 </div>
                             ) :
                             (
                                 <div className="media-block">
                                     <div className="dropzone-video" {...getRootPropsForVideo()} >
-                                        <input type="file"   {...getInputPropsForVideo()} accept="video/*" />
+                                        <input type="file"   {...getInputPropsForVideo()} accept="video/*"/>
                                         {
                                             isDragActiveForVideo ?
                                                 <p className="drag-active-center-text">Drop the files here ...</p> :
@@ -154,10 +173,13 @@ const CreateEditPostPage = () => {
                                                         <img className="right-icon" src={video_icon} alt="video-icon"/>
                                                     </div>
                                                     <div className="shadow-block"></div>
-                                                    <div className="upload-media-text">Drag and drop your Introduction Video</div>
+                                                    <div className="upload-media-text">Drag and drop your Introduction
+                                                        Video
+                                                    </div>
                                                     <div className="upload-media-subtext"> or press Button</div>
                                                     <div className="upload-btn-wrapper">
-                                                        <div className="tmp-memory-btn">Access from temporary memory</div>
+                                                        <div className="tmp-memory-btn">Access from temporary memory
+                                                        </div>
                                                         <div className="local-memory-btn">Select from File</div>
                                                     </div>
                                                 </>
@@ -166,30 +188,35 @@ const CreateEditPostPage = () => {
                                 </div>
                             )}
                         {image ? (
-                                <div className="picture-wrapper">
-                                    <img src={image} alt="course-image"/>
+                                <div className="image-wrapper">
+                                    <img className={'post-image'} src={image} alt="course-image"/>
+                                    <div onClick={() => handleDelete(setVideoFile, setImage)} className="trash-icon"><img
+                                        src={trash_icon} alt="trash-icon"/></div>
                                 </div>
                             ) :
                             (
                                 <div className="media-block">
                                     <div className="dropzone-video" {...getRootPropsForImage()} >
-                                        <input   {...getInputPropsForImage()} accept="image/*"  />
+                                        <input   {...getInputPropsForImage()} accept="image/*"/>
                                         {
                                             isDragActiveForImage ?
                                                 <p className="drag-active-center-text">Drop the files here ...</p> :
                                                 <>
-                                                        <div className="media-icons-wrapper">
-                                                            <img className="left-icon" src={image_icon} alt="video-icon"/>
-                                                            <img className="center-icon" src={image_icon} alt="video-icon"/>
-                                                            <img className="right-icon" src={image_icon} alt="video-icon"/>
+                                                    <div className="media-icons-wrapper">
+                                                        <img className="left-icon" src={image_icon} alt="video-icon"/>
+                                                        <img className="center-icon" src={image_icon} alt="video-icon"/>
+                                                        <img className="right-icon" src={image_icon} alt="video-icon"/>
+                                                    </div>
+                                                    <div className="shadow-block"></div>
+                                                    <div className="upload-media-text">Drug and drop your Introduction
+                                                        Photo
+                                                    </div>
+                                                    <div className="upload-media-subtext"> or press Button</div>
+                                                    <div className="upload-btn-wrapper">
+                                                        <div className="tmp-memory-btn">Access from temporary memory
                                                         </div>
-                                                        <div className="shadow-block"></div>
-                                                        <div className="upload-media-text">Drug and drop your Introduction Photo</div>
-                                                        <div className="upload-media-subtext"> or press Button</div>
-                                                        <div className="upload-btn-wrapper">
-                                                            <div className="tmp-memory-btn">Access from temporary memory</div>
-                                                            <div className="local-memory-btn">Select from File</div>
-                                                        </div>
+                                                        <div className="local-memory-btn">Select from File</div>
+                                                    </div>
                                                 </>
                                         }
                                     </div>
@@ -197,7 +224,33 @@ const CreateEditPostPage = () => {
                             )}
                     </div>
                     <div className="post-input-wrapper">
+                        <div className="post-input-first-column">
+                          <div className="title-wrapper">
+                              <div className="edit-post-text">Title</div>
+                              <input type="text" className='post-title-input text-input-focus-blue' placeholder="Course Name" name="title" value={title} onChange={(e)=>handleDataChange(e,setTitle)}/>
+                          </div>
+                            <div className="description-wrapper">
+                                <div className="edit-post-text edit-post-desc-text">Description</div>
+                                <textarea
+                                    className="post-desc-textarea text-input-focus-blue"
+                                    id="desc"
+                                    name="bio"
+                                    placeholder="Write your course description to here..."
+                                    onChange={(e)=>handleDataChange(e,setDesc)}
+                                    value={desc}
+                                />
+                            </div>
+                            <div className="language-wrapper">
+                                <div className="edit-post-text">Language</div>
 
+                            </div>
+
+                        </div>
+                        <div className="post-input-second-column">
+                            <div className="post-list-inputs-wrapper">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

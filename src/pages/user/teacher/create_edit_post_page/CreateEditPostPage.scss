@@ -18,30 +18,35 @@
   .edit-post-container {
     display: flex;
     margin: 0 auto;
+    min-width: 600px;
     max-width: 80%;
-    height: 730px;
+    min-height: 730px;
     padding: 20px;
     background-color: rgba(255, 255, 255, 1);
     border-radius: 16px;
     justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+
   }
 
   .post-media-wrapper {
     display: flex;
-    padding: 0;
     margin: 0;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
-    width: 30%;
+    width: 550px;
+    min-height: 640px;
   }
-  .picture-wrapper{
+  .image-wrapper{
+    position: relative;
     display: block;
     width: 512px;
     height: 288px;
     background-color: black;
     border-radius: 10px;
-    img{
+    .post-image{
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -49,6 +54,7 @@
     }
   }
   .player-wrapper{
+    position: relative;
     display: block;
     width: 512px;
     height: 288px;
@@ -159,6 +165,63 @@
         padding: 2px;
         margin-left: 10px;
         cursor: pointer;
+      }
+    }
+  }
+  .trash-icon{
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: rgba(235, 77, 61, 1);
+    z-index: 10;
+    border-radius: 10px;
+    text-align: center;
+    padding-top: 1px;
+    cursor: pointer;
+    top: 5px;
+    right: 10px;
+    padding-top: 2px;
+    img{
+      width: 70%;
+    }
+  }
+  .post-input-wrapper{
+    display: flex;
+    min-width: 300px;
+    justify-content: space-between ;
+    margin-left: 20px;
+    //margin-top: 10px;
+    .post-title-input{
+      width: 250px;
+      padding: 5px 5px 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: 0.3s;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+    .post-desc-textarea{
+      width: 250px;
+      min-height: 100px;
+      margin-top: 5px;
+      padding: 5px 5px 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: 0.3s;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+    .edit-post-text{
+      margin-top: 10px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .text-input-focus-blue{
+      &:focus {
+        border: 1px solid rgba(0, 122, 255, 0.5);
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
       }
     }
   }
