@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import {jwtDecode} from "jwt-decode";
 
-const API_BASE_URL = 'http://localhost:8082/api/v1';
+const API_BASE_URL = 'http://192.168.23.248:8082/api/v1';
 
 
 const publishService = {

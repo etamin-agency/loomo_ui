@@ -17,6 +17,10 @@ import PostLanguage from "../../../../components/edit_post_page_items/PostLangua
 import CourseDuration from "../../../../components/edit_post_page_items/CourseDuration";
 
 import './CreateEditPostPage.scss'
+import CourseSchedule from "../../../../components/edit_post_page_items/CourseSchedule";
+import ClassPrice from "../../../../components/edit_post_page_items/ClassPrice";
+
+
 
 const CreateEditPostPage = () => {
     let {postId} = useParams();
@@ -237,7 +241,7 @@ const CreateEditPostPage = () => {
                                     className="post-desc-textarea text-input-focus-blue"
                                     id="desc"
                                     name="bio"
-                                    placeholder="Write your course description to here..."
+                                    placeholder="Leave your course description here..."
                                     onChange={(e)=>handleDataChange(e,setDesc)}
                                     value={desc}
                                 />
@@ -251,9 +255,16 @@ const CreateEditPostPage = () => {
                                 <CourseDuration duration={duration} setter={setDuration}/>
                             </div>
                             <div className="schedule-wrapper">
-                                <div className="edit-post-schedule-text">
-
+                                <div className="edit-post-text">
+                                    Course Schedule
                                 </div>
+                                <CourseSchedule days={days} setDays={setDays} classTime={classTime} setClassTime={setClassTime} />
+                            </div>
+                            <div className="schedule-wrapper">
+                                <div className="edit-post-text">
+                                    Price/month
+                                </div>
+                                <ClassPrice/>
                             </div>
 
                         </div>

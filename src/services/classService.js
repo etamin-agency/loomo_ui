@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
 // const API_BASE_URL = 'http://class.loomo.online:8087/api/v1/class';
-const API_BASE_URL = 'http://localhost:8087/api/v1/class';
+const API_BASE_URL = 'http://192.168.23.248:8087/api/v1/class';
 const classService = {
 
     createClass: async (className, postId) => {

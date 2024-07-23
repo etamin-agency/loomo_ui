@@ -17,7 +17,6 @@ const CourseDuration = ({duration,setter}) => {
             setter({...duration,endDate:dateObject})
         }
     }
-    console.log(duration)
     return (
         <div className="CourseDuration">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
