@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {DemoItem} from '@mui/x-date-pickers/internals/demo';
-import {LocalizationProvider} from '@mui/x-date-pickers-pro';
-import {AdapterDayjs} from '@mui/x-date-pickers-pro/AdapterDayjs';
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
 import {useState} from "react";
