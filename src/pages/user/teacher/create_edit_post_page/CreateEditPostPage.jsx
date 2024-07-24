@@ -56,11 +56,11 @@ const CreateEditPostPage = () => {
             publishService.getPostData(postId).then(data => {
                 return data;
             }).then(data => {
-                const url = `https://d3d9es05pgt6o5.cloudfront.net/${data?.introVideoImgLink}`
+                const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoImgLink}`
                 setImage(url)
                 return data;
             }).then(data => {
-                const url = `https://d3pvu5wfhx0uzg.cloudfront.net/${data?.introVideoLink}`;
+                const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
                 setVideo(url)
                 return data;
             }).catch(() => {

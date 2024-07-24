@@ -29,7 +29,7 @@ const Post = () => {
     const navigate = useNavigate();
     useEffect(() => {
         postService.getPost(uuid).then((data) => {
-            const url = `https://d3pvu5wfhx0uzg.cloudfront.net/${data?.introVideoLink}`;
+            const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
             setFile(url);
             setData(data);
             const classTime = new Date(data?.classTime)
