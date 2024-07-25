@@ -13,29 +13,36 @@ import settings_icon from "../../../../assets/settings.png";
 import ProfilePictureUpload from "../../../../components/profile_puctire_upload/ProfilePictureUpload";
 
 import './TeacherPofilePage.scss'
+import Loading from "../../../../components/loading/Loading";
 
 
 const TeacherProfilePage = () => {
-    const {profile} = useSelector(state => state.profile);
-    const dispatch = useDispatch();
     const [showUploadView, setShowUploadView] = useState(false);
     let {userName} = useParams();
     const [isProfileOfOwner, setOwnerProfile] = useState(false);
-
-    const [data,setData]=useState(profile)
+    const [data,setData]=useState(null);
+    const [loading,setLoading]=useState(true);
 
     useEffect(() => {
         const token = Cookie.get("access_token");
         const accountUserName = jwtDecode(token).sub;
-        console.log('accountUserName:'+accountUserName)
         if (accountUserName === userName) {
             setOwnerProfile(true);
         }
         settingService.getTeacherProfile(userName).then(data => {
-            dispatch(setTeacherProfile(data))
-            setData(profile)
+            const  obj= {
+                firstName: data?.firstName,
+                lastName: data?.lastName,
+                userName: data?.userName,
+                profilePicture: data?.profilePicture,
+                bio: data?.bio
+            }
+            setData(obj)
+            setLoading(false)
+
         });
-    }, [dispatch]);
+    }, []);
+
 
 
     const handleMouseOver = () => {
@@ -71,6 +78,8 @@ const TeacherProfilePage = () => {
         <div>
             {showUploadView && <ProfilePictureUpload setShowUploadView={setShowUploadView}/>}
             <div className="TeacherProfilePage">
+                {loading&&
+                    <Loading/>}
                 <div className="student-wrapper">
                     <div className="user-image-container"
                          onMouseOver={handleMouseOver}

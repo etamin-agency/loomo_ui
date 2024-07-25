@@ -23,7 +23,6 @@ const StudentProfilePage = () => {
     const [loading,setLoading]=useState(true);
 
     useEffect(()=>{
-        console.log("heey")
         const token = Cookie.get("access_token");
         const accountUserName = jwtDecode(token).sub;
         if (accountUserName === userName) {

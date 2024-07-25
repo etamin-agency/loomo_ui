@@ -33,6 +33,7 @@ import DemoRoomPage from "../pages/user/teacher/room/DemoRoomPage";
 import EditClassListPage from "../pages/user/teacher/edit_class_list_page/EditClassListPage";
 import EditClassPage from "../pages/user/teacher/edit_class_page/EditClassPage";
 import CreateEditPostPage from "../pages/user/teacher/create_edit_post_page/CreateEditPostPage";
+import TeacherProfilePage from "../pages/user/teacher/teacher_profile_page/TeacherProfilePage";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
@@ -100,7 +101,7 @@ function App() {
                                             </LocalizationProvider>
                                         }/>
                                     </Route>
-                                    <Route path="/teacher/:userName" element={<StudentProfilePage/>}/>
+                                    <Route path="/teacher/:userName" element={<TeacherProfilePage/>}/>
                                     <Route path="/student/:userName" element={<StudentProfilePage/>}/>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
@@ -131,7 +132,7 @@ function App() {
                                     <Route path="/assignments" element={<AssignmentsPage/>}/>
                                     <Route path="/archive" element={<ArchivePage/>}/>
                                     <Route path="/class-demo" element={<StudentDemoClassPage/>}/>
-                                    <Route path="/teacher/:userName" element={<StudentProfilePage/>}/>
+                                    <Route path="/teacher/:userName" element={<TeacherProfilePage/>}/>
                                     <Route path="/student/:userName" element={<StudentProfilePage/>}/>
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
