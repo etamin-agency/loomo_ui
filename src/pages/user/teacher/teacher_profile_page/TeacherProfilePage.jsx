@@ -27,27 +27,14 @@ const TeacherProfilePage = () => {
     useEffect(() => {
         const token = Cookie.get("access_token");
         const accountUserName = jwtDecode(token).sub;
+        console.log('accountUserName:'+accountUserName)
         if (accountUserName === userName) {
             setOwnerProfile(true);
-            settingService.getTeacherProfile(userName).then(data => {
-                dispatch(setTeacherProfile(data))
-                setData(profile)
-            });
         }
-        else {
-            settingService.getStudentProfile(userName).then(data => {
-                const  obj= {
-                    firstName: data?.firstName,
-                    lastName: data?.lastName,
-                    userName: data?.userName,
-                    profilePicture: data?.profilePicture,
-                    bio: data?.bio
-                }
-                setData(obj)
-            });
-        }
-
-
+        settingService.getTeacherProfile(userName).then(data => {
+            dispatch(setTeacherProfile(data))
+            setData(profile)
+        });
     }, [dispatch]);
 
 
