@@ -15,10 +15,15 @@ import ReactPlayer from "react-player";
 
 import PostLanguage from "../../../../components/edit_post_page_items/PostLanguage";
 import CourseDuration from "../../../../components/edit_post_page_items/CourseDuration";
+import CourseToWho from "../../../../components/edit_post_page_items/CourseToWho";
+import Requirements from "../../../../components/edit_post_page_items/Requirements";
+import TagsInput from "../../../../components/edit_post_page_items/Tags";
+import RoadmapToggle from "../../../../components/edit_post_page_items/Roadmap";
 
 import './CreateEditPostPage.scss'
 import CourseSchedule from "../../../../components/edit_post_page_items/CourseSchedule";
 import ClassPrice from "../../../../components/edit_post_page_items/ClassPrice";
+
 
 
 
@@ -133,7 +138,7 @@ const CreateEditPostPage = () => {
     } = useDropzone({
         onDrop: onDropImage,
         accept: 'image/*'
-    })
+    });
 
     const handleDelete = (mediaSetter, fileSetter) => {
         mediaSetter('')
@@ -271,6 +276,24 @@ const CreateEditPostPage = () => {
                         <div className="post-input-second-column">
                             <div className="post-list-inputs-wrapper">
                             </div>
+                        </div>
+                    </div>
+                    <div className="post-form-Wrapper"> 
+                        <div className="CourseToWho-wrapper">
+                            <h5>Course to who:</h5>
+                            <CourseToWho/>
+                        </div>
+                        <div className="Requirements-wrapper"> 
+                            <h5>Requirements:</h5>
+                            <Requirements/>
+                        </div>
+                        <div className="Tags-wrapper">
+                            <h5>Tags</h5>
+                            <TagsInput/>
+                        </div>
+                        <div className="Roadmap-wrapper">
+                            
+                            <RoadmapToggle/>
                         </div>
                     </div>
                 </div>
