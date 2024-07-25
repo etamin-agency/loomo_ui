@@ -15,8 +15,8 @@ import ReactPlayer from "react-player";
 
 import PostLanguage from "../../../../components/edit_post_page_items/PostLanguage";
 import CourseDuration from "../../../../components/edit_post_page_items/CourseDuration";
-import CourseToWho from "../../../../components/edit_post_page_items/CourseToWho";
 import Requirements from "../../../../components/edit_post_page_items/Requirements";
+import CourseToWho from "../../../../components/edit_post_page_items/CourseToWho";
 import TagsInput from "../../../../components/edit_post_page_items/Tags";
 import RoadmapToggle from "../../../../components/edit_post_page_items/Roadmap";
 

@@ -33,6 +33,12 @@ const Requirements = () => {
     setInputFields(newInputFields);
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleAddField();
+    }
+  };
+
   return (
     <Box sx={{ maxHeight: 200, overflowY: 'auto', mb: 2 }}>
       {inputFields.map((field, index) => (
@@ -43,6 +49,7 @@ const Requirements = () => {
             size="small"
             value={field.value}
             onChange={(event) => handleInputChange(field.id, event)}
+            onKeyDown={handleKeyPress}
             fullWidth
             error={field.error}
             helperText={field.error ? "Must be at least 4 characters" : ""}

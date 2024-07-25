@@ -28,6 +28,24 @@
     flex-direction: row;
     flex-wrap: wrap;
 
+    @media (min-width: 700px) {
+      .edit-post-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        
+      }
+    }
+
+  }
+  @media (max-width: 700px) {
+    .edit-post-container {
+      justify-content: center;
+      align-items: center;
+      gap: 100px;
+      flex-direction: column;
+    }
   }
 
   .post-media-wrapper {
@@ -227,4 +245,6 @@
       }
     }
   }
+  
 }
+

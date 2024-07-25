@@ -60,6 +60,12 @@ const RoadmapToggle = () => {
   };
 
   const displayedLessons = showAll ? lessons : lessons.slice(0, 4);
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleAddField();
+    }
+  };
+
 
   return (
     <Box sx={{ maxWidth: 400, margin: 'auto' }}>
@@ -77,7 +83,7 @@ const RoadmapToggle = () => {
       </Box>
       {!isDisabled && (
         <>
-          <Box sx={{ maxHeight: 200, overflowY: 'auto', mb: 2 }}>
+          <Box sx={{ maxHeight: 200, maxWidth: 266, overflowY: 'auto', mb: 2 }}>
             <List>
               {displayedLessons.map((lesson, index) => (
                 <ListItem key={index}>
@@ -108,6 +114,7 @@ const RoadmapToggle = () => {
                 size="small"
                 value={field.value}
                 onChange={(event) => handleInputChange(field.id, event)}
+                onKeyDown={handleKeyPress}
                 fullWidth
                 error={field.error}
                 helperText={field.error ? "Must be at least 4 characters" : ""}

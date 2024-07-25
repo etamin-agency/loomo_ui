@@ -20,6 +20,11 @@ const TagsInput = () => {
     setTags(tags.filter(tag => tag !== tagToDelete));
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleAddTag();
+    }
+  };
   return (
     <Box>
       <Box display="flex" alignItems="center" mb={2}>
@@ -30,6 +35,7 @@ const TagsInput = () => {
           width="300px"
           value={newTag}
           onChange={(event) => setNewTag(event.target.value)}
+          onKeyDown={handleKeyPress}
           fullWidth
         />
         <IconButton
