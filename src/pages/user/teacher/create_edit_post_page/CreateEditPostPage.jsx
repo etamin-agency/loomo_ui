@@ -165,6 +165,15 @@ const CreateEditPostPage = () => {
     const handleDataChange = (event,setter) => {
       setter(event.target.value)
     }
+    const validateDescription = (value) => {
+        if (value.trim() === '') {
+          return 'Description is required';
+        }
+        if (value.length < 10) {
+          return 'Description must be at least 10 characters long';
+        }
+        return '';
+      };
     return (
         <div className="CreateEditPostPage">
             <Link to="/publish-post">
