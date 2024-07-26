@@ -4,20 +4,28 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 const TagsInput = () => {
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState('');
+  const [error, setError] = useState('');
 
   const handleAddTag = () => {
+    if (tags.length >= 8) {
+      setError('You can only add up to 8 tags.');
+      return;
+    }
     if (newTag.trim() !== '' && !tags.includes(newTag)) {
       setTags([...tags, newTag]);
       setNewTag('');
+      setError('');
     }
   };
 
   const handleDeleteTag = (tagToDelete) => {
     setTags(tags.filter(tag => tag !== tagToDelete));
+    setError(''); // Clear error message if any tag is deleted
   };
 
   const handleKeyPress = (event) => {
@@ -25,19 +33,21 @@ const TagsInput = () => {
       handleAddTag();
     }
   };
+
   return (
     <Box>
-      <Box display="flex" alignItems="center" mb={2}>
+      <Box display="flex" alignItems="start" mb={2}>
         <TextField
           label="Add Tags here"
           variant="outlined"
           size="small"
-          width="300px"
           value={newTag}
           style={{ marginTop: 10 }}
           onChange={(event) => setNewTag(event.target.value)}
           onKeyDown={handleKeyPress}
           fullWidth
+          error={!!error}
+          helperText={error}
         />
         <IconButton
           color="primary"
@@ -48,15 +58,14 @@ const TagsInput = () => {
         </IconButton>
       </Box>
       <Box
-        sx={{ maxHeight: 100, overflowY: 'auto', mb: 2}}
+        sx={{ maxHeight: 100, overflowY: 'auto', mb: 2 }}
         display="flex"
         flexWrap="wrap"
         gap={1}
         width="230px" // Fixed width for the tags container
-        
         borderRadius="4px"
       >
-        {tags.map((tag, index) => (
+        {tags.slice(0, 8).map((tag, index) => (
           <Chip
             key={index}
             label={tag}

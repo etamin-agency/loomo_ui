@@ -145,9 +145,13 @@ const RoadmapToggle = () => {
               </IconButton>
             </Box>
           ))}
-          <Button onClick={handleSave} variant="contained" sx={{ mt: 2 }}>
+          
+         
+          <Box display="flex" justifyContent="flex-end" mt={2}>
+          <Button onClick={handleSave} variant="contained">
             Save
           </Button>
+        </Box>
         </Paper>
       </Modal>
     </Box>

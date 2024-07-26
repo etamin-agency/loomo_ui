@@ -53,7 +53,7 @@
     display: flex;
     margin: 0;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 50px;
     padding: 20px;
     width: 550px;
     min-height: 640px;
@@ -245,10 +245,25 @@
         box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
       }
     }
+    .Tags-wrapper{
+      margin-top: 20px;
+      h5{
+        margin: 0;
+      }
+    }
   }
   .post-form-Wrapper{
     margin-top: 10px;
-    
+    position: relative;
+    .save{
+      position: absolute;
+      bottom: 30px;
+      right:1px;
+      button{
+        width: 100px;
+        border-radius: 20px;
+      }
+    }
   }
   
 }

@@ -1,4 +1,5 @@
 import {Link, useNavigate, useParams} from "react-router-dom";
+import {Box , Button}from '@mui/material';
 
 
 import {useCallback, useEffect, useState} from "react";
@@ -293,6 +294,11 @@ const CreateEditPostPage = () => {
                                 </div>
                                 <ClassPrice/>
                             </div>
+                            <div className="Tags-wrapper">
+                                <h5>Tags</h5>
+                                <TagsInput/>
+                            </div>
+                            
 
                         </div>
                         <div className="post-input-second-column">
@@ -309,14 +315,23 @@ const CreateEditPostPage = () => {
                             <h5>Requirements:</h5>
                             <Requirements/>
                         </div>
-                        <div className="Tags-wrapper">
-                            <h5>Tags</h5>
-                            <TagsInput/>
-                        </div>
+                        
                         <div className="Roadmap-wrapper">
                             
                             <RoadmapToggle/>
                         </div>
+                        <div className="save">
+                            <Box display="flex" justifyContent="flex-end" gap={3} mt={2}>
+                                <Button variant="outlined" color="secondary" >
+                                Cancel
+                                </Button>
+                                <Button variant="contained"  color="primary"  >
+                                Save
+                                </Button>
+                                
+                            </Box>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
