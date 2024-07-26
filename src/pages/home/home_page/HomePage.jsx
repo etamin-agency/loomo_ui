@@ -21,6 +21,7 @@ const HomePage = () => {
                                 Log In
                             </Button>
                         </Link>
+                        
 
                         <Link to="/signup">
                             <Button id="signup-button" variant="primary" size="sm">

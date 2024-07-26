@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -20,7 +20,9 @@ const RoadmapToggle = () => {
   const [lessons, setLessons] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [inputFields, setInputFields] = useState([{ id: 1, value: '', error: false }]);
+  const [inputFields, setInputFields] = useState([{ id: Date.now(), value: '', error: false }]);
+  const inputRefs = useRef([]);
+  const containerRef = useRef(null);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -36,10 +38,21 @@ const RoadmapToggle = () => {
 
   const handleAddField = () => {
     if (inputFields[inputFields.length - 1].value.length >= 4) {
-      setInputFields([...inputFields, { id: inputFields.length + 1, value: '', error: false }]);
-    } else {
-      const newInputFields = [...inputFields];
-      newInputFields[inputFields.length - 1].error = true;
+      const newField = { id: Date.now(), value: '', error: false };
+      setInputFields([...inputFields, newField]);
+
+      // Focus on the new input field and scroll into view
+      setTimeout(() => {
+        inputRefs.current[inputFields.length].focus();
+        inputRefs.current[inputFields.length].scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+  } else {
+      const newInputFields = inputFields.map((field, index) => {
+        if (index === inputFields.length - 1) {
+          return { ...field, error: true };
+        }
+        return field;
+      });
       setInputFields(newInputFields);
     }
   };
@@ -51,8 +64,7 @@ const RoadmapToggle = () => {
   const handleInputChange = (id, event) => {
     const newInputFields = inputFields.map(field => {
       if (field.id === id) {
-        field.value = event.target.value;
-        field.error = field.value.length < 4;
+        return { ...field, value: event.target.value, error: event.target.value.length < 4 };
       }
       return field;
     });
@@ -66,9 +78,13 @@ const RoadmapToggle = () => {
     }
   };
 
+  useEffect(() => {
+    inputRefs.current = inputRefs.current.slice(0, inputFields.length);
+  }, [inputFields]);
+
 
   return (
-    <Box sx={{ maxWidth: 400, margin: 'auto' }}>
+    <Box ref={containerRef} sx={{ maxWidth: 400, margin: 'auto'  }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Roadmap
@@ -102,17 +118,18 @@ const RoadmapToggle = () => {
         </>
       )}
       <Modal open={open} onClose={handleClose}>
-        <Paper sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, p: 4 }}>
+        <Paper sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, p: 4, maxHeight: 500, overflowY: 'auto' }}>
           <Typography variant="h6" component="h2" gutterBottom>
             Add New Lesson
           </Typography>
           {inputFields.map((field, index) => (
-            <Box key={field.id} display="flex" alignItems="center" mb={1}>
+            <Box key={field.id} display="flex" alignItems="start" mb={1}>
               <TextField
                 label="Lesson Title"
                 variant="outlined"
                 size="small"
                 value={field.value}
+                inputRef={el => inputRefs.current[index] = el}
                 onChange={(event) => handleInputChange(field.id, event)}
                 onKeyDown={handleKeyPress}
                 fullWidth
@@ -122,7 +139,7 @@ const RoadmapToggle = () => {
               <IconButton
                 color={index === inputFields.length - 1 ? "primary" : "secondary"}
                 onClick={index === inputFields.length - 1 ? handleAddField : () => handleRemoveField(field.id)}
-                style={{ marginLeft: 4, padding: 8 }}
+                style={{ marginLeft: 4, padding: 8}}
               >
                 {index === inputFields.length - 1 ? <AddIcon /> : <DeleteIcon color='primary'/>}
               </IconButton>

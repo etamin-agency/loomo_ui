@@ -34,6 +34,7 @@ const TagsInput = () => {
           size="small"
           width="300px"
           value={newTag}
+          style={{ marginTop: 10 }}
           onChange={(event) => setNewTag(event.target.value)}
           onKeyDown={handleKeyPress}
           fullWidth
@@ -41,12 +42,13 @@ const TagsInput = () => {
         <IconButton
           color="primary"
           onClick={handleAddTag}
-          style={{ marginLeft: 4, padding: 8 }}
+          style={{ marginLeft: 4, padding: 8, marginTop: 8 }}
         >
           <AddIcon />
         </IconButton>
       </Box>
       <Box
+        sx={{ maxHeight: 100, overflowY: 'auto', mb: 2}}
         display="flex"
         flexWrap="wrap"
         gap={1}

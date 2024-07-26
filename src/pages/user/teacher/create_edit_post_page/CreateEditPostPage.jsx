@@ -8,7 +8,7 @@ import video_icon from '../../../../assets/video-icon.png'
 import image_icon from '../../../../assets/image-icon.png'
 import trash_icon from '../../../../assets/trash.svg'
 import publishService from "../../../../services/publishService";
-
+import AddIcon from '@mui/icons-material/Delete';
 import {useDropzone} from "react-dropzone";
 import ReactPlayer from "react-player";
 
@@ -80,6 +80,22 @@ const CreateEditPostPage = () => {
         }
 
     }, []);
+
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            const message = 'Are you sure you want to leave? The video upload process is not complete yet.';
+            event.returnValue = message;
+            return message;
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+    
+
 
     const onDropVideo = useCallback(acceptedFiles => {
         setVideoLoading(true);
@@ -166,8 +182,11 @@ const CreateEditPostPage = () => {
                                         className={"react-player"}
                                         config={{file: {attributes: {controlsList: 'nodownload'}}}}
                                     />
-                                    <div onClick={() => handleDelete(setVideo, setVideoFile)} className="trash-icon"><img
-                                        src={trash_icon} alt="trash-icon"/></div>
+                                    <div onClick={() => handleDelete(setVideo, setVideoFile)} className="trash-icon">
+                                    {/* <img
+                                        src={trash_icon} alt="trash-icon"/> */}
+                                    <AddIcon /> 
+                                    </div>
                                 </div>
                             ) :
                             (
@@ -201,8 +220,11 @@ const CreateEditPostPage = () => {
                         {image ? (
                                 <div className="image-wrapper">
                                     <img className={'post-image'} src={image} alt="course-image"/>
-                                    <div onClick={() => handleDelete(setVideoFile, setImage)} className="trash-icon"><img
-                                        src={trash_icon} alt="trash-icon"/></div>
+                                    <div onClick={() => handleDelete(setVideoFile, setImage)} className="trash-icon">
+                                    {/* <img
+                                        src={trash_icon} alt="trash-icon"/> */}
+                                    <AddIcon />
+                                    </div>
                                 </div>
                             ) :
                             (

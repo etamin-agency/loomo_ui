@@ -203,6 +203,8 @@ const CreateEditPage = () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, []);
+
+    
     const setImageHandle = async () => {
         await fetch(any_image)
             .then(response => response.blob())
