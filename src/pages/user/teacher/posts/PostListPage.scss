@@ -1,0 +1,101 @@
+.PostListPage {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 80%;
+  height: 100%;
+  padding-top: 100px;
+  padding-left: 50px;
+  .first-class {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 40%;
+    height: 40%;
+    transform: translate(-50%, -50%);
+    background-color: #cb4540;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    border-radius: 20px ;
+
+    text-align: center;
+
+    .user-link {
+
+    }
+
+    .first-class-text {
+      display: block;
+      font-size: 48px;
+      color: white;
+    }
+    .wrapper-new-class{
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  .classes-wrapper{
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+
+  }
+  .published-post{
+    position: relative;
+    min-width: 340px;
+    min-height: 280px;
+    background-color: white;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    margin:10px 20px;
+  }
+  .published-post-create{
+    position: relative;
+    min-width: 340px;
+    padding-bottom: 10px;
+    border-radius: 15px;
+    margin:20px 20px;
+    background-color: #cccccc;
+    height: 220px;
+  }
+  .post-image{
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 20px;
+    margin: 10px auto 0;
+  }
+  .post-title{
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 10px auto 0;
+    width: 290px;
+  }
+  .create-icon{
+    position: absolute;
+    display: block;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .studio-link{
+    position: absolute;
+    display: block;
+    color: white;
+    top: 30px;
+    left: 30px;
+    font-size: 40px;
+    font-weight: 600;
+    span{
+      color: #1066e8;
+      font-size: 46px;
+      font-weight: 600;
+    }
+  }
+}

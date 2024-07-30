@@ -62,10 +62,10 @@ const DashboardSidebar = () => {
             name: "Classes"
         },
         {
-            link: "studio",
+            link: "posts",
             src: studio_logo,
             alt: "studio-logo",
-            name: "Teacher's Studio"
+            name: "Posts"
         },
         {
             link: "assignments",

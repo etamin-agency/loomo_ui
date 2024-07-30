@@ -34,6 +34,7 @@ import EditClassListPage from "../pages/user/teacher/edit_class_list_page/EditCl
 import EditClassPage from "../pages/user/teacher/edit_class_page/EditClassPage";
 import CreateEditPostPage from "../pages/user/teacher/create_edit_post_page/CreateEditPostPage";
 import TeacherProfilePage from "../pages/user/teacher/teacher_profile_page/TeacherProfilePage";
+import PostListPage from "../pages/user/teacher/posts/PostListPage";
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
@@ -86,6 +87,7 @@ function App() {
                         {role === "teacher" &&
                             <Route>
                                 <Route path="/" element={<Dashboard/>}>
+                                    <Route path="/posts" element={<PostListPage/>}/>
                                     <Route path="/classes" element={<StudentClassesPage/>}/>
                                     <Route path="/studio" element={<TeacherStudioPage/>}/>
                                     <Route path="/assignments" element={<AssignmentsPage/>}/>
@@ -121,7 +123,6 @@ function App() {
                                     }/>
 
                                 </Route>
-                                <Route path="/publish-post" element={<PublishPostPage/>}/>
                             </Route>
 
                         }

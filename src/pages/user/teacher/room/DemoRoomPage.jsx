@@ -186,7 +186,7 @@ const DemoRoomPage = () => {
             id: 'leaveRoom'
         });
         ws.current.close();
-        navigate("/studio");
+        navigate("/posts");
         window.location.reload()
     }
     const onParticipantLeft = (request) => {
