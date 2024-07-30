@@ -21,10 +21,10 @@ import CourseToWho from "../../../../components/edit_post_page_items/CourseToWho
 import TagsInput from "../../../../components/edit_post_page_items/Tags";
 import RoadmapToggle from "../../../../components/edit_post_page_items/Roadmap";
 
-import './CreateEditPostPage.scss'
 import CourseSchedule from "../../../../components/edit_post_page_items/CourseSchedule";
 import ClassPrice from "../../../../components/edit_post_page_items/ClassPrice";
 
+import './CreateEditPostPage.scss'
 
 
 
@@ -176,7 +176,7 @@ const CreateEditPostPage = () => {
       };
     return (
         <div className="CreateEditPostPage">
-            <Link to="/publish-post">
+            <Link to="/posts">
                 <div className="publish-post-link">Loomo</div>
             </Link>
             <div>

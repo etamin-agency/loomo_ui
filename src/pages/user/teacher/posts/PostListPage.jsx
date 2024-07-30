@@ -1,17 +1,14 @@
+import {Link} from "react-router-dom";
+import Loading from "../../../../components/loading/Loading";
+import create_icon from "../../../../assets/create-icon.png";
 import {useEffect, useState} from "react";
-
 import {jwtDecode} from "jwt-decode";
 import Cookie from "js-cookie";
-import {Link} from "react-router-dom";
-
-import create_icon from "../../../../assets/create-icon.png"
 import publishService from "../../../../services/publishService";
 
-import Loading from "../../../../components/loading/Loading";
+import './PostListPage.scss'
 
-import './PublishPostPage.scss'
-
-const PublishPostsPage = () => {
+const PostListPage = () => {
     const [data, setData] = useState({});
     const [totalElements, setTotalElements] = useState(0);
     const [loading, setLoading] = useState(true)
@@ -24,9 +21,8 @@ const PublishPostsPage = () => {
         })
     }, []);
 
-    return (
-        <div className="PublishPostPage">
-            <Link to="/posts"><div className="studio-link"><span>L</span>oomo</div></Link>
+    return(
+        <div className='PostListPage'>
 
             {loading ? <Loading/> :
                 totalElements > 0 ?
@@ -44,7 +40,7 @@ const PublishPostsPage = () => {
                         ))}
                         <div className="published-post">
                             <Link to={`/edit/`}>
-                                    <img src={create_icon} alt="create-class-icon" className="create-icon"/>
+                                <img src={create_icon} alt="create-class-icon" className="create-icon"/>
                             </Link>
                         </div>
 
@@ -63,6 +59,8 @@ const PublishPostsPage = () => {
             }
 
         </div>
+
     )
 }
-export default PublishPostsPage;
+
+export default PostListPage;

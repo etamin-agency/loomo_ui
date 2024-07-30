@@ -15,7 +15,7 @@ const TeacherStudioPage = () => {
     return (
         <div className="TeacherStudioPage">
                 <div className="wrapper">
-                    <Link to="/publish-post"  className="block-link">
+                    <Link to="/posts"  className="block-link">
                         <div className="block">Publish Post</div>
                     </Link>
                     <Link to="/teacher-demo"  className="block-link">
