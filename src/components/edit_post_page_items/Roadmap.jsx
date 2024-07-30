@@ -14,6 +14,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 
 const RoadmapToggle = () => {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,8 @@ const RoadmapToggle = () => {
   const [showAll, setShowAll] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [inputFields, setInputFields] = useState([{ id: Date.now(), value: '', error: false }]);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingText, setEditingText] = useState("");
   const inputRefs = useRef([]);
   const containerRef = useRef(null);
 
@@ -31,7 +34,7 @@ const RoadmapToggle = () => {
     const newLessons = inputFields.filter(field => field.value.trim() !== '' && !field.error).map(field => field.value);
     if (newLessons.length > 0) {
       setLessons([...lessons, ...newLessons]);
-      setInputFields([{ id: 1, value: '', error: false }]);
+      setInputFields([{ id: Date.now(), value: '', error: false }]);
       handleClose();
     }
   };
@@ -46,7 +49,7 @@ const RoadmapToggle = () => {
         inputRefs.current[inputFields.length].focus();
         inputRefs.current[inputFields.length].scrollIntoView({ behavior: 'smooth' });
       }, 0);
-  } else {
+    } else {
       const newInputFields = inputFields.map((field, index) => {
         if (index === inputFields.length - 1) {
           return { ...field, error: true };
@@ -70,21 +73,44 @@ const RoadmapToggle = () => {
     });
     setInputFields(newInputFields);
   };
-
-  const displayedLessons = showAll ? lessons : lessons.slice(0, 4);
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleAddField();
     }
   };
 
+  const handleDeleteLesson = (index) => {
+    const newLessons = lessons.filter((_, i) => i !== index);
+    setLessons(newLessons);
+  };
+
+  const handleEditLesson = (index) => {
+    setEditingIndex(index);
+    setEditingText(lessons[index]);
+  };
+
+  const handleSaveEdit = () => {
+    const newLessons = lessons.map((lesson, index) =>
+      index === editingIndex ? editingText : lesson
+    );
+    setLessons(newLessons);
+    setEditingIndex(null);
+    setEditingText("");
+  };
+
+  const handleCancelEdit = () => {
+    setEditingIndex(null);
+    setEditingText("");
+  };
+
+  const displayedLessons = showAll ? lessons : lessons.slice(0, 4);
+
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, inputFields.length);
   }, [inputFields]);
 
-
   return (
-    <Box ref={containerRef} sx={{ maxWidth: 400, margin: 'auto'  }}>
+    <Box ref={containerRef} sx={{ maxWidth: 400, margin: 'auto' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Roadmap
@@ -103,14 +129,38 @@ const RoadmapToggle = () => {
             <List>
               {displayedLessons.map((lesson, index) => (
                 <ListItem key={index}>
-                  <Typography>
-                    Lesson {index + 1} - {lesson}
-                  </Typography>
+                  {editingIndex === index ? (
+                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <TextField
+                        value={editingText}
+                        onChange={(e) => setEditingText(e.target.value)}
+                        sx={{ mr: 1, flexGrow: 1 }}
+                      />
+                      <IconButton onClick={handleSaveEdit}>
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton onClick={handleCancelEdit}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Box>
+                  ) : (
+                    <>
+                      <Typography sx={{ flexGrow: 1 }}>
+                        Lesson {index + 1} - {lesson}
+                      </Typography>
+                      <IconButton edge="end" aria-label="edit" onClick={() => handleEditLesson(index)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteLesson(index)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
+                  )}
                 </ListItem>
               ))}
             </List>
           </Box>
-          {lessons.length > 2 && !showAll && (
+          {lessons.length > 4 && !showAll && (
             <Button fullWidth variant="outlined" onClick={() => setShowAll(true)}>
               Show More
             </Button>
@@ -139,21 +189,17 @@ const RoadmapToggle = () => {
               <IconButton
                 color={index === inputFields.length - 1 ? "primary" : "secondary"}
                 onClick={index === inputFields.length - 1 ? handleAddField : () => handleRemoveField(field.id)}
-                style={{ marginLeft: 4, padding: 8}}
+                style={{ marginLeft: 4, padding: 8 }}
               >
-                {index === inputFields.length - 1 ? <AddIcon /> : <DeleteIcon color='primary'/>}
+                {index === inputFields.length - 1 ? <AddIcon /> : <DeleteIcon />}
               </IconButton>
             </Box>
           ))}
-          
-          <Button onClick={handleSave} variant="contained" sx={{ mt: 2 }}>
-            Save
-          </Button>
           <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Button onClick={handleSave} variant="contained">
-            Save
-          </Button>
-        </Box>
+            <Button onClick={handleSave} variant="contained">
+              Save
+            </Button>
+          </Box>
         </Paper>
       </Modal>
     </Box>

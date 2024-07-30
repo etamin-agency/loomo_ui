@@ -21,7 +21,11 @@ const HomePage = () => {
                                 Log In
                             </Button>
                         </Link>
-                        
+                        {/* <Link to="/post-page">
+                            <Button id="login-button" variant="secondary" size="sm">
+                                post
+                            </Button>
+                        </Link> */}
 
                         <Link to="/signup">
                             <Button id="signup-button" variant="primary" size="sm">

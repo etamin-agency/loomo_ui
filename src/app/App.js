@@ -65,6 +65,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<HomePage/>}>
                             <Route path="/" element={<img src={Loomo} alt="loomo-img"/>}/>
+                            <Route path="post-page" element={<CreateEditPostPage/>}/>
                             <Route path="/classes/search" element={<SearchPage/>}/>
                             <Route path="/post/:uuid" element={<Post/>}/>
                         </Route>

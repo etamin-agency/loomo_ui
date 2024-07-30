@@ -28,7 +28,7 @@ const CourseDuration = ({duration,setter}) => {
                                           className="start-date-picker"
                                           format="DD-MM-YYYY"
                         />
-                        <div className="duration-picker-arrow">-></div>
+                        <div className="duration-picker-arrow">-{'>'}</div>
                         <MobileDatePicker defaultValue={duration?.endDate}
                                           onAccept={(date)=>handleSetDateAndClose(date,false)}
                                           disablePast

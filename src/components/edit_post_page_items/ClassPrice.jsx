@@ -1,55 +1,69 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import { TextField, FormControl, Select, MenuItem, InputLabel, FormHelperText, Button } from '@mui/material';
 
-// Validation Schema using yup
-const validationSchema = yup.object({
-  price: yup
-    .number()
-    .positive('Price must be a positive number')
-    .max(10000, 'Price cannot exceed 10,000')
-    .typeError('Price must be a number')
-    .test('max-decimal-places', 'Price cannot have more than two decimal places', (value) => {
-      return value === undefined || !/(\.\d{3,})/.test(value);
-    })
-    .required('Price is required')
-});
+const PriceInput = () => {
+  const [currency, setCurrency] = React.useState('USD');
+  const [price, setPrice] = React.useState('');
+  const [error, setError] = React.useState('');
 
-const ClassPrice = () => {
-  const formik = useFormik({
-    initialValues: {
-      price: '',
-    },
-    validationSchema,
-    onSubmit: (values) => {
-      console.log('Price submitted:', values.price);
-    },
-  });
+  const handleCurrencyChange = (event) => {
+    setCurrency(event.target.value);
+  };
 
+  const handlePriceChange = (event) => {
+    const value = parseFloat(event.target.value);
+    if ( value <= 0) {
+      setError('Price must be a positive number');
+    } else {
+      setError('');
+      setPrice(value);
+    }
+  };
+
+  const getCurrencySymbol = () => {
+    switch (currency) {
+      case 'USD': return '$';
+      case 'EUR': return '€';
+      case 'GBP': return '£';
+      default: return '';
+    }
+  };
+  const inputWidth = 100;
   return (
-    <Box sx={{ mt: 2 }}>
-      <form onSubmit={formik.handleSubmit}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <TextField
-          label="Price"
-          variant="outlined"
-          size="small"
-          fullWidth
-          name="price"
-          value={formik.values.price}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.price && Boolean(formik.errors.price)}
-          helperText={formik.touched.price && formik.errors.price}
-          placeholder="200"
-          
+          value={price}
+          onChange={handlePriceChange}
+          type="number"
+          size='small'
+          placeholder='200'
+          error={!!error}
+          helperText={error}
+          InputProps={{
+            startAdornment: (
+              <span>{getCurrencySymbol()}</span>
+            ),
+            inputProps: { min: 0 }
+          }}
+          style={{ width: inputWidth }}
         />
         
-      </form>
-    </Box>
+          <FormControl style={{ marginLeft: 10 }} error={!!error}>
+            
+            <Select value={currency} onChange={handleCurrencyChange} size='small'>
+              <MenuItem value="USD">USD</MenuItem>
+              <MenuItem value="EUR">EUR</MenuItem>
+              <MenuItem value="GBP">GBP</MenuItem>
+            </Select>
+            <FormHelperText>{error && 'Please enter a valid price'}</FormHelperText>
+          </FormControl>
+        
+      </div>
+     
+    </div>
   );
 };
 
-export default ClassPrice;
+export default PriceInput;
+

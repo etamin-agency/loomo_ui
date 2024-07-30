@@ -20,7 +20,9 @@ import Requirements from "../../../../components/edit_post_page_items/Requiremen
 import CourseToWho from "../../../../components/edit_post_page_items/CourseToWho";
 import TagsInput from "../../../../components/edit_post_page_items/Tags";
 import RoadmapToggle from "../../../../components/edit_post_page_items/Roadmap";
-
+import Duration from "../../../../components/edit_post_page_items/Duration";
+import Students from "../../../../components/edit_post_page_items/Students";
+import DemoDay from "../../../../components/edit_post_page_items/Demoday";
 import './CreateEditPostPage.scss'
 import CourseSchedule from "../../../../components/edit_post_page_items/CourseSchedule";
 import ClassPrice from "../../../../components/edit_post_page_items/ClassPrice";
@@ -287,7 +289,7 @@ const CreateEditPostPage = () => {
                                 <div className="edit-post-text">Language</div>
                                 <PostLanguage langauge={language} setter={setLanguage}/>
                             </div>
-                            <div className="duration-wrapper">
+                            <div className="course-duration-wrapper">
                                 <div className="edit-post-text">Course Duration</div>
                                 <CourseDuration duration={duration} setter={setDuration}/>
                             </div>
@@ -297,16 +299,31 @@ const CreateEditPostPage = () => {
                                 </div>
                                 <CourseSchedule days={days} setDays={setDays} classTime={classTime} setClassTime={setClassTime} />
                             </div>
-                            <div className="schedule-wrapper">
+                            <div className="Price-wrapper">
                                 <div className="edit-post-text">
                                     Price/month
                                 </div>
                                 <ClassPrice/>
                             </div>
-                            <div className="Tags-wrapper">
-                                <h5>Tags</h5>
-                                <TagsInput/>
+                            <div className="Duration-wrapper">
+                                <div className="edit-post-text">
+                                    Price/month
+                                </div>
+                                <Duration/>
                             </div>
+                            <div className="Students-wrapper">
+                                <div className="edit-post-text">
+                                    Students
+                                </div>
+                                <Students/>
+                            </div>
+                            <div className="Demo-wrapper">
+                                <div className="edit-post-text">
+                                    Demoday
+                                </div>
+                                <DemoDay/>
+                            </div>
+                            
                             
 
                         </div>
@@ -328,6 +345,10 @@ const CreateEditPostPage = () => {
                         <div className="Roadmap-wrapper">
                             
                             <RoadmapToggle/>
+                        </div>
+                        <div className="Tags-wrapper">
+                            <h5>Tags</h5>
+                            <TagsInput/>
                         </div>
                         <div className="save">
                             <Box display="flex" justifyContent="flex-end" gap={3} mt={2}>
