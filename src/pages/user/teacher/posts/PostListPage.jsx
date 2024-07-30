@@ -38,7 +38,7 @@ const PostListPage = () => {
                                 </div>
                             </div>
                         ))}
-                        <div className="published-post">
+                        <div className="published-post-create ">
                             <Link to={`/edit/`}>
                                 <img src={create_icon} alt="create-class-icon" className="create-icon"/>
                             </Link>
