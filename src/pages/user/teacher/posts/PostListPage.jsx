@@ -5,13 +5,19 @@ import {useEffect, useState} from "react";
 import {jwtDecode} from "jwt-decode";
 import Cookie from "js-cookie";
 import publishService from "../../../../services/publishService";
+import {IconButton} from "@mui/material";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import './PostListPage.scss'
+import IconMenu from "../../../../components/icon_menu/IconMenu";
+import MenuItems from "../../../../components/icon_menu/MenuItems";
 
 const PostListPage = () => {
     const [data, setData] = useState({});
     const [totalElements, setTotalElements] = useState(0);
     const [loading, setLoading] = useState(true)
+
+
     useEffect(() => {
         const userName = jwtDecode(Cookie.get('access_token')).sub;
         publishService.getPosts(0, 25, userName).then(obj => {
@@ -21,7 +27,8 @@ const PostListPage = () => {
         })
     }, []);
 
-    return(
+
+    return (
         <div className='PostListPage'>
 
             {loading ? <Loading/> :
@@ -29,8 +36,10 @@ const PostListPage = () => {
                     <div className="classes-wrapper">
                         {data?.map((item) => (
                             <div className="published-post" key={item?.postId}>
-                                <Link to={`/edit/${item.postId}`}>
-                                    <img className="post-image" src={`https://d1kcxr0k66kiti.cloudfront.net/${item?.imageId}`}
+                                <MenuItems postId={item?.postId}/>
+                                <Link to={`/edit/${item?.postId}`}>
+                                    <img className="post-image"
+                                         src={`https://d1kcxr0k66kiti.cloudfront.net/${item?.imageId}`}
                                          alt="post-photo"/>
                                 </Link>
                                 <div className="post-title">
@@ -44,14 +53,12 @@ const PostListPage = () => {
                             </Link>
                         </div>
 
-                    </div>:
-                    <div className="first-class">
-                        <div className="wrapper-new-class">
-                            <div className="first-class-text">
-                                Create new class
-                            </div>
-                            <Link to={`/edit`} className="user-link">
-                                <img src={create_icon} alt="create-class-icon"/>
+                    </div> :
+                    <div className="classes-wrapper">
+
+                        <div className="published-post-create ">
+                            <Link to={`/edit/`}>
+                                <img src={create_icon} alt="create-class-icon" className="create-icon"/>
                             </Link>
                         </div>
 
