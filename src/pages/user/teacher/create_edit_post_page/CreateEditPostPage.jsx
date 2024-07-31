@@ -238,10 +238,11 @@ const CreateEditPostPage = () => {
         }
     };
 
+    console.log(formData)
+
     if (loading) {
         return <Loading />;
     }
-
     return (
         <div className="CreateEditPostPage">
             <Link to="/posts">

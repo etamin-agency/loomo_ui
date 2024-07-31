@@ -1,9 +1,9 @@
 import React from 'react';
 import { TextField, FormControl, Select, MenuItem, InputLabel, FormHelperText, Button } from '@mui/material';
 
-const PriceInput = () => {
+const PriceInput = (props) => {
   const [currency, setCurrency] = React.useState('USD');
-  const [price, setPrice] = React.useState('');
+  const [price, setPrice] = React.useState(props?.price);
   const [error, setError] = React.useState('');
 
   const handleCurrencyChange = (event) => {
