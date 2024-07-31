@@ -97,6 +97,18 @@
       margin-top: 150px;
       text-align: center;
     }
+    .dropzone-video{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    .dropzone-image{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
 
     .media-icons-wrapper {
       display: flex;
@@ -208,6 +220,7 @@
     display: flex;
     min-width: 300px;
     justify-content: space-between ;
+    flex-direction: column;
     margin-left: 20px;
     //margin-top: 10px;
     .post-title-input{

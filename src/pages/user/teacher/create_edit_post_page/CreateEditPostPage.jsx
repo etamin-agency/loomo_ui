@@ -1,373 +1,444 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
-import {Box , Button}from '@mui/material';
-
-
-import {useCallback, useEffect, useState} from "react";
-import {isValidUUID} from "../../../../utils/helper/validation";
-
-import video_icon from '../../../../assets/video-icon.png'
-import image_icon from '../../../../assets/image-icon.png'
-import trash_icon from '../../../../assets/trash.svg'
-import publishService from "../../../../services/publishService";
-import AddIcon from '@mui/icons-material/Delete';
-import {useDropzone} from "react-dropzone";
+import React, { useCallback, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Box, Button, TextField, Typography } from '@mui/material';
+import { useDropzone } from "react-dropzone";
 import ReactPlayer from "react-player";
-
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import PostLanguage from "../../../../components/edit_post_page_items/PostLanguage";
 import CourseDuration from "../../../../components/edit_post_page_items/CourseDuration";
 import Requirements from "../../../../components/edit_post_page_items/Requirements";
-import CourseToWho from "../../../../components/edit_post_page_items/CourseToWho";
+import CourseForm from "../../../../components/edit_post_page_items/CourseToWho";
 import TagsInput from "../../../../components/edit_post_page_items/Tags";
 import RoadmapToggle from "../../../../components/edit_post_page_items/Roadmap";
 import Duration from "../../../../components/edit_post_page_items/Duration";
 import Students from "../../../../components/edit_post_page_items/Students";
 import DemoDay from "../../../../components/edit_post_page_items/Demoday";
-import './CreateEditPostPage.scss'
 import CourseSchedule from "../../../../components/edit_post_page_items/CourseSchedule";
 import ClassPrice from "../../../../components/edit_post_page_items/ClassPrice";
+import Loading from "../../../../components/loading/Loading";
 
-import './CreateEditPostPage.scss'
+import video_icon from '../../../../assets/video-icon.png';
+import image_icon from '../../../../assets/image-icon.png';
 
+import publishService from "../../../../services/publishService";
+import { isValidUUID } from "../../../../utils/helper/validation";
 
+import './CreateEditPostPage.scss';
 
 const CreateEditPostPage = () => {
-    let {postId} = useParams();
-    const [loading, setLoading] = useState(true);
-    const [image, setImage] = useState('');
-    const [imageFile, setImageFile] = useState('');
-    const [video, setVideo] = useState('');
-    const [videoFile, setVideoFile] = useState('');
-    const [title, setTitle] = useState('');
-    const [desc, setDesc] = useState('');
-    const [price, setPrice] = useState('');
-    const [language, setLanguage] = useState('');
-    const [req, setReq] = useState('');
-    const [numberOfStudents, setNumberOfStudents] = useState('');
-    const [duration, setDuration] = useState({startDate:'',endDate:''});
-    const [days, setDays] = useState('');
-    const [courseToWho, setCourseToWho] = useState('');
-    const [demoDate, setDemoDate] = useState('');
-    const [classTime, setClassTime] = useState('');
-    const [classStartEndDate] = useState('');
-    const [isClassPrivate] = useState(false);
-    const [courseRoadMap, setCourseRoadMap] = useState('');
-    const [isCourseRoadMapExists, setCourseRoadMapExists] = useState(false);
-    const [tags, setTags] = useState('');
-
-    const [videoLoading, setVideoLoading] = useState(false);
-
-
-    const [isChanged, setChanged] = useState(false)
+    const { postId } = useParams();
     const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+        title: '',
+        desc: '',
+        price: '',
+        language: '',
+        req: [{ id: Date.now(), value: '', error: false }],
+        numberOfStudents: '',
+        duration: { startDate: '', endDate: '' },
+        days: [],
+        courseToWho: [{ id: Date.now(), value: '', error: false }],
+        demoDate: '',
+        classTime: '',
+        tags: [],
+        courseRoadMap: '',
+        isCourseRoadMapExists: false,
+        isClassPrivate: false
+    });
+
+    const [image, setImage] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+    const [video, setVideo] = useState('');
+    const [videoFile, setVideoFile] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [isChanged, setChanged] = useState(false);
+    const [errors, setErrors] = useState({});
+
     useEffect(() => {
         if (postId && isValidUUID(postId)) {
-            publishService.getPostData(postId).then(data => {
-                return data;
-            }).then(data => {
-                const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoImgLink}`
-                setImage(url)
-                return data;
-            }).then(data => {
-                const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
-                setVideo(url)
-                return data;
-            }).catch(() => {
-                // navigate to some error page
-                navigate("/")
-            }).finally(() => {
-                setLoading(false)
-            })
+            publishService.getPostData(postId)
+                .then(data => {
+                    setFormData(prevState => ({
+                        ...prevState,
+                        title: data.title,
+                        desc: data.description,
+                        price: data.price,
+                        language: data.language,
+                        req: data.requirements.map((item, index) => ({ id: index, value: item, error: false })),
+                        numberOfStudents: data.maxStudents,
+                        duration: {
+                            startDate: data.startDate,
+                            endDate: data.endDate
+                        },
+                        days: data.classDays,
+                        courseToWho: data.courseTarget.map((item, index) => ({ id: index, value: item, error: false })),
+                        demoDate: data.demoTime,
+                        classTime: data.classTime,
+                        tags: data.tags,
+                        courseRoadMap: data.courseRoadMap,
+                        isCourseRoadMapExists: !!data.courseRoadMap,
+                        isClassPrivate: data.isPrivate
+                    }));
+                    setImage(`https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoImgLink}`);
+                    setVideo(`https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoLink}`);
+                })
+                .catch(() => {
+                    navigate("/");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
         } else {
-            setChanged(true)
-            setLoading(false)
+            setChanged(true);
+            setLoading(false);
         }
-
-    }, []);
+    }, [postId, navigate]);
 
     useEffect(() => {
         const handleBeforeUnload = (event) => {
-            const message = 'Are you sure you want to leave? The video upload process is not complete yet.';
-            event.returnValue = message;
-            return message;
+            if (isChanged) {
+                const message = 'You have unsaved changes. Are you sure you want to leave?';
+                event.returnValue = message;
+                return message;
+            }
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
-        
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, []);
-    
+    }, [isChanged]);
 
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+        setChanged(true);
+        validateField(name, value);
+    };
+
+    const validateField = (fieldName, value) => {
+        let error = '';
+        switch (fieldName) {
+            case 'title':
+                if (value.trim() === '') {
+                    error = 'Title is required';
+                } else if (value.length < 3) {
+                    error = 'Title must be at least 3 characters long';
+                }
+                break;
+            case 'desc':
+                if (value.trim() === '') {
+                    error = 'Description is required';
+                } else if (value.length < 10) {
+                    error = 'Description must be at least 10 characters long';
+                }
+                break;
+            case 'price':
+                if (isNaN(value) || Number(value) <= 0) {
+                    error = 'Price must be a positive number';
+                }
+                break;
+            case 'tags':
+                if (!Array.isArray(value) || value.some(tag => tag.trim() === '')) {
+                    error = 'Tags must be non-empty';
+                }
+                if (new Set(value).size !== value.length) {
+                    error = 'Tags must be unique';
+                }
+                break;
+            default:
+                break;
+        }
+        setErrors(prevErrors => ({
+            ...prevErrors,
+            [fieldName]: error
+        }));
+    };
 
     const onDropVideo = useCallback(acceptedFiles => {
-        setVideoLoading(true);
-        try {
-            const file = acceptedFiles[0];
-            setVideoFile(file);
-            if (file.type.startsWith('video/')) {
-                const video = document.createElement('video');
-                video.preload = 'metadata';
-                video.onloadedmetadata = () => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => {
-                        setVideoLoading(false);
-                        setVideo(reader.result);
-                    };
-                };
-                video.src = URL.createObjectURL(file);
-            } else {
-                console.log('File is not a video.');
-            }
-        } catch (error) {
-            console.error("Error reading file:", error);
+        const file = acceptedFiles[0];
+        if (!file || !file.type.startsWith('video/')) {
+            console.error('File is not a video.');
+            return;
         }
+        setVideoFile(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+            setVideo(reader.result);
+            setChanged(true);
+        };
+        reader.readAsDataURL(file);
     }, []);
-    const onDropImage = useCallback(acceptedFiles => {
-        try {
-            const imageFile = acceptedFiles[0];
 
-            if (!imageFile || !imageFile.type.startsWith('image/')) {
-                console.error("File is not an image.");
-                return false;
-            }
-            setImageFile(imageFile)
-            const reader = new FileReader();
-            reader.readAsDataURL(acceptedFiles[0]);
-            reader.onload = () => {
-                setImage(reader.result);
-            };
-        } catch (error) {
-            console.error("Error reading file:", error);
+    const onDropImage = useCallback(acceptedFiles => {
+        const file = acceptedFiles[0];
+        if (!file || !file.type.startsWith('image/')) {
+            console.error('File is not an image.');
+            return;
         }
+        setImageFile(file);
+        const reader = new FileReader();
+        reader.onload = () => {
+            setImage(reader.result);
+            setChanged(true);
+        };
+        reader.readAsDataURL(file);
     }, []);
-    const {
-        getRootProps: getRootPropsForVideo,
-        getInputProps: getInputPropsForVideo,
-        isDragActive: isDragActiveForVideo
-    } = useDropzone({
+
+    const { getRootProps: getRootPropsForVideo, getInputProps: getInputPropsForVideo } = useDropzone({
         onDrop: onDropVideo,
         accept: 'video/*'
     });
-    const {
-        getRootProps: getRootPropsForImage,
-        getInputProps: getInputPropsForImage,
-        isDragActive: isDragActiveForImage
-    } = useDropzone({
+
+    const { getRootProps: getRootPropsForImage, getInputProps: getInputPropsForImage } = useDropzone({
         onDrop: onDropImage,
         accept: 'image/*'
     });
 
     const handleDelete = (mediaSetter, fileSetter) => {
-        mediaSetter('')
-        fileSetter('')
+        mediaSetter('');
+        fileSetter(null);
+        setChanged(true);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        Object.keys(formData).forEach(key => validateField(key, formData[key]));
+        if (Object.values(errors).some(error => error !== '')) {
+            console.error('Form has errors. Please correct them before submitting.');
+            return;
+        }
+        setLoading(true);
+        const submitData = new FormData();
+        if (imageFile) submitData.append("photoFile", imageFile);
+        if (videoFile) submitData.append("videoFile", videoFile);
+        Object.keys(formData).forEach(key => {
+            if (typeof formData[key] === 'object' && !Array.isArray(formData[key])) {
+                submitData.append(key, JSON.stringify(formData[key]));
+            } else {
+                submitData.append(key, formData[key]);
+            }
+        });
+        try {
+            if (postId && isValidUUID(postId)) {
+                await publishService.editPost(postId, submitData);
+            } else {
+                await publishService.createPost(submitData);
+            }
+            
+        } catch (error) {
+            console.error('Error submitting post:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return <Loading />;
     }
 
-    const handleDataChange = (event,setter) => {
-      setter(event.target.value)
-    }
-    const validateDescription = (value) => {
-        if (value.trim() === '') {
-          return 'Description is required';
-        }
-        if (value.length < 10) {
-          return 'Description must be at least 10 characters long';
-        }
-        return '';
-      };
     return (
         <div className="CreateEditPostPage">
             <Link to="/posts">
                 <div className="publish-post-link">Loomo</div>
             </Link>
-            <div>
+            <form onSubmit={handleSubmit}>
                 <div className="edit-post-container">
                     <div className="post-media-wrapper">
                         {video ? (
-                                <div className="player-wrapper">
-                                    <ReactPlayer
-                                        width="100%"
-                                        height="100%"
-                                        url={video}
-                                        controls
-                                        className={"react-player"}
-                                        config={{file: {attributes: {controlsList: 'nodownload'}}}}
-                                    />
-                                    <div onClick={() => handleDelete(setVideo, setVideoFile)} className="trash-icon">
-                                    {/* <img
-                                        src={trash_icon} alt="trash-icon"/> */}
-                                    <AddIcon /> 
-                                    </div>
+                            <div className="player-wrapper">
+                                <ReactPlayer
+                                    width="100%"
+                                    height="100%"
+                                    url={video}
+                                    controls
+                                    className="react-player"
+                                    config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+                                />
+                                <div onClick={() => handleDelete(setVideo, setVideoFile)} className="trash-icon">
+                                    <DeleteIcon />
                                 </div>
-                            ) :
-                            (
-                                <div className="media-block">
-                                    <div className="dropzone-video" {...getRootPropsForVideo()} >
-                                        <input type="file"   {...getInputPropsForVideo()} accept="video/*"/>
-                                        {
-                                            isDragActiveForVideo ?
-                                                <p className="drag-active-center-text">Drop the files here ...</p> :
-                                                <>
-                                                    <div className="media-icons-wrapper">
-                                                        <img className="left-icon" src={video_icon} alt="video-icon"/>
-                                                        <img className="center-icon" src={video_icon} alt="video-icon"/>
-                                                        <img className="right-icon" src={video_icon} alt="video-icon"/>
-                                                    </div>
-                                                    <div className="shadow-block"></div>
-                                                    <div className="upload-media-text">Drag and drop your Introduction
-                                                        Video
-                                                    </div>
-                                                    <div className="upload-media-subtext"> or press Button</div>
-                                                    <div className="upload-btn-wrapper">
-                                                        <div className="tmp-memory-btn">Access from temporary memory
-                                                        </div>
-                                                        <div className="local-memory-btn">Select from File</div>
-                                                    </div>
-                                                </>
-                                        }
+                            </div>
+                        ) : (
+                            <div className="media-block">
+                                <div className="dropzone-video" {...getRootPropsForVideo()}>
+                                    <input {...getInputPropsForVideo()} />
+                                    <div className="media-icons-wrapper">
+                                        <img className="center-icon" src={video_icon} alt="video-icon" />
                                     </div>
-                                </div>
-                            )}
+                                    <div className="upload-media-text">Drag and drop your Introduction Video</div>
+                                    <div className="upload-media-subtext">or press Button</div>
+                                    <Button variant="contained" color="primary">Select Video</Button>
+                                </div>      
+                            </div>
+                        )}
                         {image ? (
-                                <div className="image-wrapper">
-                                    <img className={'post-image'} src={image} alt="course-image"/>
-                                    <div onClick={() => handleDelete(setVideoFile, setImage)} className="trash-icon">
-                                    {/* <img
-                                        src={trash_icon} alt="trash-icon"/> */}
-                                    <AddIcon />
-                                    </div>
+                            <div className="image-wrapper">
+                                <img className="post-image" src={image} alt="course-image" />
+                                <div onClick={() => handleDelete(setImage, setImageFile)} className="trash-icon">
+                                    <DeleteIcon />
                                 </div>
-                            ) :
-                            (
-                                <div className="media-block">
-                                    <div className="dropzone-video" {...getRootPropsForImage()} >
-                                        <input   {...getInputPropsForImage()} accept="image/*"/>
-                                        {
-                                            isDragActiveForImage ?
-                                                <p className="drag-active-center-text">Drop the files here ...</p> :
-                                                <>
-                                                    <div className="media-icons-wrapper">
-                                                        <img className="left-icon" src={image_icon} alt="video-icon"/>
-                                                        <img className="center-icon" src={image_icon} alt="video-icon"/>
-                                                        <img className="right-icon" src={image_icon} alt="video-icon"/>
-                                                    </div>
-                                                    <div className="shadow-block"></div>
-                                                    <div className="upload-media-text">Drug and drop your Introduction
-                                                        Photo
-                                                    </div>
-                                                    <div className="upload-media-subtext"> or press Button</div>
-                                                    <div className="upload-btn-wrapper">
-                                                        <div className="tmp-memory-btn">Access from temporary memory
-                                                        </div>
-                                                        <div className="local-memory-btn">Select from File</div>
-                                                    </div>
-                                                </>
-                                        }
+                            </div>
+                        ) : (
+                            <div className="media-block">
+                                <div className="dropzone-image" {...getRootPropsForImage()}>
+                                    <input {...getInputPropsForImage()} />
+                                    <div className="media-icons-wrapper">
+                                        <img className="center-icon" src={image_icon} alt="image-icon" />
                                     </div>
+                                    <div className="upload-media-text">Drag and drop your Course Image</div>
+                                    <div className="upload-media-subtext">or press Button</div>
+                                    <Button variant="contained" color="primary">Select Image</Button>
                                 </div>
-                            )}
+                            </div>
+                        )}
                     </div>
                     <div className="post-input-wrapper">
-                        <div className="post-input-first-column">
-                          <div className="title-wrapper">
-                              <div className="edit-post-text">Title</div>
-                              <input type="text" className='post-title-input text-input-focus-blue' placeholder="Course Name" name="title" value={title} onChange={(e)=>handleDataChange(e,setTitle)}/>
-                          </div>
-                            <div className="description-wrapper">
-                                <div className="edit-post-text edit-post-desc-text">Description</div>
-                                <textarea
-                                    className="post-desc-textarea text-input-focus-blue"
-                                    id="desc"
-                                    name="bio"
-                                    placeholder="Leave your course description here..."
-                                    onChange={(e)=>handleDataChange(e,setDesc)}
-                                    value={desc}
-                                />
-                            </div>
-                            <div className="language-wrapper">
-                                <div className="edit-post-text">Language</div>
-                                <PostLanguage langauge={language} setter={setLanguage}/>
-                            </div>
-                            <div className="course-duration-wrapper">
-                                <div className="edit-post-text">Course Duration</div>
-                                <CourseDuration duration={duration} setter={setDuration}/>
-                            </div>
-                            <div className="schedule-wrapper">
-                                <div className="edit-post-text">
-                                    Course Schedule
-                                </div>
-                                <CourseSchedule days={days} setDays={setDays} classTime={classTime} setClassTime={setClassTime} />
-                            </div>
-                            <div className="Price-wrapper">
-                                <div className="edit-post-text">
-                                    Price/month
-                                </div>
-                                <ClassPrice/>
-                            </div>
-                            <div className="Duration-wrapper">
-                                <div className="edit-post-text">
-                                    Price/month
-                                </div>
-                                <Duration/>
-                            </div>
-                            <div className="Students-wrapper">
-                                <div className="edit-post-text">
-                                    Students
-                                </div>
-                                <Students/>
-                            </div>
-                            <div className="Demo-wrapper">
-                                <div className="edit-post-text">
-                                    Demoday
-                                </div>
-                                <DemoDay/>
-                            </div>
-                            
-                            
+                    <Typography variant="h6">Title </Typography>
+                        <TextField
+                            fullWidth
+                            label="Title"
+                            size="small"
+                            name="title"
+                            value={formData.title}
+                            onChange={handleInputChange}
+                            error={!!errors.title}
+                            helperText={errors.title}
+                            margin="normal"
+                        />
+                         <Typography variant="h6">Description </Typography>
+                        <TextField
+                            fullWidth
+                            multiline
+                            rows={4}
+                            label="Description"
+                            name="desc"
+                            value={formData.desc}
+                            onChange={handleInputChange}
+                            error={!!errors.desc}
+                            helperText={errors.desc}
+                            margin="normal"
+                        />
+                         <Typography variant="h6">Languages </Typography>
+                        <PostLanguage language={formData.language} setter={(lang) => {
+                            setFormData(prevState => ({ ...prevState, language: lang }));
+                            setChanged(true);
+                        }} />
+                         <Typography variant="h6">CourseDuration </Typography>
+                        <CourseDuration duration={formData.duration} setter={(duration) => {
+                            setFormData(prevState => ({ ...prevState, duration }));
+                            setChanged(true);
+                        }} />
+                        <Typography variant="h6">CourseSchedule </Typography>
+                        <CourseSchedule 
+                            days={formData.days} 
+                            setDays={(days) => {
+                                setFormData(prevState => ({ ...prevState, days }));
+                                setChanged(true);
+                            }} 
+                            classTime={formData.classTime} 
+                            setClassTime={(time) => {
+                                setFormData(prevState => ({ ...prevState, classTime: time }));
+                                setChanged(true);
+                            }}
+                        />
+                        <Typography variant="h6">Price</Typography>
+                        <ClassPrice 
+                            price={formData.price} 
+                            setPrice={(price) => {
+                                setFormData(prevState => ({ ...prevState, price }));
+                                setChanged(true);
+                                validateField('price', price);
+                            }}
+                            error={errors.price}
+                        />
+                        <Typography variant="h6">Duration</Typography>
+                        <Duration />
+                        <Typography variant="h6">Students</Typography>
+                        <Students 
+                            numberOfStudents={formData.numberOfStudents}
+                            setNumberOfStudents={(num) => {
+                                setFormData(prevState => ({ ...prevState, numberOfStudents: num }));
+                                setChanged(true);
+                            }}
+                        />
+                        <Typography variant="h6">DemoDay</Typography>
 
-                        </div>
-                        <div className="post-input-second-column">
-                            <div className="post-list-inputs-wrapper">
-                            </div>
-                        </div>
+                        <DemoDay 
+                            demoDate={formData.demoDate}
+                            setDemoDate={(date) => {
+                                setFormData(prevState => ({ ...prevState, demoDate: date }));
+                                setChanged(true);
+                            }}
+                        />
                     </div>
-                    <div className="post-form-Wrapper"> 
-                        <div className="CourseToWho-wrapper">
-                            <h5>Course to who:</h5>
-                            <CourseToWho/>
-                        </div>
-                        <div className="Requirements-wrapper"> 
-                            <h5>Requirements:</h5>
-                            <Requirements/>
-                        </div>
-                        
-                        <div className="Roadmap-wrapper">
-                            
-                            <RoadmapToggle/>
-                        </div>
-                        <div className="Tags-wrapper">
-                            <h5>Tags</h5>
-                            <TagsInput/>
-                        </div>
-                        <div className="save">
-                            <Box display="flex" justifyContent="flex-end" gap={3} mt={2}>
-                                <Button variant="outlined" color="secondary" >
-                                Cancel
-                                </Button>
-                                <Button variant="contained"  color="primary"  >
-                                Save
-                                </Button>
+                    <div className="post-form-Wrapper">
+                        <Typography variant="h6">Course to who:</Typography>
+                        <CourseForm 
+                            courseToWho={formData.courseToWho}
+                            setCourseToWho={(targets) => {
+                                setFormData(prevState => ({ ...prevState, courseToWho: targets }));
+                                setChanged(true);
+                            }}
+                        />
+                        <Typography variant="h6">Requirements:</Typography>
+                        <Requirements 
+                            requirements={formData.req}
+                            setRequirements={(reqs) => {
+                                setFormData(prevState => ({ ...prevState, req: reqs }));
+                                setChanged(true);
+                            }}
+                        />
+                        <RoadmapToggle 
+                            isCourseRoadMapExists={formData.isCourseRoadMapExists}
+                            courseRoadMap={formData.courseRoadMap}
+                            setIsCourseRoadMapExists={(exists) => {
+                                setFormData(prevState => ({ ...prevState, isCourseRoadMapExists: exists }));
+                                setChanged(true);
+                            }}
+                            setCourseRoadMap={(roadmap) => {
+                                setFormData(prevState => ({ ...prevState, courseRoadMap: roadmap }));
+                                setChanged(true);
+                            }}
+                        />
+                        <Typography variant="h6">Tags</Typography>
+                        <TagsInput 
+                            tags={formData.tags}
+                            setTags={(tags) => {
+                                setFormData(prevState => ({ ...prevState, tags }));
+                                setChanged(true);
+                                validateField('tags', tags);
                                 
-                            </Box>
-                        </div>
-                        
+                            }}
+                           
+                        />
+                        <Box display="flex" justifyContent="flex-end" gap={3} mt={2}>
+                            <Button 
+                                variant="outlined" 
+                                color="secondary" 
+                                onClick={() => navigate("/posts")}
+                            >
+                                Cancel
+                            </Button>
+                            <Button 
+                                variant="contained" 
+                                color="primary" 
+                                type="submit"
+                                disabled={!isChanged || Object.values(errors).some(error => error !== '')}
+                            >
+                                Save
+                            </Button>
+                        </Box>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-    )
-}
+    );
+};
 
 export default CreateEditPostPage;

@@ -4,10 +4,8 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
-const TagsInput = () => {
-  const [tags, setTags] = useState([]);
+const TagsInput = ({ tags, setTags }) => {
   const [newTag, setNewTag] = useState('');
   const [error, setError] = useState('');
 
@@ -20,7 +18,12 @@ const TagsInput = () => {
       setTags([...tags, newTag]);
       setNewTag('');
       setError('');
+    } else if (tags.includes(newTag)) {
+      setError('Tags must be unique.');
+    } else {
+      setError('Tag cannot be empty.');
     }
+    
   };
 
   const handleDeleteTag = (tagToDelete) => {
@@ -30,6 +33,7 @@ const TagsInput = () => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
+      event.preventDefault();
       handleAddTag();
     }
   };
