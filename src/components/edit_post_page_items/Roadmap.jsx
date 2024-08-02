@@ -16,7 +16,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 
-const RoadmapToggle = () => {
+const RoadmapToggle = (props) => {
   const [open, setOpen] = useState(false);
   const [lessons, setLessons] = useState([]);
   const [showAll, setShowAll] = useState(false);
@@ -30,9 +30,14 @@ const RoadmapToggle = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  useEffect(()=>{
+    setLessons(props.courseRoadMap);
+  },[]);
+
   const handleSave = () => {
     const newLessons = inputFields.filter(field => field.value.trim() !== '' && !field.error).map(field => field.value);
     if (newLessons.length > 0) {
+      props.setCourseRoadMap([...lessons,...newLessons])
       setLessons([...lessons, ...newLessons]);
       setInputFields([{ id: Date.now(), value: '', error: false }]);
       handleClose();

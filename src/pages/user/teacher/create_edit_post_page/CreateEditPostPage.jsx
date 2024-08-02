@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, Button, TextField, Typography } from '@mui/material';
-import { useDropzone } from "react-dropzone";
+import React, {useCallback, useEffect, useState} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {Box, Button, TextField, Typography} from '@mui/material';
+import {useDropzone} from "react-dropzone";
 import ReactPlayer from "react-player";
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -22,12 +22,12 @@ import video_icon from '../../../../assets/video-icon.png';
 import image_icon from '../../../../assets/image-icon.png';
 
 import publishService from "../../../../services/publishService";
-import { isValidUUID } from "../../../../utils/helper/validation";
+import {isValidUUID} from "../../../../utils/helper/validation";
 
 import './CreateEditPostPage.scss';
 
 const CreateEditPostPage = () => {
-    const { postId } = useParams();
+    const {postId} = useParams();
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -35,13 +35,14 @@ const CreateEditPostPage = () => {
         desc: '',
         price: '',
         language: '',
-        req: [{ id: Date.now(), value: '', error: false }],
+        req: [{id: Date.now(), value: '', error: false}],
         numberOfStudents: '',
-        duration: { startDate: '', endDate: '' },
+        duration: {startDate: '', endDate: ''},
         days: [],
-        courseToWho: [{ id: Date.now(), value: '', error: false }],
+        courseToWho: [{id: Date.now(), value: '', error: false}],
         demoDate: '',
         classTime: '',
+        classDuration: '',
         tags: [],
         courseRoadMap: '',
         isCourseRoadMapExists: false,
@@ -66,20 +67,21 @@ const CreateEditPostPage = () => {
                         desc: data.description,
                         price: data.price,
                         language: data.language,
-                        req: data.requirements.map((item, index) => ({ id: index, value: item, error: false })),
+                        req: data.requirements.map((item, index) => ({id: index, value: item, error: false})),
                         numberOfStudents: data.maxStudents,
                         duration: {
                             startDate: data.startDate,
                             endDate: data.endDate
                         },
                         days: data.classDays,
-                        courseToWho: data.courseTarget.map((item, index) => ({ id: index, value: item, error: false })),
+                        courseToWho: data.courseTarget.map((item, index) => ({id: index, value: item, error: false})),
                         demoDate: data.demoTime,
                         classTime: data.classTime,
                         tags: data.tags,
                         courseRoadMap: data.courseRoadMap,
                         isCourseRoadMapExists: !!data.courseRoadMap,
-                        isClassPrivate: data.isPrivate
+                        isClassPrivate: data.isPrivate,
+                        classDuration: data?.duration
                     }));
                     setImage(`https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoImgLink}`);
                     setVideo(`https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoLink}`);
@@ -112,7 +114,7 @@ const CreateEditPostPage = () => {
     }, [isChanged]);
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
+        const {name, value} = event.target;
         setFormData(prevState => ({
             ...prevState,
             [name]: value
@@ -190,12 +192,12 @@ const CreateEditPostPage = () => {
         reader.readAsDataURL(file);
     }, []);
 
-    const { getRootProps: getRootPropsForVideo, getInputProps: getInputPropsForVideo } = useDropzone({
+    const {getRootProps: getRootPropsForVideo, getInputProps: getInputPropsForVideo} = useDropzone({
         onDrop: onDropVideo,
         accept: 'video/*'
     });
 
-    const { getRootProps: getRootPropsForImage, getInputProps: getInputPropsForImage } = useDropzone({
+    const {getRootProps: getRootPropsForImage, getInputProps: getInputPropsForImage} = useDropzone({
         onDrop: onDropImage,
         accept: 'image/*'
     });
@@ -217,20 +219,41 @@ const CreateEditPostPage = () => {
         const submitData = new FormData();
         if (imageFile) submitData.append("photoFile", imageFile);
         if (videoFile) submitData.append("videoFile", videoFile);
-        Object.keys(formData).forEach(key => {
-            if (typeof formData[key] === 'object' && !Array.isArray(formData[key])) {
-                submitData.append(key, JSON.stringify(formData[key]));
-            } else {
-                submitData.append(key, formData[key]);
-            }
-        });
+        // Object.keys(formData).forEach(key => {
+        //     if (typeof formData[key] === 'object' && !Array.isArray(formData[key])) {
+        //         submitData.append(key, JSON.stringify(formData[key]));
+        // } else {
+        const obj = {
+            title: formData.title,
+            description: formData.desc,
+            courseTarget: formData.courseToWho.map(data=> data.value),
+            requirements: formData.req.map(data=>data.value),
+            language: formData.language,
+            price: formData.price,
+            maxStudents: formData.numberOfStudents,
+            demoTime: formData.demoDate,
+            classDays: formData.days,
+            classTime: formData.classTime,
+            classStartDate: formData.duration.startDate,
+            classEndDate: formData.duration.endDate,
+            tags: formData.tags,
+            roadmap: formData.courseRoadMap,
+            duration: formData.classDuration,
+            isPrivate: formData.isCourseRoadMapExists,
+            isRoadmapPresent: false,
+        }
+        console.log(obj)
+        submitData.append('classDto', JSON.stringify(obj));
+
+
+        console.log(submitData)
         try {
             if (postId && isValidUUID(postId)) {
                 await publishService.editPost(postId, submitData);
             } else {
                 await publishService.createPost(submitData);
             }
-            
+
         } catch (error) {
             console.error('Error submitting post:', error);
         } finally {
@@ -238,10 +261,9 @@ const CreateEditPostPage = () => {
         }
     };
 
-    console.log(formData)
 
     if (loading) {
-        return <Loading />;
+        return <Loading/>;
     }
     return (
         <div className="CreateEditPostPage">
@@ -259,10 +281,10 @@ const CreateEditPostPage = () => {
                                     url={video}
                                     controls
                                     className="react-player"
-                                    config={{ file: { attributes: { controlsList: 'nodownload' } } }}
+                                    config={{file: {attributes: {controlsList: 'nodownload'}}}}
                                 />
                                 <div onClick={() => handleDelete(setVideo, setVideoFile)} className="trash-icon">
-                                    <DeleteIcon />
+                                    <DeleteIcon/>
                                 </div>
                             </div>
                         ) : (
@@ -270,19 +292,19 @@ const CreateEditPostPage = () => {
                                 <div className="dropzone-video" {...getRootPropsForVideo()}>
                                     <input {...getInputPropsForVideo()} />
                                     <div className="media-icons-wrapper">
-                                        <img className="center-icon" src={video_icon} alt="video-icon" />
+                                        <img className="center-icon" src={video_icon} alt="video-icon"/>
                                     </div>
                                     <div className="upload-media-text">Drag and drop your Introduction Video</div>
                                     <div className="upload-media-subtext">or press Button</div>
                                     <Button variant="contained" color="primary">Select Video</Button>
-                                </div>      
+                                </div>
                             </div>
                         )}
                         {image ? (
                             <div className="image-wrapper">
-                                <img className="post-image" src={image} alt="course-image" />
+                                <img className="post-image" src={image} alt="course-image"/>
                                 <div onClick={() => handleDelete(setImage, setImageFile)} className="trash-icon">
-                                    <DeleteIcon />
+                                    <DeleteIcon/>
                                 </div>
                             </div>
                         ) : (
@@ -290,7 +312,7 @@ const CreateEditPostPage = () => {
                                 <div className="dropzone-image" {...getRootPropsForImage()}>
                                     <input {...getInputPropsForImage()} />
                                     <div className="media-icons-wrapper">
-                                        <img className="center-icon" src={image_icon} alt="image-icon" />
+                                        <img className="center-icon" src={image_icon} alt="image-icon"/>
                                     </div>
                                     <div className="upload-media-text">Drag and drop your Course Image</div>
                                     <div className="upload-media-subtext">or press Button</div>
@@ -300,7 +322,7 @@ const CreateEditPostPage = () => {
                         )}
                     </div>
                     <div className="post-input-wrapper">
-                    <Typography variant="h6">Title </Typography>
+                        <Typography variant="h6">Title </Typography>
                         <TextField
                             fullWidth
                             label="Title"
@@ -312,7 +334,7 @@ const CreateEditPostPage = () => {
                             helperText={errors.title}
                             margin="normal"
                         />
-                         <Typography variant="h6">Description </Typography>
+                        <Typography variant="h6">Description </Typography>
                         <TextField
                             fullWidth
                             multiline
@@ -325,110 +347,114 @@ const CreateEditPostPage = () => {
                             helperText={errors.desc}
                             margin="normal"
                         />
-                         <Typography variant="h6">Languages </Typography>
+                        <Typography variant="h6">Languages </Typography>
                         <PostLanguage language={formData.language} setter={(lang) => {
-                            setFormData(prevState => ({ ...prevState, language: lang }));
+                            setFormData(prevState => ({...prevState, language: lang}));
                             setChanged(true);
-                        }} />
-                         <Typography variant="h6">CourseDuration </Typography>
+                        }}/>
+                        <Typography variant="h6">CourseDuration </Typography>
                         <CourseDuration duration={formData.duration} setter={(duration) => {
-                            setFormData(prevState => ({ ...prevState, duration }));
+                            setFormData(prevState => ({...prevState, duration}));
                             setChanged(true);
-                        }} />
+                        }}/>
                         <Typography variant="h6">CourseSchedule </Typography>
-                        <CourseSchedule 
-                            days={formData.days} 
+                        <CourseSchedule
+                            days={formData.days}
                             setDays={(days) => {
-                                setFormData(prevState => ({ ...prevState, days }));
+                                setFormData(prevState => ({...prevState, days}));
                                 setChanged(true);
-                            }} 
-                            classTime={formData.classTime} 
+                            }}
+                            classTime={formData.classTime}
                             setClassTime={(time) => {
-                                setFormData(prevState => ({ ...prevState, classTime: time }));
+                                setFormData(prevState => ({...prevState, classTime: time}));
                                 setChanged(true);
                             }}
                         />
                         <Typography variant="h6">Price</Typography>
-                        <ClassPrice 
-                            price={formData.price} 
+                        <ClassPrice
+                            price={formData.price}
                             setPrice={(price) => {
-                                setFormData(prevState => ({ ...prevState, price }));
+                                setFormData(prevState => ({...prevState, price}));
                                 setChanged(true);
                                 validateField('price', price);
                             }}
                             error={errors.price}
                         />
                         <Typography variant="h6">Duration</Typography>
-                        <Duration />
+                        <Duration duration={formData.duration} setDuration={(duration)=>{
+                            setFormData(prevState => ({...prevState, duration}));
+                            setChanged(true);
+                        }
+                        }/>
                         <Typography variant="h6">Students</Typography>
-                        <Students 
+                        <Students
                             numberOfStudents={formData.numberOfStudents}
                             setNumberOfStudents={(num) => {
-                                setFormData(prevState => ({ ...prevState, numberOfStudents: num }));
+                                setFormData(prevState => ({...prevState, numberOfStudents: num}));
                                 setChanged(true);
                             }}
                         />
                         <Typography variant="h6">DemoDay</Typography>
 
-                        <DemoDay 
+                        <DemoDay
                             demoDate={formData.demoDate}
                             setDemoDate={(date) => {
-                                setFormData(prevState => ({ ...prevState, demoDate: date }));
+                                setFormData(prevState => ({...prevState, demoDate: date}));
                                 setChanged(true);
                             }}
                         />
                     </div>
                     <div className="post-form-Wrapper">
                         <Typography variant="h6">Course to who:</Typography>
-                        <CourseForm 
+                        <CourseForm
                             courseToWho={formData.courseToWho}
                             setCourseToWho={(targets) => {
-                                setFormData(prevState => ({ ...prevState, courseToWho: targets }));
+                                setFormData(prevState => ({...prevState, courseToWho: targets}));
                                 setChanged(true);
                             }}
                         />
                         <Typography variant="h6">Requirements:</Typography>
-                        <Requirements 
+                        <Requirements
                             requirements={formData.req}
                             setRequirements={(reqs) => {
-                                setFormData(prevState => ({ ...prevState, req: reqs }));
+                                setFormData(prevState => ({...prevState, req: reqs}));
                                 setChanged(true);
                             }}
                         />
-                        <RoadmapToggle 
+                        <RoadmapToggle
                             isCourseRoadMapExists={formData.isCourseRoadMapExists}
                             courseRoadMap={formData.courseRoadMap}
                             setIsCourseRoadMapExists={(exists) => {
-                                setFormData(prevState => ({ ...prevState, isCourseRoadMapExists: exists }));
+                                setFormData(prevState => ({...prevState, isCourseRoadMapExists: exists}));
                                 setChanged(true);
                             }}
                             setCourseRoadMap={(roadmap) => {
-                                setFormData(prevState => ({ ...prevState, courseRoadMap: roadmap }));
+                                setFormData(prevState => ({...prevState, courseRoadMap: roadmap}));
                                 setChanged(true);
                             }}
                         />
                         <Typography variant="h6">Tags</Typography>
-                        <TagsInput 
+                        <TagsInput
                             tags={formData.tags}
                             setTags={(tags) => {
-                                setFormData(prevState => ({ ...prevState, tags }));
+                                setFormData(prevState => ({...prevState, tags}));
                                 setChanged(true);
                                 validateField('tags', tags);
-                                
+
                             }}
-                           
+
                         />
                         <Box display="flex" justifyContent="flex-end" gap={3} mt={2}>
-                            <Button 
-                                variant="outlined" 
-                                color="secondary" 
+                            <Button
+                                variant="outlined"
+                                color="secondary"
                                 onClick={() => navigate("/posts")}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                variant="contained" 
-                                color="primary" 
+                            <Button
+                                variant="contained"
+                                color="primary"
                                 type="submit"
                                 disabled={!isChanged || Object.values(errors).some(error => error !== '')}
                             >

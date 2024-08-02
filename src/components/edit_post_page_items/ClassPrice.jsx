@@ -17,6 +17,7 @@ const PriceInput = (props) => {
     } else {
       setError('');
       setPrice(value);
+      props.setPrice(value)
     }
   };
 
