@@ -9,7 +9,7 @@ const DurationInput = (props) => {
     const [minutes, setMinutes] = React.useState(1);
 
     useEffect(() => {
-        setHours(props.duration / 60);
+        setHours(Math.floor(props.duration / 60));
         setMinutes(props.duration % 60)
     }, [])
     const handleHoursChange = (event) => {

@@ -132,7 +132,7 @@ const RoadmapToggle = (props) => {
         <>
           <Box sx={{ maxHeight: 200, maxWidth: 266, overflowY: 'auto', mb: 2 }}>
             <List>
-              {displayedLessons.map((lesson, index) => (
+              {displayedLessons?.map((lesson, index) => (
                 <ListItem key={index}>
                   {editingIndex === index ? (
                     <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>

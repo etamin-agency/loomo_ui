@@ -36,15 +36,15 @@ const CreateEditPostPage = () => {
         price: '',
         language: '',
         req: [{id: Date.now(), value: '', error: false}],
-        numberOfStudents: '',
+        numberOfStudents: 10,
         duration: {startDate: '', endDate: ''},
         days: [],
         courseToWho: [{id: Date.now(), value: '', error: false}],
         demoDate: '',
         classTime: '',
-        classDuration: '',
+        classDuration: 90,
         tags: [],
-        courseRoadMap: '',
+        courseRoadMap: [],
         isCourseRoadMapExists: false,
         isClassPrivate: false
     });
@@ -381,8 +381,8 @@ const CreateEditPostPage = () => {
                             error={errors.price}
                         />
                         <Typography variant="h6">Duration</Typography>
-                        <Duration duration={formData.duration} setDuration={(duration)=>{
-                            setFormData(prevState => ({...prevState, duration}));
+                        <Duration duration={formData.classDuration} setDuration={(duration)=>{
+                            setFormData(prevState => ({...prevState, classDuration: duration}));
                             setChanged(true);
                         }
                         }/>

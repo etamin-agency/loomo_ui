@@ -1,6 +1,6 @@
-import {DemoItem} from "@mui/x-date-pickers/internals/demo";
-import {LocalizationProvider, MobileTimePicker, StaticTimePicker, TimePicker} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import * as React from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -9,15 +9,15 @@ import FormControl from '@mui/material/FormControl';
 import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-import './EditPageItems.scss'
-import arrow_down from "../../assets/down-arrow-svgrepo-com.svg";
-import Dropdown from "react-bootstrap/Dropdown";
+import './EditPageItems.scss';
 
-const CourseSchedule = ({days, setDays, classTime, setClassTime}) => {
-
-    const handleSetClassTime = (value) => {
-        console.log(value)
-    }
+const CourseSchedule = ({ days, setDays, classTime, setClassTime }) => {
+    const handleClassTimeChange = (newValue) => {
+        // Ensure newValue is not null before updating state
+        if (newValue) {
+            setClassTime(newValue);
+        }
+    };
 
     return (
         <div className="CourseSchedule">
@@ -26,19 +26,21 @@ const CourseSchedule = ({days, setDays, classTime, setClassTime}) => {
                     <DemoItem>
                         <TimePicker
                             label="Class Time"
+                            value={classTime || null} // Ensure classTime is not undefined
+                            onChange={handleClassTimeChange}
                             className="schedule-time-picker"
                         />
                     </DemoItem>
                 </LocalizationProvider>
             </div>
             <div className="schedule-block">
-                <MultipleSelectCheckmarks/>
+                <MultipleSelectCheckmarks days={days} setDays={setDays} />
             </div>
         </div>
-    )
+    );
 }
-function MultipleSelectCheckmarks() {
-    const [personName, setPersonName] = React.useState([]);
+
+function MultipleSelectCheckmarks({ days, setDays }) {
     const ITEM_HEIGHT = 42;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -59,12 +61,12 @@ function MultipleSelectCheckmarks() {
         'Saturday',
         'Sunday'
     ];
-    console.log(personName)
+
     const handleChange = (event) => {
         const {
             target: { value },
         } = event;
-        setPersonName(
+        setDays(
             typeof value === 'string' ? value.split(',') : value,
         );
     };
@@ -72,28 +74,27 @@ function MultipleSelectCheckmarks() {
     return (
         <div className="WeekDaysItem">
             <FormControl sx={{ m: 1, width: 115 }} className="custom-toggle">
-                <InputLabel id="demo-multiple-checkbox-label" className="label">  Days</InputLabel>
+                <InputLabel id="demo-multiple-checkbox-label" className="label">Days</InputLabel>
                 <Select
                     labelId="demo-multiple-checkbox-label"
                     id="demo-multiple-checkbox"
                     multiple
-                    value={personName}
+                    value={days || []} // Ensure days is not undefined
                     onChange={handleChange}
-                    input={<OutlinedInput label="sass" />}
+                    input={<OutlinedInput label="Days" />}
                     renderValue={(selected) => selected.join(', ')}
                     MenuProps={MenuProps}
                 >
                     {names.map((name) => (
-                        <MenuItem key={name} value={name}  className="dropdown-menu">
-                            <Checkbox checked={personName.indexOf(name) > -1}  />
-                            <ListItemText primary={name}  />
+                        <MenuItem key={name} value={name} className="dropdown-menu">
+                            <Checkbox checked={days.includes(name)} />
+                            <ListItemText primary={name} />
                         </MenuItem>
                     ))}
-
                 </Select>
-
             </FormControl>
         </div>
     );
 }
+
 export default CourseSchedule;
