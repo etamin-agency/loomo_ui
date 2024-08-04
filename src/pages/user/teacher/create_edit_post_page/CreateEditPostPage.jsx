@@ -61,6 +61,7 @@ const CreateEditPostPage = () => {
         if (postId && isValidUUID(postId)) {
             publishService.getPostData(postId)
                 .then(data => {
+                    console.log(data)
                     setFormData(prevState => ({
                         ...prevState,
                         title: data.title,
@@ -70,17 +71,17 @@ const CreateEditPostPage = () => {
                         req: data.requirements.map((item, index) => ({id: index, value: item, error: false})),
                         numberOfStudents: data.maxStudents,
                         duration: {
-                            startDate: data.startDate,
-                            endDate: data.endDate
+                            startDate: data.classStartDate,
+                            endDate: data.classEndDate
                         },
                         days: data.classDays,
                         courseToWho: data.courseTarget.map((item, index) => ({id: index, value: item, error: false})),
                         demoDate: data.demoTime,
                         classTime: data.classTime,
                         tags: data.tags,
-                        courseRoadMap: data.courseRoadMap,
-                        isCourseRoadMapExists: !!data.courseRoadMap,
-                        isClassPrivate: data.isPrivate,
+                        courseRoadMap: data.roadmapPresent?data.roadmap:[],
+                        isCourseRoadMapExists: data.roadmapPresent,
+                        isClassPrivate: data?.private,
                         classDuration: data?.duration
                     }));
                     setImage(`https://d37zebxsdrcn1w.cloudfront.net/${data.introVideoImgLink}`);
@@ -239,14 +240,13 @@ const CreateEditPostPage = () => {
             tags: formData.tags,
             roadmap: formData.courseRoadMap,
             duration: formData.classDuration,
-            isPrivate: formData.isCourseRoadMapExists,
-            isRoadmapPresent: false,
+            isPrivate: false,
+            isRoadmapPresent: !!formData.courseRoadMap,
         }
-        console.log(obj)
         submitData.append('classDto', JSON.stringify(obj));
 
 
-        console.log(submitData)
+        console.log(obj)
         try {
             if (postId && isValidUUID(postId)) {
                 await publishService.editPost(postId, submitData);
@@ -396,12 +396,14 @@ const CreateEditPostPage = () => {
                         />
                         <Typography variant="h6">Demo Day</Typography>
 
+
                         <DemoDay
                             demoDate={formData.demoDate}
                             setDemoDate={(date) => {
-                                setFormData(prevState => ({...prevState, demoDate: date}));
+                                setFormData(prevState => ({ ...prevState, demoDate: date }));
                                 setChanged(true);
                             }}
+                            startDate={formData.duration.startDate}
                         />
                     </div>
                     <div className="post-form-Wrapper">

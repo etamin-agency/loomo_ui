@@ -6,28 +6,22 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { Box } from '@mui/material';
 import dayjs from 'dayjs';
 
-const DemoDay = ({ demoDate, setDemoDate }) => {
-    const [selectedDate, setSelectedDate] = React.useState(demoDate ? dayjs(demoDate).startOf('day') : dayjs());
+const DemoDay = ({ demoDate, setDemoDate, startDate }) => {
+    const [selectedDate, setSelectedDate] = React.useState(demoDate ? dayjs(demoDate) : dayjs());
     const [selectedTime, setSelectedTime] = React.useState(demoDate ? dayjs(demoDate) : dayjs().set('hour', 17).set('minute', 0));
 
     const handleDateChange = (newDate) => {
-        const newDateTime = dayjs(selectedTime).set({
-            year: newDate.year(),
-            month: newDate.month(),
-            date: newDate.date(),
-        });
+        const newDateTime = selectedTime.set('year', newDate.year()).set('month', newDate.month()).set('date', newDate.date());
         setSelectedDate(newDate);
         setSelectedTime(newDateTime);
-        setDemoDate(newDateTime.toISOString()); // Or format as needed
+        setDemoDate(newDateTime.toISOString());
     };
 
     const handleTimeChange = (newTime) => {
-        const newDateTime = dayjs(selectedDate).set({
-            hour: newTime.hour(),
-            minute: newTime.minute(),
-        });
+        const newDateTime = selectedDate.set('hour', newTime.hour()).set('minute', newTime.minute());
         setSelectedTime(newTime);
-        setDemoDate(newDateTime.toISOString()); // Or format as needed
+        setSelectedDate(newDateTime);
+        setDemoDate(newDateTime.toISOString());
     };
 
     return (
@@ -38,6 +32,8 @@ const DemoDay = ({ demoDate, setDemoDate }) => {
                         value={selectedDate}
                         onChange={handleDateChange}
                         format="DD/MM/YYYY"
+                        disablePast
+                        maxDate={startDate ? dayjs(startDate) : null}
                         slotProps={{
                             textField: {
                                 size: 'small',
