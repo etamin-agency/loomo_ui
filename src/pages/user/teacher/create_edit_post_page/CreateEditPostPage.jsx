@@ -245,19 +245,27 @@ const CreateEditPostPage = () => {
         }
         submitData.append('classDto', JSON.stringify(obj));
 
-
-        console.log(obj)
         try {
             if (postId && isValidUUID(postId)) {
-                await publishService.editPost(postId, submitData);
+                await publishService.editPost(postId, submitData).then((data)=>{
+                    if (data) {
+                        setLoading(false)
+                        navigate("/posts");
+                    }
+                });
             } else {
-                await publishService.createPost(submitData);
+                await publishService.createPost(submitData).then((data)=>{
+                    if (data) {
+                        setLoading(false)
+                        navigate("/posts");
+                    }
+                });
             }
 
         } catch (error) {
             console.error('Error submitting post:', error);
         } finally {
-            setLoading(false);
+            setLoading(false)
         }
     };
 
