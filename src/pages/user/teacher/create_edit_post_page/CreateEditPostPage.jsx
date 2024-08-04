@@ -352,12 +352,12 @@ const CreateEditPostPage = () => {
                             setFormData(prevState => ({...prevState, language: lang}));
                             setChanged(true);
                         }}/>
-                        <Typography variant="h6">CourseDuration </Typography>
+                        <Typography variant="h6">Course Duration </Typography>
                         <CourseDuration duration={formData.duration} setter={(duration) => {
                             setFormData(prevState => ({...prevState, duration}));
                             setChanged(true);
                         }}/>
-                        <Typography variant="h6">CourseSchedule </Typography>
+                        <Typography variant="h6">Course Schedule </Typography>
                         <CourseSchedule
                             days={formData.days}
                             setDays={(days) => {
