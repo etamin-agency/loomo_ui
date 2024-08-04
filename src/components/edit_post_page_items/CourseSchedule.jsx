@@ -13,7 +13,6 @@ import './EditPageItems.scss';
 
 const CourseSchedule = ({ days, setDays, classTime, setClassTime }) => {
     const handleClassTimeChange = (newValue) => {
-        // Ensure newValue is not null before updating state
         if (newValue) {
             setClassTime(newValue);
         }

@@ -83,7 +83,7 @@ const CreateEditPostPage = () => {
                         isClassPrivate: data.isPrivate,
                         classDuration: data?.duration
                     }));
-                    setImage(`https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoImgLink}`);
+                    setImage(`https://d37zebxsdrcn1w.cloudfront.net/${data.introVideoImgLink}`);
                     setVideo(`https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoLink}`);
                 })
                 .catch(() => {
@@ -394,7 +394,7 @@ const CreateEditPostPage = () => {
                                 setChanged(true);
                             }}
                         />
-                        <Typography variant="h6">DemoDay</Typography>
+                        <Typography variant="h6">Demo Day</Typography>
 
                         <DemoDay
                             demoDate={formData.demoDate}

@@ -108,7 +108,7 @@ const RoadmapToggle = (props) => {
     setEditingText("");
   };
 
-  const displayedLessons = showAll ? lessons : lessons.slice(0, 4);
+  const displayedLessons = showAll ? lessons : lessons?.slice(0, 4);
 
   useEffect(() => {
     inputRefs.current = inputRefs.current.slice(0, inputFields.length);
@@ -165,7 +165,7 @@ const RoadmapToggle = (props) => {
               ))}
             </List>
           </Box>
-          {lessons.length > 4 && !showAll && (
+          {lessons?.length > 4 && !showAll && (
             <Button fullWidth variant="outlined" onClick={() => setShowAll(true)}>
               Show More
             </Button>
