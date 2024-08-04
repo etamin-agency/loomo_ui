@@ -112,6 +112,23 @@ const publishService = {
             console.log(error)
         }
     },
+    deletePost: async (uuid) => {
+        const token = Cookie.get('access_token');
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+        try {
+            const response =  await axiosInstance.delete(`delete/${uuid}`);
+            return response.data;
+        } catch (error) {
+            console.log(error)
+        }
+    },
 
 };
 

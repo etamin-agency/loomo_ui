@@ -86,7 +86,7 @@ function MultipleSelectCheckmarks({ days, setDays }) {
                 >
                     {names.map((name) => (
                         <MenuItem key={name} value={name} className="dropdown-menu">
-                            <Checkbox checked={days.includes(name)} />
+                            <Checkbox checked={days?.includes(name)} />
                             <ListItemText primary={name} />
                         </MenuItem>
                     ))}

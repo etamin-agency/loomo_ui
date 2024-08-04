@@ -10,6 +10,7 @@ import ContentCopy from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
 import { Snackbar, Alert } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import publishService from "../../services/publishService";
 
 export default function IconMenu(props) {
     const navigate = useNavigate();
@@ -22,6 +23,14 @@ export default function IconMenu(props) {
             });
     };
 
+    const deletePost = () => {
+        publishService.deletePost(props?.postId)
+            .then((data) => {
+                if (data){
+                    console.log(props?.postId +" is deleted")
+                }
+            });
+    };
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -37,7 +46,7 @@ export default function IconMenu(props) {
         <div className='MenuItems'>
             <Paper sx={{ width: 155, maxWidth: '100%', marginRight: '10px' }}>
                 <MenuList>
-                    <MenuItem>
+                    <MenuItem onClick={deletePost}>
                         <ListItemIcon>
                             <DeleteIcon fontSize="small" />
                         </ListItemIcon>
