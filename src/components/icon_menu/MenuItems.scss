@@ -4,4 +4,16 @@
   right: 20px;
   top: 20px;
   z-index: 1;
+
+  button {
+    padding: 5px;
+    color: black;
+    background-color: grey;
+    border-radius: 50%;
+    opacity: 70%;
+    &:hover {
+      background-color: grey;
+      opacity: 40%;
+    }
+  }
 }

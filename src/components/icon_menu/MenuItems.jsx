@@ -11,24 +11,37 @@ export default function MenuItems(props) {
     const [isHovered, setIsHovered] = useState(false);
     const menuRef = useRef(null);
     const buttonRef = useRef(null);
+    const isHoveredRef = useRef(isHovered)
+
+    useEffect(() => {
+        isHoveredRef.current = isHovered
+    }, [isHovered])
 
     const handlePostIconClick = () => {
         setPostIconOpen(!isPostIconOpen);
-        setTimeout(() => {
-            if (!isHovered) {
-                setPostIconOpen(false);
-            }
-        }, 4000);
     };
 
     const handleMouseEnter = () => {
         setIsHovered(true);
+        
     };
 
     const handleMouseLeave = () => {
         setIsHovered(false);
-        setPostIconOpen(false);
     };
+
+    useEffect(() => {
+        if(!isHovered && isPostIconOpen) {
+            const timer = setTimeout(() => {
+                if(!isHoveredRef.current) {
+                    setPostIconOpen(false)
+                }
+            }, 2000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [isHovered, isPostIconOpen])
+
 
     const handleClickOutside = (event) => {
         if (
@@ -52,9 +65,10 @@ export default function MenuItems(props) {
     }, [isPostIconOpen]);
 
     return (
-        <div className='MenuItems'>
+        <div className='MenuItems' >
             <IconButton
                 id="long-button"
+                className='menu-button'
                 onClick={handlePostIconClick}
                 ref={buttonRef}
             >

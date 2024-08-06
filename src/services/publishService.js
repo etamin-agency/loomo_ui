@@ -4,7 +4,7 @@ import {jwtDecode} from "jwt-decode";
 
 const API_BASE_URL = 'http://192.168.23.246:8082/api/v1/publish-class';
 
-//const API_BASE_URL = 'http://localhost:8082/api/v1/publish-class';
+// const API_BASE_URL = 'http://localhost:8082/api/v1/publish-class';
 
 
 const publishService = {
