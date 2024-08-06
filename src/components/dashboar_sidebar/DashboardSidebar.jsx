@@ -3,8 +3,8 @@ import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
-
-
+import ArrowIcon from '@mui/icons-material/ArrowCircleRight';
+import { Box } from '@mui/material';
 import demoService from "../../services/demoService";
 
 
@@ -26,6 +26,11 @@ const DashboardSidebar = () => {
     const {role} = useSelector(state => state.role);
     const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
     const [isDemoLessons,setIsDemoLessons]=useState(false);
+    const [collapsed, setCollapsed] = useState(false);
+
+    const handleToggle = () => {
+        setCollapsed(prevState => !prevState);
+    };
     const student = [
         {
             link: "classes",
@@ -92,12 +97,22 @@ const DashboardSidebar = () => {
     },[])
     console.log(userName)
     return (
-        <aside className="student-dashboard">
+        <aside className={`student-dashboard ${collapsed ? 'collapsed' : ''}`}>
             <div className="home-link">
                 <Link to="/">
                     <div className="loomo">Loomo</div>
                     <img className="student-logo home-logo" src={home_logo} alt="profile-picture"/>
+                    
                 </Link>
+                
+                <ArrowIcon
+                    color="success"
+                    fontSize="large"
+                    className="arrow-icon"
+                    onClick={handleToggle}
+                />
+                
+                
             </div>
             <div className="wrapper">
                 {(role === "student" && isDemoLessons) &&(
@@ -126,7 +141,7 @@ const DashboardSidebar = () => {
                             <div className="dashboard-block" key={id}>
                                 <Link to={`/${link}`} className="student-link">
                                     <img src={src} className="student-logo" alt={alt}/>
-                                    <div>{name}</div>
+                                    <div className="student-name">{name}</div>        
                                 </Link>
                             </div>
                         )
@@ -136,8 +151,9 @@ const DashboardSidebar = () => {
             </div>
             <div className="dashboard-block profile-link">
                 <Link to={`${role === "teacher" ? "/teacher" : "/student"}/${userName.current}`} className="student-link">
-                    <img src={user_logo} className="student-logo" alt="user-logo"/>
-                    <div>Profile</div>
+                    
+                    <img src={user_logo} className="student-logo" alt="user-logo"/>     
+                    <div className="student-name">Profile</div>
                 </Link>
             </div>
 

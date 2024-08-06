@@ -16,7 +16,7 @@ const CourseForm = ({ courseToWho, setCourseToWho }) => {
       // Focus on the new input field and scroll into view
       setTimeout(() => {
         inputRefs.current[courseToWho.length]?.focus();
-        inputRefs.current[courseToWho.length]?.scrollIntoView({ behavior: 'smooth' });
+        //inputRefs.current[courseToWho.length]?.scrollIntoView({ behavior: 'smooth' });
       }, 0);
     } else {
       const newInputFields = courseToWho.map((field, index) => {

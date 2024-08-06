@@ -137,8 +137,8 @@ const CreateEditPostPage = () => {
             case 'desc':
                 if (value.trim() === '') {
                     error = 'Description is required';
-                } else if (value.length < 10) {
-                    error = 'Description must be at least 10 characters long';
+                } else if (value.length < 3) {
+                    error = 'Description must be at least 3 characters long';
                 }
                 break;
             case 'price':
@@ -150,9 +150,7 @@ const CreateEditPostPage = () => {
                 if (!Array.isArray(value) || value.some(tag => tag.trim() === '')) {
                     error = 'Tags must be non-empty';
                 }
-                if (new Set(value).size !== value.length) {
-                    error = 'Tags must be unique';
-                }
+                
                 break;
             default:
                 break;

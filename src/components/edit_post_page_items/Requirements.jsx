@@ -17,7 +17,7 @@ const Requirements = ({ requirements, setRequirements }) => {
       // Focus on the new input field and scroll into view
       setTimeout(() => {
         inputRefs.current[requirements.length]?.focus();
-        inputRefs.current[requirements.length]?.scrollIntoView({ behavior: 'smooth' });
+        //inputRefs.current[requirements.length]?.scrollIntoView({ behavior: 'smooth' });
       }, 0);
     } else {
       const newInputFields = requirements.map((field, index) => {

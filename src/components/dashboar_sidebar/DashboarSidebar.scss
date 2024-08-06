@@ -5,83 +5,108 @@
   height: 100%;
   top: 0;
   left: 0;
-  background-color: #420c8f;
+  background-color: #15064e;
   border-left-style: none;
   border-bottom-style: none;
   border-radius: 0px 10px 10px 0px;
+  transition: width 0.3s ease; /* Smooth transition for width */
+}
 
-  .wrapper {
-    position: absolute;
-    display: flex;
-    width: 100%;
-    height: 130px;
-    top: 50%;
-    transform: translateY(-50%);
-    flex-direction: column;
-    justify-content: center;
+.student-dashboard.collapsed {
+  width: 5%; /* Adjust as needed for collapsed state */
+}
 
-  }
+.wrapper {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 130px;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
+  justify-content: center;
+}
 
-  .dashboard-block {
-    width: 100%;
-    height: 90px;
-    padding: 30px;
-    text-align: center;
-    border: 1px solid white;
-    border-left-style: none;
-  }
+.dashboard-block {
+  width: 100%;
+  height: 60px;
+  padding: 30px;
+  text-align: start;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
 
-  .student-link {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
+.student-name {
+  margin-right: 5px;
+  width: 80%;
+  height: 45px;
+  padding-top: 10px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  text-align: start;
+  border-radius: 30px;
+}
 
-    div {
-      margin-left: 15px;
-    }
-  }
+.student-name:hover {
+  background-color: rgb(169, 184, 169);
+  color: green;
+}
 
-  .profile-link {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    border-bottom-style: none;
-    border-bottom-left-radius: 0px;
-  }
+.student-link {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: start; /* Corrected 'st' to 'start' */
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
 
-  .user-photo {
-    position: absolute;
-    top: 6%;
-    left: 0;
-  }
+.profile-link {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
 
-  .student_picture {
-    display: block;
-    width: 30%;
-    margin: 0 auto;
-  }
+.user-photo {
+  position: absolute;
+  top: 6%;
+  left: 0;
+}
 
-  .student-logo {
-    display: block;
-    width: 25px;
-    height: 25px;
-  }
+.student_picture {
+  display: block;
+  width: 30%;
+  margin: 0 auto;
+}
 
-  .loomo {
-    position: absolute;
-    display: block;
-    top: 3%;
-    left: 7%;
-    color: white;
-    font-size: 26px;
-    font-weight: 600;
-  }
-  .home-logo{
-    display: none;
-  }
+.student-logo {
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin-right: auto;
+}
 
+.loomo {
+  position: absolute;
+  display: block;
+  top: 3%;
+  left: 7%;
+  color: white;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.home-logo {
+  display: none;
+}
+
+.arrow-icon {
+  position: absolute;
+  right: -15px;
+  top: 30px;
+  cursor: pointer; /* Add pointer cursor to indicate clickable */
 }
