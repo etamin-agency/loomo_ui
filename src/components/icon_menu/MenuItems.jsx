@@ -80,7 +80,7 @@ export default function MenuItems(props) {
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <IconMenu postId={props?.postId} />
+                    <IconMenu postId={props?.postId} onDelete={props?.onDelete} />
                 </div>
             }
         </div>

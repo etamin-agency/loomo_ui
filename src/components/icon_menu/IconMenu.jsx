@@ -32,7 +32,8 @@ export default function IconMenu(props) {
         publishService.deletePost(props?.postId)
             .then((data) => {
                 if (data){
-                    console.log(props?.postId + " is deleted");
+                    // console.log(props?.postId + " is deleted");
+                    props?.onDelete(props?.postId)
                 }
                 setOpenDialog(false);
             });
@@ -97,7 +98,7 @@ export default function IconMenu(props) {
                     justifyContent: 'center',
                     '& .MuiDialog-paper': {
                         maxWidth: '400px',
-                        marginBottom: '20vh',
+                        marginBottom: '25vh',
                         padding: '10px',
                     },
                 }}

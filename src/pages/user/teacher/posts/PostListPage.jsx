@@ -28,6 +28,12 @@ const PostListPage = () => {
     }, []);
 
 
+    const handlePostDelete = (postId) => {
+        setData(data.filter((post) => post.postId !== postId));
+        setTotalElements(totalElements - 1);
+    };
+
+
     return (
         <div className='PostListPage'>
 
@@ -36,11 +42,11 @@ const PostListPage = () => {
                     <div className="classes-wrapper">
                         {data?.map((item) => (
                             <div className="published-post" key={item?.postId}>
-                                <MenuItems postId={item?.postId}/>
+                                <MenuItems postId={item?.postId} onDelete={handlePostDelete}/>
                                 <Link to={`/edit/${item?.postId}`}>
                                     <img className="post-image"
-                                         src={`https://d37zebxsdrcn1w.cloudfront.net/${item?.imageId}`}
-                                         alt="post-photo"/>
+                                        src={`https://d37zebxsdrcn1w.cloudfront.net/${item?.imageId}`}
+                                        alt="post-photo"/>
                                 </Link>
                                 <div className="post-title">
                                     {item?.title}
