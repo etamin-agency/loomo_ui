@@ -4,52 +4,38 @@ import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
 
-const MAX_TAGS = 8;
-const MIN_TAG_LENGTH = 3;
-const ERRORS = {
-  maxTags: `You can only add up to ${MAX_TAGS} tags.`,
-  shortTag: `Tag must be at least ${MIN_TAG_LENGTH} characters.`,
-  uniqueTag: 'Tags must be unique.',
-  emptyTag: 'Tag cannot be empty.',
-};
-
-const TagsInput = ({ tags = [], setTags }) => {
+const TagsInput = ({ tags, setTags }) => {
   const [newTag, setNewTag] = useState('');
   const [error, setError] = useState('');
 
-  const safeTags = Array.isArray(tags) ? tags : [];
-
   const handleAddTag = () => {
-    if (safeTags.length >= MAX_TAGS) {
-      setError(ERRORS.maxTags);
+    if (tags?.length >= 8) {
+      setError('You can only add up to 8 tags.');
       return;
     }
-    if (newTag.trim().length < MIN_TAG_LENGTH) {
-      setError(ERRORS.shortTag);
+    if (newTag.trim().length < 3) {
+      setError('Tag must be at least 3 characters .');
       return;
     }
-    if (safeTags.includes(newTag.trim())) {
-      setError(ERRORS.uniqueTag);
-      return;
+    if (newTag.trim() !== '' && !tags?.includes(newTag)) {
+      setTags([...tags, newTag]);
+      setNewTag('');
+      setError('');
+    } else if (tags?.includes(newTag)) {
+      setError('Tags must be unique.');
+    } else {
+      setError('Tag cannot be empty.');
     }
-    if (newTag.trim() === '') {
-      setError(ERRORS.emptyTag);
-      return;
-    }
-    setTags([...safeTags, newTag.trim()]);
-    setNewTag('');
-    setError('');
   };
 
   const handleDeleteTag = (tagToDelete) => {
-    setTags(safeTags.filter(tag => tag !== tagToDelete));
-    setError('');
+    setTags(tags.filter((tag) => tag !== tagToDelete));
+    setError(''); // Clear error message if any tag is deleted
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       event.preventDefault();
       handleAddTag();
     }
@@ -57,41 +43,36 @@ const TagsInput = ({ tags = [], setTags }) => {
 
   return (
     <Box>
-      <Box display="flex" alignItems="center" mb={2}>
+      <Box display="flex" alignItems="start" mb={2}>
         <TextField
-          label="Add Tags"
+          label="Add Tags here"
           variant="outlined"
           size="small"
           value={newTag}
+          style={{ marginTop: 10 }}
           onChange={(event) => setNewTag(event.target.value)}
           onKeyDown={handleKeyPress}
           fullWidth
           error={!!error}
           helperText={error}
-          sx={{ mt: 1 }}
         />
         <IconButton
           color="primary"
           onClick={handleAddTag}
-          sx={{ ml: 1, mt: 1 }}
-          aria-label="add tag"
+          style={{ marginLeft: 4, padding: 8, marginTop: 8 }}
         >
           <AddIcon />
         </IconButton>
       </Box>
       <Box
-        sx={{
-          maxHeight: 100,
-          overflowY: 'auto',
-          mb: 2,
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 1,
-          width: '230px',
-          borderRadius: '4px',
-        }}
+        sx={{ maxHeight: 100, overflowY: 'auto', mb: 2 }}
+        display="flex"
+        flexWrap="wrap"
+        gap={1}
+        width="230px" // Fixed width for the tags container
+        borderRadius="4px"
       >
-        {safeTags.slice(0, MAX_TAGS).map((tag, index) => (
+        {tags?.slice(0, 8).map((tag, index) => (
           <Chip
             key={index}
             label={tag}
@@ -101,11 +82,6 @@ const TagsInput = ({ tags = [], setTags }) => {
       </Box>
     </Box>
   );
-};
-
-TagsInput.propTypes = {
-  tags: PropTypes.array,
-  setTags: PropTypes.func.isRequired,
 };
 
 export default TagsInput;
