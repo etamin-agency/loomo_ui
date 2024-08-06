@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import {useEffect, useRef, useState} from "react";
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
-import ArrowIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowIcon from "@mui/icons-material/ArrowCircleRightOutlined";
 import { Box } from '@mui/material';
 import demoService from "../../services/demoService";
 
@@ -102,13 +102,13 @@ const DashboardSidebar = () => {
                 <Link to="/">
                     <div className="loomo">Loomo</div>
                     <img className="student-logo home-logo" src={home_logo} alt="profile-picture"/>
-                    
                 </Link>
                 
                 <ArrowIcon
-                    color="success"
+                    sx={{color: '#d1c6e6', backgroundColor: '#15064e', borderRadius: '50%' }}
+
                     fontSize="large"
-                    className="arrow-icon"
+                    className={`arrow-icon ${collapsed ? 'back-arrow' : ''}`}
                     onClick={handleToggle}
                 />
                 
@@ -141,7 +141,7 @@ const DashboardSidebar = () => {
                             <div className="dashboard-block" key={id}>
                                 <Link to={`/${link}`} className="student-link">
                                     <img src={src} className="student-logo" alt={alt}/>
-                                    <div className="student-name">{name}</div>        
+                                    <div className={`student-name ${collapsed ? 'hidden' : ''}`}>{name}</div>        
                                 </Link>
                             </div>
                         )
@@ -153,7 +153,7 @@ const DashboardSidebar = () => {
                 <Link to={`${role === "teacher" ? "/teacher" : "/student"}/${userName.current}`} className="student-link">
                     
                     <img src={user_logo} className="student-logo" alt="user-logo"/>     
-                    <div className="student-name">Profile</div>
+                    <div className={`student-name ${collapsed ? 'hidden' : ''}`}>Profile</div>
                 </Link>
             </div>
 
