@@ -75,7 +75,7 @@ const TeacherProfilePage = () => {
         }
     };
     return (
-        <div>
+        <>
             {showUploadView && <ProfilePictureUpload setShowUploadView={setShowUploadView}/>}
             <div className="TeacherProfilePage">
                 {loading&&
@@ -104,6 +104,6 @@ const TeacherProfilePage = () => {
                     {data?.bio}
                 </div>
             </div>
-        </div>)
+        </>)
 }
 export default TeacherProfilePage;
