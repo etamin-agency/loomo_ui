@@ -1,9 +1,9 @@
 import React from 'react';
-import { TextField, FormControl, Select, MenuItem, InputLabel, FormHelperText, Button } from '@mui/material';
+import { TextField, FormControl, Select, MenuItem } from '@mui/material';
 
 const PriceInput = (props) => {
   const [currency, setCurrency] = React.useState('USD');
-  const [price, setPrice] = React.useState(props?.price);
+  const [price, setPrice] = React.useState(props?.price || '');
   const [error, setError] = React.useState('');
 
   const handleCurrencyChange = (event) => {
@@ -11,13 +11,18 @@ const PriceInput = (props) => {
   };
 
   const handlePriceChange = (event) => {
-    const value = parseFloat(event.target.value);
-    if ( value <= 0) {
+    const value = event.target.value;
+    setPrice(value);
+    validatePrice(value);
+  };
+
+  const validatePrice = (value) => {
+    const numValue = parseFloat(value);
+    if (isNaN(numValue) || numValue <= 0) {
       setError('Price must be a positive number');
     } else {
       setError('');
-      setPrice(value);
-      props.setPrice(value)
+      props.setPrice(numValue);
     }
   };
 
@@ -29,7 +34,9 @@ const PriceInput = (props) => {
       default: return '';
     }
   };
+
   const inputWidth = 100;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -40,7 +47,6 @@ const PriceInput = (props) => {
           size='small'
           placeholder='200'
           error={!!error}
-          helperText={error}
           InputProps={{
             startAdornment: (
               <span>{getCurrencySymbol()}</span>
@@ -50,21 +56,18 @@ const PriceInput = (props) => {
           style={{ width: inputWidth }}
         />
         
-          <FormControl style={{ marginLeft: 10 }} error={!!error}>
-            
-            <Select value={currency} onChange={handleCurrencyChange} size='small'>
-              <MenuItem value="USD">USD</MenuItem>
-              <MenuItem value="EUR">EUR</MenuItem>
-              <MenuItem value="GBP">GBP</MenuItem>
-            </Select>
-            <FormHelperText>{error && 'Please enter a valid price'}</FormHelperText>
-          </FormControl>
-        
+        <FormControl style={{ marginLeft: 10 }}>
+          <Select value={currency} onChange={handleCurrencyChange} size='small'>
+            <MenuItem value="USD">USD</MenuItem>
+            <MenuItem value="EUR">EUR</MenuItem>
+            <MenuItem value="GBP">GBP</MenuItem>
+          </Select>
+        </FormControl>
       </div>
-     
+      
+      {error && <div style={{ color: 'red' }}>{error}</div>}
     </div>
   );
 };
 
 export default PriceInput;
-

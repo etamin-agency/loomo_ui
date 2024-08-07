@@ -4,7 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
-.idea
+
+# IDE settings
+.idea/
+.vscode/
 
 # testing
 /coverage

@@ -151,10 +151,15 @@ const CreateEditPostPage = () => {
       case "desc":
         if (value.trim() === "") {
           error = "Description is required";
-        } else if (value.length < 10) {
-          error = "Description must be at least 10 characters long";
+        } else if (value.length < 4) {
+          error = "Description must be at least 3 characters long";
         }
         break;
+      case "language": // Correct the case
+      if (value.trim() === "") {
+        error = "Language is required"; // Correct the error message
+      }
+      break;
       case "price":
         if (isNaN(value) || Number(value) <= 0) {
           error = "Price must be a positive number";
@@ -191,7 +196,7 @@ const CreateEditPostPage = () => {
     };
     reader.readAsDataURL(file);
   }, []);
-
+  
   const onDropImage = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     if (!file || !file.type.startsWith("image/")) {
@@ -400,10 +405,14 @@ const CreateEditPostPage = () => {
             <Typography variant="h6">Languages </Typography>
             <PostLanguage
               language={formData.language}
+              name="language"
               setter={(lang) => {
                 setFormData((prevState) => ({ ...prevState, language: lang }));
                 setChanged(true);
+                validateField("language", lang);
               }}
+              error={!!errors.language}
+              helperText={errors.language}
             />
             <Typography variant="h6">Course Duration </Typography>
             <CourseDuration

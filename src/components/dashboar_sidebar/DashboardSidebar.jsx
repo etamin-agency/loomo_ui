@@ -72,18 +72,18 @@ const DashboardSidebar = () => {
             alt: "studio-logo",
             name: "Posts"
         },
-        {
-            link: "assignments",
-            src: home_work_logo,
-            alt: "homework-logo",
-            name: "Assignments"
-        },
-        {
-            link: "wallet",
-            src: wallet_logo,
-            alt: "archive-logo",
-            name: "Wallet"
-        },
+        // {
+        //     link: "assignments",
+        //     src: home_work_logo,
+        //     alt: "homework-logo",
+        //     name: "Assignments"
+        // },
+        // {
+        //     link: "wallet",
+        //     src: wallet_logo,
+        //     alt: "archive-logo",
+        //     name: "Wallet"
+        // },
 
     ];
     useEffect(()=>{
