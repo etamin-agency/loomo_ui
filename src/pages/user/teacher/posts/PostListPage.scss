@@ -6,6 +6,7 @@
   height: 100%;
   padding-top: 100px;
   padding-left: 50px;
+  transition: all .3s ease;
   .first-class {
     position: absolute;
     display: block;
@@ -17,7 +18,6 @@
     background-color: #cb4540;
     box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
     border-radius: 20px ;
-
     text-align: center;
 
     .user-link {
@@ -99,4 +99,8 @@
       font-weight: 600;
     }
   }
+}
+
+.student-dashboard.collapsed ~ .PostListPage {
+  right: 15%;
 }

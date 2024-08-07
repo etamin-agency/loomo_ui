@@ -98,7 +98,7 @@ export default function IconMenu(props) {
                     justifyContent: 'center',
                     '& .MuiDialog-paper': {
                         maxWidth: '400px',
-                        marginBottom: '25vh',
+                        marginBottom: '10vh',
                         padding: '10px',
                     },
                 }}
