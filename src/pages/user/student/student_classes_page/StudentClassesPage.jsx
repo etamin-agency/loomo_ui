@@ -11,6 +11,7 @@ import './StudentClassesPage.scss'
 import {calculateTimeRemaining} from "../../../../utils/helper/math";
 import {useSelector} from "react-redux";
 import demoRoomService from "../../../../services/demoRoomService";
+import Loading from "../../../../components/loading/Loading";
 
 const StudentClassesPage = () => {
     const navigate = useNavigate();
@@ -91,15 +92,7 @@ const StudentClassesPage = () => {
 
     return (
         <div className="StudentClassPage">
-            {loading &&
-                <div className="loading-to-center">
-                    <div className="Loading">
-                        <div>
-
-                        </div>
-                    </div>
-                </div>
-            }
+            {loading && <Loading />}
             <div className="class-wrapper">
                 {classes?.map(data => {
                     const isClassTime = isJoinClass(data?.classDays, data?.classTime)

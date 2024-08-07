@@ -1,7 +1,7 @@
 import "./Loading.scss"
 const Loading = () => {
     return(
-        <div className="some-name">
+        <div className="loading-to-center">
             <div className="Loading">
                 <div>
 

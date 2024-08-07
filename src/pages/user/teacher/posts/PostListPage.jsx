@@ -40,6 +40,11 @@ const PostListPage = () => {
             {loading ? <Loading/> :
                 totalElements > 0 ?
                     <div className="classes-wrapper">
+                        <div className="published-post-create ">
+                            <Link to={`/edit/`}>
+                                <img src={create_icon} alt="create-class-icon" className="create-icon"/>
+                            </Link>
+                        </div>
                         {data?.map((item) => (
                             <div className="published-post" key={item?.postId}>
                                 <MenuItems postId={item?.postId} onDelete={handlePostDelete}/>
@@ -53,12 +58,7 @@ const PostListPage = () => {
                                 </div>
                             </div>
                         ))}
-                        <div className="published-post-create ">
-                            <Link to={`/edit/`}>
-                                <img src={create_icon} alt="create-class-icon" className="create-icon"/>
-                            </Link>
-                        </div>
-
+                        
                     </div> :
                     <div className="classes-wrapper">
 

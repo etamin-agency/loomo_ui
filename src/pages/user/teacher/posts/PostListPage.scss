@@ -5,8 +5,9 @@
   width: 80%;
   height: 100%;
   padding-top: 100px;
-  padding-left: 50px;
+  padding-left: 100px;
   transition: all .3s ease;
+  z-index: -1;
   .first-class {
     position: absolute;
     display: block;
@@ -40,7 +41,6 @@
     display: flex;
     width: 100%;
     flex-wrap: wrap;
-
   }
   .published-post{
     position: relative;
@@ -102,5 +102,5 @@
 }
 
 .student-dashboard.collapsed ~ .PostListPage {
-  right: 15%;
+  width: 95%;
 }
