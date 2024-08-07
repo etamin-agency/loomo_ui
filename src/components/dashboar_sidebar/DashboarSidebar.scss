@@ -125,3 +125,17 @@
   border: none;
   pointer-events: none;
 }
+
+
+@media (max-width: 900px) {
+  .student-dashboard.collapsed ~ .PostListPage {
+    width: 95%;
+    padding-left: 50px;
+}
+
+  .arrow-icon {
+    display: none;
+    pointer-events: none;
+    opacity: 0;
+  }
+}

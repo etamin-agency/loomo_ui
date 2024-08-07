@@ -27,10 +27,35 @@ const DashboardSidebar = () => {
     const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
     const [isDemoLessons,setIsDemoLessons]=useState(false);
     const [collapsed, setCollapsed] = useState(false);
+    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1000);
+
 
     const handleToggle = () => {
         setCollapsed(prevState => !prevState);
     };
+
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth < 900);
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        handleResize();
+
+        if (isSmallScreen) {
+            setCollapsed(true)
+        } else {
+            setCollapsed(false)
+        }
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [isSmallScreen]);
+
+
     const student = [
         {
             link: "classes",
@@ -91,10 +116,9 @@ const DashboardSidebar = () => {
            demoService.isStudentAttendingToAnyClass().then(data=>{
                 setIsDemoLessons(data);
             });
-
         }
-
     },[])
+
     console.log(userName)
     return (
         <aside className={`student-dashboard ${collapsed ? 'collapsed' : ''}`}>
