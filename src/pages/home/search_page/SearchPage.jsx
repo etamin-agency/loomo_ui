@@ -22,16 +22,8 @@ const SearchPage = () => {
     const fetchData = async () => {
         try {
             const data = await searchService.searchPosts(queryParam, page);
-            const posts = await Promise.all(data?.posts?.map(async (post) => {
-                const file = await postService.getImage(post?.imageId);
-                return {
-                    ...post,
-                    image: file
-                };
-            }));
-            console.log(posts)
-            setTotalNum(data?.totalCount);
-            setPosts(posts);
+            setTotalNum(data?.totalCount)
+            setPosts(data?.posts);
             setLoading(false);
         } catch (error) {
             console.error("Error fetching posts:", error);
@@ -57,7 +49,7 @@ const SearchPage = () => {
 
                     <div className="post" key={post.id}>
                         <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <img className="post-image" src={`data:image/jpeg;base64, ${post?.image}`}
+                            <img className="post-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${post?.imageId}`}
                                  alt="post-image"/>
 
                             <div className="post-text">{post?.title}</div>
