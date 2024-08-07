@@ -2,6 +2,8 @@
   position: fixed;
   display: block;
   width: 20%;
+  min-width: 90px;
+  max-width: 200px;
   height: 100%;
   top: 0;
   left: 0;
@@ -13,6 +15,7 @@
 }
 
 .student-dashboard.collapsed {
+  // min-width: none;
   width: 90px; /* Adjust as needed for collapsed state */
 }
 

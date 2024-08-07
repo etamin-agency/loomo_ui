@@ -18,7 +18,7 @@
     top: 0;
     left: -1vw;
     background-color: black;
-    opacity: .5;
+    opacity: 0.5;
 }
 
 .Loading {
@@ -42,5 +42,13 @@
         to {
             transform: rotate(360deg);
         }
+    }
+}
+
+@media (min-width: 1200px) {
+    .loading-to-center {
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 105%;
+        left: -5%;
     }
 }
