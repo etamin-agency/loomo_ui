@@ -53,17 +53,19 @@ jobs:
           DELETIONS: ${{ env.DELETIONS }}
         run: |
           curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=Markdown -d text="
-          *New commit in the repository:* '${GITHUB_REPOSITORY}' 
+          🚀 *New Commit Alert!*
 
-          👨‍💻 *Author:* ${GITHUB_COMMIT_AUTHOR}
+          *Repository:* \`${GITHUB_REPOSITORY}\`
           
-          📜 *Message:* '${GITHUB_COMMIT_MESSAGE}'
+          👨‍💻 *Author:* \`${GITHUB_COMMIT_AUTHOR}\`
           
-          🕒 *Commit Time (GMT+5):* ${COMMIT_TIME}
+          📜 *Message:* \`${GITHUB_COMMIT_MESSAGE}\`
           
-          📝 *Files Changed:* ${FILES_CHANGED}
-          ➕ *Insertions:* ${INSERTIONS}
-          ➖ *Deletions:* ${DELETIONS}
+          🕒 *Commit Time (GMT+5):* \`${COMMIT_TIME}\`
           
-          Great job, team!
+          📝 *Files Changed:* \`${FILES_CHANGED}\`
+          ➕ *Insertions:* \`${INSERTIONS}\` ✅
+          ➖ *Deletions:* \`${DELETIONS}\` ❌
+          
+          🎉 Great job, team! Keep the momentum going!
           "
