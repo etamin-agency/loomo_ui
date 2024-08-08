@@ -13,6 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Get commit details
+        id: commit_details
+        run: |
+          # Extract the number of files changed, insertions, and deletions
+          FILES_CHANGED=$(git diff --name-only ${{ github.event.before }}..${{ github.sha }} | wc -l)
+          INSERTIONS=$(git diff --stat ${{ github.event.before }}..${{ github.sha }} | tail -1 | grep -oP '\d+(?= insertions)')
+          DELETIONS=$(git diff --stat ${{ github.event.before }}..${{ github.sha }} | tail -1 | grep -oP '\d+(?= deletions)')
+          
+          # Store in environment variables
+          echo "FILES_CHANGED=${FILES_CHANGED}" >> $GITHUB_ENV
+          echo "INSERTIONS=${INSERTIONS}" >> $GITHUB_ENV
+          echo "DELETIONS=${DELETIONS}" >> $GITHUB_ENV
+
       - name: Format commit time in GMT+5
         id: format_time
         run: |
@@ -28,16 +41,8 @@ jobs:
           GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           GITHUB_COMMIT_AUTHOR: ${{ github.event.head_commit.author.name }}
           COMMIT_TIME: ${{ env.COMMIT_TIME }}
+          FILES_CHANGED: ${{ env.FILES_CHANGED }}
+          INSERTIONS: ${{ env.INSERTIONS }}
+          DELETIONS: ${{ env.DELETIONS }}
         run: |
-          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=Markdown -d text="
-          *New commit in the repository:* ' ${GITHUB_REPOSITORY} ' 
-  
-          👨‍💻 Author: ${GITHUB_COMMIT_AUTHOR}
-          
-          📜 *Message:* ' ${GITHUB_COMMIT_MESSAGE} '
-          
-          🕒 *Commit Time (GMT+5):* ${COMMIT_TIME}
-  
-          Great job, team! 
-          "
-          
+          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="<b>🎉 New commit in the repository:</b> ${GITHUB_REPOSITORY}! 🚀<br><br><b>👨‍💻 Author:</b> ${GITHUB_COMMIT_AUTHOR}<br><b>📜 Message:</b> ${GITHUB_COMMIT_MESSAGE}<br><b>🕒 Commit Time (GMT+5):</b> ${COMMIT_TIME}<br><b>📝 Files Changed:</b> ${FILES_CHANGED}<br><b>➕ Insertions:</b> ${INSERTIONS}<br><b>➖ Deletions:</b> ${DELETIONS}<br><br>Great job, team! 🌟"
