@@ -30,8 +30,8 @@
   }
   .post-image{
     display: block;
-    width: 374px;
-    height: 225px;
+    max-width: 380px;
+    max-height: 260px;
     object-fit: cover;
     border-radius: 10px;
     margin: 20px auto 0;
@@ -63,5 +63,21 @@
   }
   .post-wrapper{
     margin-top: 15px;
+  }
+  .show-more-button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+  .show-more-button:hover {
+      background-color: #0056b3;
   }
 }

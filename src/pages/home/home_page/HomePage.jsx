@@ -17,9 +17,9 @@ const HomePage = () => {
                 {role ==='' ?
                     <div className="header__btn">
                         <Link to="/login">
-                            <Button id="login-button" variant="secondary" size="sm">
+                            <button id="login-button" >
                                 Log In
-                            </Button>
+                            </button>
                         </Link>
                         {/* <Link to="/post-page">
                             <Button id="login-button" variant="secondary" size="sm">
@@ -28,9 +28,9 @@ const HomePage = () => {
                         </Link> */}
 
                         <Link to="/signup">
-                            <Button id="signup-button" variant="primary" size="sm">
+                            <button id="signup-button" >
                                 Sign Up
-                            </Button>
+                            </button>
                         </Link>
                     </div>:
                         <div className="home__wrapper">

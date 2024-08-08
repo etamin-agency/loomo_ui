@@ -1,18 +1,40 @@
 .HomePage{
   .header {
+    height: 80px;
     position: relative;
-    margin-top: 15px;
+    border-bottom: 1px solid black;
+    background-color: rgb(0, 26, 255);
     display: flex;
     justify-content: space-around;
-
-    &__btn {
-      width: 130px;
+    align-items: center;
+    .header__btn{
       display: flex;
-      justify-content: space-between;
+      gap: 20px;
+      button {
+        padding: 6px 15px;
+        border: solid 0.5px rgb(43, 43, 43);
+        display: flex;
+        justify-content: space-between;
+        text-decoration: none;
+        font-weight: 500;
+        background-color: white;
+      }
+      #signup-button{
+        background-color: black;
+        color: white;
+      }
     }
+    
   }
 
-
+  .home-intro {
+    display: block;
+    margin: 20px auto 0;
+    text-align: center;
+    img {
+      width: 600px;
+    }
+  }
   .profile_picture{
     display: block;
     right: 10%;
@@ -30,14 +52,5 @@
   }
   .header__search{
     margin-top: 40px;
-  }
-
-}
-.home-intro {
-  display: block;
-  margin: 20px auto 0;
-  text-align: center;
-  img {
-    width: 600px;
   }
 }

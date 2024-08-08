@@ -22,6 +22,7 @@ const SearchBar = () => {
 
     return (
         <div className="SearchBar">
+        <img className="search-icon" src={search_icon} alt="search-icon" onClick={handleSearch}/>     
             <input
                 className="search-bar"
                 type="text"
@@ -29,8 +30,9 @@ const SearchBar = () => {
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onKeyPress={handleKeyPress}
+                
             />
-            <img className="search-icon" src={search_icon} alt="search-icon" onClick={handleSearch}/>
+            
         </div>
     );
 };
