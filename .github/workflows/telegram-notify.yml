@@ -13,13 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get random informal message
-        id: get_message
-        run: |
-          chmod +x .github/scripts/select_message.sh
-          MESSAGE=$(./.github/scripts/select_message.sh)
-          echo "MESSAGE=$MESSAGE" >> $GITHUB_ENV
-
       - name: Send notification to Telegram
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
@@ -27,7 +20,5 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
           GITHUB_COMMIT_AUTHOR: ${{ github.event.head_commit.author.name }}
-          GITHUB_COMMIT_URL: ${{ github.event.head_commit.url }}
-          SUFFIX: ${{ env.MESSAGE }}
         run: |
-          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d text="🚀 New commit in ${GITHUB_REPOSITORY}\n\n💡 Commit Message: ${GITHUB_COMMIT_MESSAGE}\n👨‍💻 Author: ${GITHUB_COMMIT_AUTHOR}\n🔗 [View Commit](${GITHUB_COMMIT_URL})\n\n${SUFFIX}"
+          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d text="A new commit just dropped in the ${GITHUB_REPOSITORY}! 🚀\n\n👨‍💻 **Author:** ${GITHUB_COMMIT_AUTHOR}\n📜 **Message:** ${GITHUB_COMMIT_MESSAGE}\n\nGreat job, team! 🌟"
