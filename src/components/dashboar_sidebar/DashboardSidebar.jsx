@@ -113,7 +113,7 @@ const DashboardSidebar = () => {
     ];
     useEffect(()=>{
         if (role==='student'){
-           demoService.isStudentAttendingToAnyClass().then(data=>{
+            demoService.isStudentAttendingToAnyClass().then(data=>{
                 setIsDemoLessons(data);
             });
         }
@@ -121,68 +121,105 @@ const DashboardSidebar = () => {
 
     console.log(userName)
     return (
-        <aside className={`student-dashboard ${collapsed ? 'collapsed' : ''}`}>
+        <aside className={`student-dashboard ${collapsed ? "collapsed" : ""}`}>
             <div className="home-link">
                 <Link to="/">
                     <div className="loomo">Loomo</div>
-                    <img className="student-logo home-logo" src={home_logo} alt="profile-picture"/>
+                    <img
+                        className="student-logo home-logo"
+                        src={home_logo}
+                        alt="profile-picture"
+                    />
                 </Link>
-                
-                <ArrowIcon
-                    sx={{color: '#d1c6e6', backgroundColor: '#15064e', borderRadius: '50%' }}
 
+                <ArrowIcon
+                    sx={{
+                        color: "white",
+                        backgroundColor: "#007bff",
+                        borderRadius: "50%",
+                    }}
                     fontSize="large"
-                    className={`arrow-icon ${collapsed ? 'back-arrow' : ''}`}
+                    className={`arrow-icon ${collapsed ? "back-arrow" : ""}`}
                     onClick={handleToggle}
                 />
-                
-                
             </div>
             <div className="wrapper">
-                {(role === "student" && isDemoLessons) &&(
+                {role === "student" && isDemoLessons && (
                     <div className="dashboard-block">
                         <Link to={`/class-demo`} className="student-link">
-                            <img src={demo_day} className="student-logo" alt="demo-day"/>
+                            <img
+                                src={demo_day}
+                                className="student-logo"
+                                alt="demo-day"
+                            />
                             <div>Demo Classes</div>
                         </Link>
                     </div>
-                ) }
-                {
-                    role === "student" && student.map(({link, src, alt, name}, id) => {
+                )}
+                {role === "student" &&
+                    student.map(({ link, src, alt, name }, id) => {
                         return (
                             <div className="dashboard-block" key={id}>
                                 <Link to={`/${link}`} className="student-link">
-                                    <img src={src} className="student-logo" alt={alt}/>
-                                    <div className={`student-name ${collapsed ? 'hidden' : ''}`}>{name}</div>
+                                    <img
+                                        src={src}
+                                        className="student-logo"
+                                        alt={alt}
+                                    />
+                                    <div
+                                        className={`student-name ${
+                                            collapsed ? "hidden" : ""
+                                        }`}
+                                    >
+                                        {name}
+                                    </div>
                                 </Link>
                             </div>
-                        )
-                    })
-                }
-                {
-                    role === "teacher" && teacher.map(({link, src, alt, name}, id) => {
+                        );
+                    })}
+                {role === "teacher" &&
+                    teacher.map(({ link, src, alt, name }, id) => {
                         return (
                             <div className="dashboard-block" key={id}>
                                 <Link to={`/${link}`} className="student-link">
-                                    <img src={src} className="student-logo" alt={alt}/>
-                                    <div className={`student-name ${collapsed ? 'hidden' : ''}`}>{name}</div>        
+                                    <img
+                                        src={src}
+                                        className="student-logo"
+                                        alt={alt}
+                                    />
+                                    <div
+                                        className={`student-name ${
+                                            collapsed ? "hidden" : ""
+                                        }`}
+                                    >
+                                        {name}
+                                    </div>
                                 </Link>
                             </div>
-                        )
-                    })
-                }
-
+                        );
+                    })}
             </div>
             <div className="dashboard-block profile-link">
-                <Link to={`${role === "teacher" ? "/teacher" : "/student"}/${userName.current}`} className="student-link">
-                    
-                    <img src={user_logo} className="student-logo" alt="user-logo"/>     
-                    <div className={`student-name ${collapsed ? 'hidden' : ''}`}>Profile</div>
+                <Link
+                    to={`${role === "teacher" ? "/teacher" : "/student"}/${
+                        userName.current
+                    }`}
+                    className="student-link"
+                >
+                    <img
+                        src={user_logo}
+                        className="student-logo"
+                        alt="user-logo"
+                    />
+                    <div
+                        className={`student-name ${collapsed ? "hidden" : ""}`}
+                    >
+                        Profile
+                    </div>
                 </Link>
             </div>
-
         </aside>
-    )
+    );
 }
 
 export default DashboardSidebar;
