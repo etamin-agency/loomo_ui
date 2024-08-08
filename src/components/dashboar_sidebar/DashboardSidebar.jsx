@@ -153,7 +153,7 @@ const DashboardSidebar = () => {
                             <div className="dashboard-block" key={id}>
                                 <Link to={`/${link}`} className="student-link">
                                     <img src={src} className="student-logo" alt={alt}/>
-                                    <div>{name}</div>
+                                    <div className={`student-name ${collapsed ? 'hidden' : ''}`}>{name}</div>
                                 </Link>
                             </div>
                         )

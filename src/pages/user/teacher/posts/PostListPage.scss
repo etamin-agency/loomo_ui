@@ -63,12 +63,12 @@
   .post-image{
     display: block;
     position: relative;
-    // width: 100%; 
+    object-fit: cover;
     width: 340px;
     height: 220px;
-    object-fit: 340px 220px;
     border-radius: 20px;
     margin: 10px auto 0;
+    background-color: rgba(0,0,0,0.7);
   }
   .post-title{
     font-size: 18px;

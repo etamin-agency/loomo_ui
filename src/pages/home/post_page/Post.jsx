@@ -32,7 +32,6 @@ const Post = () => {
             setFile(url);
             setData(data);
             console.log(data);
-
             const classTime = new Date(data?.classTime);
             const demoDay = new Date(data?.demoTime);
             const classTimeObj = {
@@ -96,7 +95,7 @@ const Post = () => {
                 const username = jwtDecode(token).sub;
                 demoService.attendDemoClass({
                     studentUserName: username,
-                    teacherId: teacher?.teacherId,
+                    teacherId: data?.teacherId,
                     postId: uuid,
                 });
                 setAlreadyAttending(true);
