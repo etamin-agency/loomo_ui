@@ -45,4 +45,18 @@ jobs:
           INSERTIONS: ${{ env.INSERTIONS }}
           DELETIONS: ${{ env.DELETIONS }}
         run: |
-          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=HTML -d text="<b>🎉 New commit in the repository:</b> ${GITHUB_REPOSITORY}! 🚀<br><br><b>👨‍💻 Author:</b> ${GITHUB_COMMIT_AUTHOR}<br><b>📜 Message:</b> ${GITHUB_COMMIT_MESSAGE}<br><b>🕒 Commit Time (GMT+5):</b> ${COMMIT_TIME}<br><b>📝 Files Changed:</b> ${FILES_CHANGED}<br><b>➕ Insertions:</b> ${INSERTIONS}<br><b>➖ Deletions:</b> ${DELETIONS}<br><br>Great job, team! 🌟"
+          curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=Markdown -d text="
+          *New commit in the repository:* '${GITHUB_REPOSITORY}' 
+
+          👨‍💻 *Author:* ${GITHUB_COMMIT_AUTHOR}
+          
+          📜 *Message:* '${GITHUB_COMMIT_MESSAGE}'
+          
+          🕒 *Commit Time (GMT+5):* ${COMMIT_TIME}
+          
+          📝 *Files Changed:* ${FILES_CHANGED}
+          ➕ *Insertions:* ${INSERTIONS}
+          ➖ *Deletions:* ${DELETIONS}
+          
+          Great job, team!
+          "
