@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import {useSelector} from "react-redux";
 import profile_picture from "../../../assets/profile.png"
 import logout_icon from "../../../assets/logout.png"
+import LanguageIcon from '@mui/icons-material/Language';
 
 import './HomePage.scss'
 
@@ -13,12 +14,14 @@ const HomePage = () => {
     return (
         <div className="HomePage">
             <div className="header">
+                <h1>Loomo</h1>
                 <SearchBar />
+                <LanguageIcon fontSize="medium"/>
                 {role ==='' ?
                     <div className="header__btn">
                         <Link to="/login">
                             <button id="login-button" >
-                                Log In
+                                Login
                             </button>
                         </Link>
                         {/* <Link to="/post-page">
