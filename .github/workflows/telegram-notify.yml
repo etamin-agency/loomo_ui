@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          fetch-depth: 2  # Fetch the last 2 commits
+          fetch-depth: 2
 
       - name: Get commit details
         id: commit_details
@@ -24,14 +24,22 @@ jobs:
           INSERTIONS=$(echo "$STATS" | awk '{print $4}')
           DELETIONS=$(echo "$STATS" | awk '{print $6}')
           
+          # Get the number of new files added and files deleted
+          NEW_FILES=$(git diff --name-status HEAD^ HEAD | grep '^A' | wc -l)
+          DELETED_FILES=$(git diff --name-status HEAD^ HEAD | grep '^D' | wc -l)
+
           # Default to 0 if empty
           INSERTIONS=${INSERTIONS:-0}
           DELETIONS=${DELETIONS:-0}
+          NEW_FILES=${NEW_FILES:-0}
+          DELETED_FILES=${DELETED_FILES:-0}
           
           # Store in environment variables
           echo "FILES_CHANGED=${FILES_CHANGED}" >> $GITHUB_ENV
           echo "INSERTIONS=${INSERTIONS}" >> $GITHUB_ENV
           echo "DELETIONS=${DELETIONS}" >> $GITHUB_ENV
+          echo "NEW_FILES=${NEW_FILES}" >> $GITHUB_ENV
+          echo "DELETED_FILES=${DELETED_FILES}" >> $GITHUB_ENV
 
       - name: Format commit time in GMT+5
         id: format_time
@@ -51,6 +59,8 @@ jobs:
           FILES_CHANGED: ${{ env.FILES_CHANGED }}
           INSERTIONS: ${{ env.INSERTIONS }}
           DELETIONS: ${{ env.DELETIONS }}
+          NEW_FILES: ${{ env.NEW_FILES }}
+          DELETED_FILES: ${{ env.DELETED_FILES }}
         run: |
           curl -s -X POST https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage -d chat_id=${TELEGRAM_CHAT_ID} -d parse_mode=Markdown -d text="
           🚀 *New Commit Alert!*
@@ -64,10 +74,11 @@ jobs:
           🕒 *Commit Time (GMT+5):* \`${COMMIT_TIME}\`
           
           📝 *Files Changed:* \`${FILES_CHANGED}\`
-          
            *Insertions:* \`${INSERTIONS}\` ✅
-          
            *Deletions:* \`${DELETIONS}\` ❌
+
+           *New Files Added:* \`${NEW_FILES}\`  📂
+           *Files Deleted:* \`${DELETED_FILES}\` 🗑️
           
-           Great job, team! Keep the momentum going!
+          🎉 Great job, team!
           "
