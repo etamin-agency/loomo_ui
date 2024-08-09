@@ -12,6 +12,7 @@ import SwitchToLoginView from "../../../components/view/SwitchToLoginView";
 import demoService from "../../../services/demoService";
 import { useSelector } from "react-redux";
 import { Rating, Typography } from "@mui/material";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const Post = () => {
     let { uuid } = useParams();
@@ -25,6 +26,14 @@ const Post = () => {
     const [isAlreadyAttending, setAlreadyAttending] = useState(false);
     const [switchToStudentView, setSwitchToStudentView] = useState(false);
     const navigate = useNavigate();
+
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const handleToggleRoadmap = () => {
+        setIsExpanded(!isExpanded);
+    };
+
+    console.log(data);
 
     useEffect(() => {
         postService.getPost(uuid).then((data) => {
@@ -111,21 +120,25 @@ const Post = () => {
             )}
             <div className="post_wrapper">
                 <div className="wrapper-first-part">
-                    <ReactPlayer
-                        url={file}
-                        controls
-                        className="react-player"
-                        config={{
-                            file: {
-                                attributes: { controlsList: "nodownload" },
-                            },
-                        }}
-                        width={'100%'}
-                        height={'50vh'}
-                    />
+                    <div className="react-player">
+                        <ReactPlayer
+                            url={file}
+                            controls
+                            config={{
+                                file: {
+                                    attributes: { controlsList: "nodownload" },
+                                },
+                            }}
+                            width={"100%"}
+                            height={"100%"}
+                        />
+                    </div>
                     <div className="post-info-wrapper">
                         <div className="post-title">{data?.title}</div>
-                        <div className="post-desc">{data?.description}</div>
+                        <div className="post-subtitle">
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Dolorem, veniam.
+                        </div>
                         <div className="post-teacher-reviews">
                             <div className="post-teacher">
                                 <div className="teacher-name">
@@ -138,12 +151,11 @@ const Post = () => {
                                         alt="teacher"
                                     />
                                 </Link>
-                                
                             </div>
 
                             <div className="post-rating">
                                 <Typography component="legend">
-                                    Rating:
+                                    Rating: {data?.rating ? data?.rating : 3.8}
                                 </Typography>
                                 <Rating
                                     name="read-only"
@@ -152,23 +164,23 @@ const Post = () => {
                                     sx={{ color: "#007bff" }}
                                 />
                             </div>
-                            <div className="post-price-wrapper">
-                                    <div className="post-price">
-                                        {data?.price}$
-                                    </div>
-                                    <div className="post-language">
-                                        {data?.language}
-                                    </div>
-                                </div>
+                            <div className="post-students">
+                                <div>{data?.maxStudents} students</div>
+                            </div>
                         </div>
-
-                        <div className="post-time">
-                            Class starts: {classTime?.year}.{classTime?.month}.
-                            {classTime?.day} at{" "}
-                            {addZeroIfRequired(classTime?.hour)}:
-                            {addZeroIfRequired(classTime?.minute)}
+                        <div className="post-info-schedule">
+                            <div className="post-time">
+                                Class starts: {classTime?.year}.
+                                {classTime?.month}.{classTime?.day} at{" "}
+                                {addZeroIfRequired(classTime?.hour)}:
+                                {addZeroIfRequired(classTime?.minute)}
+                            </div>
+                            <div className="post-language">
+                                Language: {data?.language}
+                            </div>
                         </div>
                         <div className="post-days">
+                            Class Schedule:{" "}
                             {data?.classDays?.map((day) => (
                                 <div className="post-day" key={day}>
                                     {day}
@@ -177,44 +189,92 @@ const Post = () => {
                         </div>
                     </div>
                 </div>
-                <div className="wrapper-second-part">
-                    <div className="post-req">
-                        <div className="req-text">Requirements:</div>
-                        {data?.requirements?.map((obj, i) => (
-                            <div key={i}>
-                                {i + 1}. {obj}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="post-req">
-                        <div className="req-text">Course Target:</div>
-                        {data?.courseTarget?.map((obj, i) => (
-                            <div key={i}>
-                                {i + 1}. {obj}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="post-info-price">
-                        <div className="post-demo-day">
-                            <div>Demo day:</div>
-                            {" " + demoDay?.year}.{demoDay?.month}.
-                            {demoDay?.day} at {addZeroIfRequired(demoDay?.hour)}
-                            :{addZeroIfRequired(demoDay?.minute)}
+                <div className="post-main-container">
+                    <div className="course-description">
+                        <h3>Course Description</h3>
+                        <p>
+                            {data?.description ||
+                                "This is a placeholder for the course description. It should provide a detailed overview of the course content, learning objectives, and what students can expect to achieve by the end of the course."}
+                        </p>
+                        <div className="course-roadmap">
+                            <h4 onClick={handleToggleRoadmap}>
+                                Course Roadmap
+                                {data?.roadmap && (
+                                    <span
+                                        className={`arrow ${
+                                            isExpanded ? "up" : ""
+                                        }`}
+                                    >
+                                        <ArrowDownwardIcon />
+                                    </span>
+                                )}
+                            </h4>
+
+                            <ul className={isExpanded ? "" : "collapsed"}>
+                                {data?.roadmap?.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                )) || <li>Roadmap details are coming soon.</li>}
+                            </ul>
                         </div>
-                        <div className="post-students">
-                            <div>Students in class:</div>
-                            {data?.maxStudents}
+                        <div className="additional-info">
+                            <h4>Additional Information</h4>
+                            <ul>
+                                <li>Duration: {data?.duration || "4 weeks"}</li>
+                                <li>
+                                    Course Level: {data?.level || "Beginner"}
+                                </li>
+                                <li>Price: {data?.price || "$199"}</li>
+                            </ul>
+                        </div>
+                        <div className="tags">
+                            {data?.tags?.length > 0 ? (
+                                data.tags.map((tag, index) => (
+                                    <span key={index} className="tag">
+                                        {tag}
+                                    </span>
+                                ))
+                            ) : (
+                                <span className="tag">No tags available</span>
+                            )}
                         </div>
                     </div>
-                    <div className="parent-block">
-                        {!isAlreadyAttending && (
-                            <div
-                                className="post-attend"
-                                onClick={handleAttendDemo}
-                            >
-                                Attend Demo
+
+                    <div className="wrapper-second-part">
+                        <div className="post-req">
+                            <div className="req-text">Requirements:</div>
+                            {data?.requirements?.map((obj, i) => (
+                                <div key={i}>
+                                    {i + 1}. {obj}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="post-req">
+                            <div className="req-text">Course Target:</div>
+                            {data?.courseTarget?.map((obj, i) => (
+                                <div key={i}>
+                                    {i + 1}. {obj}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="post-info-price">
+                            <div className="post-demo-day">
+                                <div>Demo day:</div>
+                                {" " + demoDay?.year}.{demoDay?.month}.
+                                {demoDay?.day} at{" "}
+                                {addZeroIfRequired(demoDay?.hour)}:
+                                {addZeroIfRequired(demoDay?.minute)}
                             </div>
-                        )}
+                        </div>
+                        <div className="parent-block">
+                            {!isAlreadyAttending && (
+                                <div
+                                    className="post-attend"
+                                    onClick={handleAttendDemo}
+                                >
+                                    Attend Demo
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
