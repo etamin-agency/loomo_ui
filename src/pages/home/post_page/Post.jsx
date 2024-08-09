@@ -135,12 +135,9 @@ const Post = () => {
                     </div>
                     <div className="post-info-wrapper">
                         <div className="post-title">{data?.title}</div>
-                        <div className="post-subtitle">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Dolorem, veniam.
-                        </div>
+                        <div className="post-desc">{data?.description}</div>
                         <div className="post-teacher-reviews">
-                            <div className="post-teacher">
+                            {/* <div className="post-teacher">
                                 <div className="teacher-name">
                                     {teacher?.firstName} {teacher?.lastName}
                                 </div>
@@ -151,7 +148,7 @@ const Post = () => {
                                         alt="teacher"
                                     />
                                 </Link>
-                            </div>
+                            </div> */}
 
                             <div className="post-rating">
                                 <Typography component="legend">
@@ -191,11 +188,34 @@ const Post = () => {
                 </div>
                 <div className="post-main-container">
                     <div className="course-description">
-                        <h3>Course Description</h3>
-                        <p>
-                            {data?.description ||
-                                "This is a placeholder for the course description. It should provide a detailed overview of the course content, learning objectives, and what students can expect to achieve by the end of the course."}
-                        </p>
+                        <div className="post-req">
+                            <div className="req-text">Course Target:</div>
+                            {data?.courseTarget?.length ? (
+                                data.courseTarget.map((obj, i) => (
+                                    <div key={i} className="req-item">
+                                        {i + 1}. {obj}
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="req-item">
+                                    No course targets available.
+                                </div>
+                            )}
+                        </div>
+                        <div className="post-req">
+                            <div className="req-text">Requirements:</div>
+                            {data?.requirements?.length ? (
+                                data.requirements.map((obj, i) => (
+                                    <div key={i} className="req-item">
+                                        {i + 1}. {obj}
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="req-item">
+                                    No requirements available.
+                                </div>
+                            )}
+                        </div>
                         <div className="course-roadmap">
                             <h4 onClick={handleToggleRoadmap}>
                                 Course Roadmap
@@ -209,62 +229,45 @@ const Post = () => {
                                     </span>
                                 )}
                             </h4>
-
                             <ul className={isExpanded ? "" : "collapsed"}>
                                 {data?.roadmap?.map((item, index) => (
                                     <li key={index}>{item}</li>
                                 )) || <li>Roadmap details are coming soon.</li>}
                             </ul>
                         </div>
-                        <div className="additional-info">
-                            <h4>Additional Information</h4>
-                            <ul>
-                                <li>Duration: {data?.duration || "4 weeks"}</li>
-                                <li>
-                                    Course Level: {data?.level || "Beginner"}
-                                </li>
-                                <li>Price: ${data?.price || "199"}</li>
-                            </ul>
-                        </div>
-                        <div className="tags">
-                            {data?.tags?.length > 0 ? (
-                                data.tags.map((tag, index) => (
-                                    <span key={index} className="tag">
-                                        {tag}
-                                    </span>
-                                ))
-                            ) : (
-                                <span className="tag">No tags available</span>
-                            )}
-                        </div>
                     </div>
 
                     <div className="wrapper-second-part">
-                        <div className="post-req">
-                            <div className="req-text">Requirements:</div>
-                            {data?.requirements?.map((obj, i) => (
-                                <div key={i}>
-                                    {i + 1}. {obj}
+                        <div className="course-info-container">
+                            <div className="course-detail">
+                                <div className="course-detail-label">
+                                    Demo Day:
                                 </div>
-                            ))}
-                        </div>
-                        <div className="post-req">
-                            <div className="req-text">Course Target:</div>
-                            {data?.courseTarget?.map((obj, i) => (
-                                <div key={i}>
-                                    {i + 1}. {obj}
+                                <div className="course-detail-value">
+                                    {demoDay?.year}.{demoDay?.month}.
+                                    {demoDay?.day} at{" "}
+                                    {addZeroIfRequired(demoDay?.hour)}:
+                                    {addZeroIfRequired(demoDay?.minute)}
                                 </div>
-                            ))}
-                        </div>
-                        <div className="post-info-price">
-                            <div className="post-demo-day">
-                                <div>Demo day:</div>
-                                {" " + demoDay?.year}.{demoDay?.month}.
-                                {demoDay?.day} at{" "}
-                                {addZeroIfRequired(demoDay?.hour)}:
-                                {addZeroIfRequired(demoDay?.minute)}
+                            </div>
+                            <div className="course-detail">
+                                <div className="course-detail-label">
+                                    Duration:
+                                </div>
+                                <div className="course-detail-value">
+                                    {data?.duration || "4 weeks"}
+                                </div>
+                            </div>
+                            <div className="course-detail">
+                                <div className="course-detail-label">
+                                    Price:
+                                </div>
+                                <div className="course-detail-value">
+                                    ${data?.price || "199"}
+                                </div>
                             </div>
                         </div>
+
                         <div className="parent-block">
                             {!isAlreadyAttending && (
                                 <div
@@ -275,7 +278,6 @@ const Post = () => {
                                 </div>
                             )}
                         </div>
-                        {/* <button class="enroll-button">Enroll Now</button> */}
                     </div>
                 </div>
             </div>
