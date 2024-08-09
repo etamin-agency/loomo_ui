@@ -30,7 +30,7 @@ const Post = () => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleToggleRoadmap = () => {
-        setIsExpanded(!isExpanded);
+        data.roadmap && setIsExpanded(!isExpanded);
     };
 
     console.log(data);
@@ -223,7 +223,7 @@ const Post = () => {
                                 <li>
                                     Course Level: {data?.level || "Beginner"}
                                 </li>
-                                <li>Price: {data?.price || "$199"}</li>
+                                <li>Price: ${data?.price || "199"}</li>
                             </ul>
                         </div>
                         <div className="tags">
@@ -275,6 +275,7 @@ const Post = () => {
                                 </div>
                             )}
                         </div>
+                        {/* <button class="enroll-button">Enroll Now</button> */}
                     </div>
                 </div>
             </div>

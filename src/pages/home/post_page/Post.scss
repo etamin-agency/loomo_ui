@@ -27,7 +27,7 @@
 
         .react-player {
             width: 100%;
-            max-width: 600px;
+            max-width: 570px;
             max-height: 360px;
             background-color: #333;
             border-radius: 12px;
@@ -55,10 +55,6 @@
                 text-transform: capitalize;
                 letter-spacing: 1px;
                 display: block;
-
-                &:hover {
-                    color: darken($color: #007bff, $amount: 10%);
-                }
             }
 
             .post-subtitle {
@@ -144,6 +140,7 @@
     }
 
     .post-main-container {
+        position: relative;
         display: flex;
         gap: 40px;
 
@@ -300,6 +297,9 @@
         }
 
         .wrapper-second-part {
+            position: sticky;
+            top: 0;
+            max-height: 800px;
             flex: 0.8;
             background-color: #fff;
             padding: 25px;
@@ -372,6 +372,22 @@
                         background-color: #d94347;
                         transform: translateY(-5px);
                     }
+                }
+            }
+            .enroll-button {
+                background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+                color: #fff;
+                border: none;
+                border-radius: 12px;
+                padding: 15px 30px;
+                font-size: 1.2rem;
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                transition: background-color 0.3s ease, transform 0.3s ease;
+
+                &:hover {
+                    background-color: #1e7e34;
+                    transform: translateY(-5px);
                 }
             }
         }
