@@ -26,7 +26,7 @@ const SearchBar = () => {
             <input
                 className="search-bar"
                 type="text"
-                placeholder="Search..."
+                placeholder="Search Course"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onKeyPress={handleKeyPress}

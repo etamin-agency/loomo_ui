@@ -1,23 +1,24 @@
 .SearchBar{
-    width: 600px;
-    height: 50px;
+    width: 1100px;
+    height: 40px;
     padding: 2px;
-    margin-top: 10px;
-    border: 1px solid rgb(37, 37, 37);
+    
+    background-color: rgb(238, 238, 238);
     border-radius: 30px;
-    padding-left: 10px;
+    padding-left: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: white;
+    justify-content: start;
+   
     gap: 10px;
     .search-bar{
-        width: 500px;
-        height: 44px;
+        width: 800px;
+        height: 40px;
         padding: 0 8px;
         border: none;
         font-size: 14px;
         outline: none;
+        background-color: rgb(238, 238, 238);
     }
     
     .search-icon{

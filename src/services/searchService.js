@@ -9,6 +9,7 @@ const searchService = {
         try {
             const response = await axios.get(`${API_BASE_URL}/basic-search?query=${text}&page=${page}`);
             return response.data;
+
         } catch (error) {
             throw error;
         }

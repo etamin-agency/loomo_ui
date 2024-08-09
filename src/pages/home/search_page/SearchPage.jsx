@@ -4,8 +4,10 @@ import searchService from "../../../services/searchService";
 
 import Loading from "../../../components/loading/Loading";
 import './SearchPage.scss'
-
-const SearchPage = () => {
+const formatDateString = (dateString) => {
+    return dateString.slice(0, 16);
+};
+const SearchPage = ({username}) => {
     const [searchParams] = useSearchParams();
 
     const queryParam = searchParams.get('query');
@@ -22,6 +24,8 @@ const SearchPage = () => {
             setTotalNum(data?.totalCount);
             setPosts(data?.posts);
             setLoading(false);
+            console.log(data)
+            
         } catch (error) {
             console.error("Error fetching posts:", error);
             setLoading(false);
@@ -49,14 +53,29 @@ const SearchPage = () => {
             <div className="post-wrapper">
                 {posts?.slice(0, visiblePosts).map(post => (
                     <div className="post" key={post.id}>
-                        <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                            <img className="post-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${post?.imageId}`}
-                                alt="post-image" />
-                            <div className="post-text">{post?.title}</div>
-                            <div className="post-wrapper">
-                                <div className="post-language">{post?.language}</div>
-                                <div className="post-price">{post?.price}$</div>
+                        
+                        
+                        <img className="post-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${post?.imageId}`}
+                        alt="post-image" />
+                       
+                        <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>   
+                        <div className="post-text-group">
+                            <div className="post-text">
+                                <h3>{post?.title}</h3>
+                                <p>{post?.price}$</p>
                             </div>
+                            <div className="post-text-duration">
+                            <p>Lessons | Class Duration {post?.duration} hours</p>
+                            </div>
+                            <p>Launch your career as an Android app developer. Build job-ready skills for an in-demand career and earn a credential from Meta. No degree or prior experience required to get started.Launch your career as an Android app developer. Build job-ready skills</p>
+                            {/* //<div className="post-text1">{post?.desc}</div> */}
+                            <div className="post-language">
+                                <p className="post-language">{post?.language}</p>
+                                <p>{post?.classTime}</p>
+                                
+                                
+                            </div>
+                        </div>
                         </Link>
                     </div>
                 ))}
