@@ -112,15 +112,15 @@ const Post = () => {
     return loading ? (
         <Loading />
     ) : (
-        <div className="Post">
+        <div className="post-page">
             {switchToStudentView && (
                 <SwitchToLoginView
                     close={() => setSwitchToStudentView(false)}
                 />
             )}
-            <div className="post_wrapper">
-                <div className="wrapper-first-part">
-                    <div className="react-player">
+            <div className="post-content">
+                <div className="content-primary">
+                    <div className="player-wrapper">
                         <ReactPlayer
                             url={file}
                             controls
@@ -133,24 +133,13 @@ const Post = () => {
                             height={"100%"}
                         />
                     </div>
-                    <div className="post-info-wrapper">
+                    <div className="post-details">
                         <div className="post-title">{data?.title}</div>
-                        <div className="post-desc">{data?.description}</div>
-                        <div className="post-teacher-reviews">
-                            {/* <div className="post-teacher">
-                                <div className="teacher-name">
-                                    {teacher?.firstName} {teacher?.lastName}
-                                </div>
-                                <Link to={`/teacher/${teacher?.userName}`}>
-                                    <img
-                                        className="teacher-image"
-                                        src={teacher?.profilePicture}
-                                        alt="teacher"
-                                    />
-                                </Link>
-                            </div> */}
-
-                            <div className="post-rating">
+                        <div className="post-description">
+                            {data?.description}
+                        </div>
+                        <div className="post-reviews">
+                            <div className="rating-section">
                                 <Typography component="legend">
                                     Rating: {data?.rating ? data?.rating : 3.8}
                                 </Typography>
@@ -161,57 +150,59 @@ const Post = () => {
                                     sx={{ color: "#007bff" }}
                                 />
                             </div>
-                            <div className="post-students">
+                            <div className="student-count">
                                 <div>{data?.maxStudents} students</div>
                             </div>
                         </div>
-                        <div className="post-info-schedule">
-                            <div className="post-time">
+                        <div className="schedule-info">
+                            <div className="class-time">
                                 Class starts: {classTime?.year}.
                                 {classTime?.month}.{classTime?.day} at{" "}
                                 {addZeroIfRequired(classTime?.hour)}:
                                 {addZeroIfRequired(classTime?.minute)}
                             </div>
-                            <div className="post-language">
+                            <div className="language-info">
                                 Language: {data?.language}
                             </div>
                         </div>
-                        <div className="post-days">
+                        <div className="class-days">
                             Class Schedule:{" "}
                             {data?.classDays?.map((day) => (
-                                <div className="post-day" key={day}>
+                                <div className="day-item" key={day}>
                                     {day}
                                 </div>
                             ))}
                         </div>
                     </div>
                 </div>
-                <div className="post-main-container">
+                <div className="content-secondary">
                     <div className="course-description">
-                        <div className="post-req">
-                            <div className="req-text">Course Target:</div>
+                        <div className="course-target">
+                            <div className="target-title">Course Target:</div>
                             {data?.courseTarget?.length ? (
                                 data.courseTarget.map((obj, i) => (
-                                    <div key={i} className="req-item">
-                                        {i + 1}. {obj}
+                                    <div key={i} className="target-item">
+                                        {obj}
                                     </div>
                                 ))
                             ) : (
-                                <div className="req-item">
+                                <div className="target-item">
                                     No course targets available.
                                 </div>
                             )}
                         </div>
-                        <div className="post-req">
-                            <div className="req-text">Requirements:</div>
+                        <div className="requirements-section">
+                            <div className="requirements-title">
+                                Requirements:
+                            </div>
                             {data?.requirements?.length ? (
                                 data.requirements.map((obj, i) => (
-                                    <div key={i} className="req-item">
-                                        {i + 1}. {obj}
+                                    <div key={i} className="requirement-item">
+                                        {obj}
                                     </div>
                                 ))
                             ) : (
-                                <div className="req-item">
+                                <div className="requirement-item">
                                     No requirements available.
                                 </div>
                             )}
@@ -221,15 +212,21 @@ const Post = () => {
                                 Course Roadmap
                                 {data?.roadmap && (
                                     <span
-                                        className={`arrow ${
-                                            isExpanded ? "up" : ""
+                                        className={`toggle-icon ${
+                                            isExpanded ? "expanded" : ""
                                         }`}
                                     >
                                         <ArrowDownwardIcon />
                                     </span>
                                 )}
                             </h4>
-                            <ul className={isExpanded ? "" : "collapsed"}>
+                            <ul
+                                className={
+                                    isExpanded
+                                        ? "roadmap-list"
+                                        : "roadmap-collapsed"
+                                }
+                            >
                                 {data?.roadmap?.map((item, index) => (
                                     <li key={index}>{item}</li>
                                 )) || <li>Roadmap details are coming soon.</li>}
@@ -237,46 +234,63 @@ const Post = () => {
                         </div>
                     </div>
 
-                    <div className="wrapper-second-part">
-                        <div className="course-info-container">
-                            <div className="course-detail">
-                                <div className="course-detail-label">
-                                    Demo Day:
+                    <div className="main-container">
+                        <div className="main-info">
+                            <div className="info-section-container">
+                                <div className="info-section">
+                                    <div className="info-label">Demo Day:</div>
+                                    <div className="info-value">
+                                        {demoDay?.year}.{demoDay?.month}.
+                                        {demoDay?.day} at{" "}
+                                        {addZeroIfRequired(demoDay?.hour)}:
+                                        {addZeroIfRequired(demoDay?.minute)}
+                                    </div>
                                 </div>
-                                <div className="course-detail-value">
-                                    {demoDay?.year}.{demoDay?.month}.
-                                    {demoDay?.day} at{" "}
-                                    {addZeroIfRequired(demoDay?.hour)}:
-                                    {addZeroIfRequired(demoDay?.minute)}
+                                <div className="info-section">
+                                    <div className="info-label">Duration:</div>
+                                    <div className="info-value">
+                                        {data?.duration || "4 weeks"}
+                                    </div>
+                                </div>
+                                <div className="info-section">
+                                    <div className="info-label">Price:</div>
+                                    <div className="info-value">
+                                        ${data?.price || "199"}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="course-detail">
-                                <div className="course-detail-label">
-                                    Duration:
-                                </div>
-                                <div className="course-detail-value">
-                                    {data?.duration || "4 weeks"}
-                                </div>
-                            </div>
-                            <div className="course-detail">
-                                <div className="course-detail-label">
-                                    Price:
-                                </div>
-                                <div className="course-detail-value">
-                                    ${data?.price || "199"}
-                                </div>
+
+                            <div className="action-section">
+                                {!isAlreadyAttending && (
+                                    <div
+                                        className="attend-demo-button"
+                                        onClick={handleAttendDemo}
+                                    >
+                                        Attend Demo
+                                    </div>
+                                )}
                             </div>
                         </div>
-
-                        <div className="parent-block">
-                            {!isAlreadyAttending && (
-                                <div
-                                    className="post-attend"
-                                    onClick={handleAttendDemo}
-                                >
-                                    Attend Demo
-                                </div>
-                            )}
+                        <div className="teacher-info">
+                            <div className="teacher">
+                                <Link to={`/teacher/${teacher?.userName}`}>
+                                    <img
+                                        className="teacher-image"
+                                        src={teacher?.profilePicture}
+                                        alt="teacher"
+                                    />
+                                </Link>
+                                <Link to={`/teacher/${teacher?.userName}`}>
+                                    <div className="teacher-name">
+                                        {teacher?.firstName || "Genry"}{" "}
+                                        {teacher?.lastName || "Malcolm"}
+                                    </div>
+                                </Link>
+                            </div>
+                            <div className="teacher-desc">
+                                {teacher?.description ||
+                                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum omnis exercitationem tempora sunt ipsam iste eaque similique. Architecto, minima quo?"}
+                            </div>
                         </div>
                     </div>
                 </div>
