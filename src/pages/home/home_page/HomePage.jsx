@@ -31,7 +31,7 @@ const HomePage = () => {
                         </Link> */}
 
                         <Link to="/signup">
-                            <button id="signup-button" >
+                            <button id="sign-up-button" >
                                 Sign Up
                             </button>
                         </Link>
