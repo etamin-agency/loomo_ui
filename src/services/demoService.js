@@ -110,6 +110,23 @@ const demoService = {
             console.log(error)
         }
     },
+    isDemoClassesExists: async ()=>{
+        const token = Cookie.get('access_token');
+        const username = jwtDecode(token).sub;
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        try {
+            const response = await axiosInstance.get(`/is-demo-classes-exists/${username}`);
+            return response.data;
+        } catch (error) {
+            console.log(error)
+        }
+    },
 
 };
 

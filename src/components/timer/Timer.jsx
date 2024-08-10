@@ -13,9 +13,7 @@ const Timer = ({demoTime, classId, teacherId}) => {
     function calculateTimeRemaining() {
         const endTime = new Date(demoTime).getTime();
         const currentTime = new Date().getTime();
-        const userGMTOffsetInMilliseconds = new Date().getTimezoneOffset() * 60 * 1000;
-        const adjustedEndTime = endTime - userGMTOffsetInMilliseconds; // Adjusted end time based on user's GMT offset
-        const timeDiff = adjustedEndTime - currentTime;
+        const timeDiff = endTime - currentTime;
         return {
             days: Math.floor(timeDiff / (1000 * 60 * 60 * 24)),
             hours: Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
