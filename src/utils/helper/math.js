@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 function adjustDateByHour(year, month, day, hour, minute, hours) {
     const date = new Date(year, month - 1, day, hour, minute);
     const totalMillisecondsToAdd = hours * 60 * 60 * 1000;
@@ -5,6 +7,24 @@ function adjustDateByHour(year, month, day, hour, minute, hours) {
     return date;
 }
 
+
+
+export const calculateDaysBetween = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const differenceInTime = end - start;
+    return Math.ceil(differenceInTime / (1000 * 60 * 60 * 24));
+};
+
+export const convertMinutesToHours = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
+};
+
+export const formatDateTime = (dateString) => {
+    return dayjs(dateString).format('HH:mm DD.MM.YYYY');
+};
 export function calculateTimeRemaining(classDays,classTime,now=new Date()) {
     if (!classDays) return {
         days: -1,
@@ -66,6 +86,7 @@ export function calculateTimeRemaining(classDays,classTime,now=new Date()) {
         seconds: secondsRemaining
     };
 }
+
 export function isTimeGreaterThanNow(time1, time2) {
     const hours1 = time1.getHours();
     const minutes1 = time1.getMinutes();

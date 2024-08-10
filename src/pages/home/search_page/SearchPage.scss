@@ -1,7 +1,11 @@
+
+*{
+  margin: 0;
+}
 .SearchPage{
   width: 100%;
   height: 100%;
-  padding: 10px;
+  padding: 15px;
   background-color: #eeeeee;
   .results-number{
     font-size: 38px;
@@ -18,11 +22,14 @@
     
   }
   .post{
-    width: 900px;
+    width: 940px;
+    height: 220px;
     background-color: #ffffff;
     display: flex;
+    justify-content: space-between;
     padding: 10px;
-    border-radius: 10px;
+    border-radius:20px;
+    box-sizing: border-box;
     transition: background-color 0.5s ease;
     margin: 0;
     cursor: pointer;
@@ -31,17 +38,19 @@
     }
   }
   .post-text-group{
-    width: 500px;
+    width: 600px;
     height: 100%;
-    padding: 0 10px;
+    padding:5px 20px;
     text-align: left;
 
   }
   .post-image{
-    max-width: 380px;
-    max-height: 260px;
+    width: 320px;
+    max-width: 320px;
+    max-height: 200px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 20px;
     
   }
   .post-text{
@@ -49,9 +58,10 @@
     align-items: center;
     justify-content: space-between;
     h3{
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
       margin: 0;
+      width: 90%;
 
     }
     p{
@@ -63,11 +73,18 @@
   }
   .post-text-duration{
     p{
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 400;
-      margin-top: 5px;
-      margin-bottom: 5px;
+      margin: 0;
     }
+  }
+  .post-text-description{
+    font-size: 16px;
+    margin: 0;
+    font-family: Mazzard;
+    margin-top: 5px;
+    font-weight: 500;
+    line-height: 18px;
   }
   .post-text1{
     display: block;
@@ -83,6 +100,45 @@
   .post-language{
     display: flex;
     justify-content: space-between;
+    align-self: center;
+    margin-top: 5px;
+    
+    p{
+      width: 82px;
+      height: 30px;
+      font-size: 15px;
+    }
+    .post-text-rank{
+      height: auto;
+      img{
+        width: 87px;
+        height: 23px;
+        margin-top: 10px;
+      }
+    }
+    .post-teacher-profile{
+      width: 130px;
+      height: 40px;
+      display: flex;
+      margin-top: 5px;
+      .teacher-name{
+        h5{
+          font-size: 15px;
+          margin: 0;
+        }
+        p{
+          font-size: 10px;
+          margin: 0;
+        }
+        
+      }
+      img{
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+      }
+    }
+    
    
   }
   .post-wrapper{
