@@ -12,6 +12,7 @@ import SwitchToLoginView from "../../../components/view/SwitchToLoginView";
 import demoService from "../../../services/demoService";
 import { useSelector } from "react-redux";
 import { Rating, Typography } from "@mui/material";
+import { convertMinutesToHours } from "../../../utils/helper/math";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const Post = () => {
@@ -131,6 +132,11 @@ const Post = () => {
                             }}
                             width={"100%"}
                             height={"100%"}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "flex-end",
+                            }}
                         />
                     </div>
                     <div className="post-details">
@@ -156,8 +162,8 @@ const Post = () => {
                         </div>
                         <div className="schedule-info">
                             <div className="class-time">
-                                Class starts: {classTime?.year}.
-                                {classTime?.month}.{classTime?.day} at{" "}
+                                Class starts: {classTime?.day}.
+                                {classTime?.month}.{classTime?.year} at{" "}
                                 {addZeroIfRequired(classTime?.hour)}:
                                 {addZeroIfRequired(classTime?.minute)}
                             </div>
@@ -176,13 +182,13 @@ const Post = () => {
                     </div>
                 </div>
                 <div className="content-secondary">
-                    <div className="course-description">
+                    <div className="course-info">
                         <div className="course-target">
                             <div className="target-title">Course Target:</div>
                             {data?.courseTarget?.length ? (
                                 data.courseTarget.map((obj, i) => (
                                     <div key={i} className="target-item">
-                                        {obj}
+                                        {obj.length ? obj : null}
                                     </div>
                                 ))
                             ) : (
@@ -240,8 +246,8 @@ const Post = () => {
                                 <div className="info-section">
                                     <div className="info-label">Demo Day:</div>
                                     <div className="info-value">
-                                        {demoDay?.year}.{demoDay?.month}.
-                                        {demoDay?.day} at{" "}
+                                        {demoDay?.day}.{demoDay?.month}.
+                                        {demoDay?.year} at{" "}
                                         {addZeroIfRequired(demoDay?.hour)}:
                                         {addZeroIfRequired(demoDay?.minute)}
                                     </div>
@@ -249,7 +255,9 @@ const Post = () => {
                                 <div className="info-section">
                                     <div className="info-label">Duration:</div>
                                     <div className="info-value">
-                                        {data?.duration || "4 weeks"}
+                                        {convertMinutesToHours(
+                                            data?.duration
+                                        ) || "2h 30m"}
                                     </div>
                                 </div>
                                 <div className="info-section">
