@@ -84,7 +84,6 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
         if (error) return console.error("sdp offer error")
         console.log('Invoking SDP offer callback function');
 
-        // Modify SDP to set higher bitrate
         const modifiedSdp = setHighBitrate(offerSdp);
 
         let msg = {
@@ -125,8 +124,8 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
             nextMLineIndex = sdpLines.length;
         }
 
-        // Add a=fmtp line to set max bitrate
-        const maxBitrate = 2000; // 2 Mbps
+
+        const maxBitrate = 2000;
         const insertAt = nextMLineIndex - 1;
         const fmtpLine = `a=fmtp:96 max-fr=60;max-fs=8160;max-br=${maxBitrate}`;
         sdpLines.splice(insertAt, 0, fmtpLine);
