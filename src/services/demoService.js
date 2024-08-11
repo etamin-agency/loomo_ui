@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
 // const API_BASE_URL = 'http://192.168.23.248:8085/api/v1/demo-class';
-const API_BASE_URL = 'http://192.168.23.246:8085/api/v1/demo-class';
+const API_BASE_URL = 'https://192.168.23.246:8448/api/v1/demo-class';
 // const API_BASE_URL = 'http://localhost:8085/api/v1/demo-class';
 
 const demoService = {

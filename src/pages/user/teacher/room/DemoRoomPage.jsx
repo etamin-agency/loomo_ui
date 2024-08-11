@@ -24,7 +24,7 @@ const DemoRoomPage = () => {
     const {roomId} = useParams();
     const {role} = useSelector(state => state.role);
     const navigate = useNavigate()
-    const ws = useRef(new WebSocket('wss://192.168.23.246:8086/demo-room'));
+    const ws = useRef(new WebSocket('wss://192.168.23.246:8449/demo-room'));
     const participantsView = useRef(new Map());
     const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
     const [teacherName, setTeacherName] = useState('');
@@ -36,7 +36,7 @@ const DemoRoomPage = () => {
 
     useEffect(() => {
         checkIfExistence(roomId).then(r => console.log("hey"));
-        ws.current = new WebSocket('wss://192.168.23.246:8086/demo-room');
+        ws.current = new WebSocket('wss://192.168.23.246:8449/demo-room');
         console.log("Page Loaded - Opened WebSocket");
         triggerRender();
         ws.current.onopen = () => {
