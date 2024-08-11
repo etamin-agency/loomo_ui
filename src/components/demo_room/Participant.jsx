@@ -31,8 +31,8 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
                 const constraints = {
                     audio: isAudioOn,
                     video: isVideoOn ? {
-                        width: { ideal: 1280, max: 1920 },
-                        height: { ideal: 720, max: 1080 },
+                        width: { ideal: 1920, max: 3840 },
+                        height: { ideal: 1080, max: 2160 },
                         frameRate: { ideal: 30, max: 60 },
                         aspectRatio: { ideal: 16/9 },
                         facingMode: "user",
@@ -45,7 +45,10 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
                     localVideo: videoRef.current,
                     mediaConstraints: constraints,
                     onicecandidate: onIceCandidate,
-                    sendSource: 'webcam'
+                    sendSource: 'webcam',
+                    configuration: {
+                        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                    }
                 }
                 rtcPeer.current = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
                     function (error) {
@@ -61,6 +64,9 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
                     mediaConstraints: {
                         audio: isAudioOn,
                         video: isVideoOn
+                    },
+                    configuration: {
+                        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
                     }
                 }
                 rtcPeer.current = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
@@ -77,12 +83,55 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
     const offerToReceiveVideo = (error, offerSdp, wp) => {
         if (error) return console.error("sdp offer error")
         console.log('Invoking SDP offer callback function');
+
+        // Modify SDP to set higher bitrate
+        const modifiedSdp = setHighBitrate(offerSdp);
+
         let msg = {
             id: "receiveVideoFrom",
             sender: name,
-            sdpOffer: offerSdp
+            sdpOffer: modifiedSdp
         };
         sendMessage(msg);
+    }
+
+    const setHighBitrate = (sdp) => {
+        const sdpLines = sdp.split('\r\n');
+        let mLineIndex = -1;
+
+        // Find m= line for video
+        for (let i = 0; i < sdpLines.length; i++) {
+            if (sdpLines[i].startsWith('m=video')) {
+                mLineIndex = i;
+                break;
+            }
+        }
+
+        if (mLineIndex === -1) {
+            console.log('Could not find the m line for video');
+            return sdp;
+        }
+
+        // Find next m= line
+        let nextMLineIndex = -1;
+        for (let i = mLineIndex + 1; i < sdpLines.length; i++) {
+            if (sdpLines[i].startsWith('m=')) {
+                nextMLineIndex = i;
+                break;
+            }
+        }
+
+        if (nextMLineIndex === -1) {
+            nextMLineIndex = sdpLines.length;
+        }
+
+        // Add a=fmtp line to set max bitrate
+        const maxBitrate = 2000; // 2 Mbps
+        const insertAt = nextMLineIndex - 1;
+        const fmtpLine = `a=fmtp:96 max-fr=60;max-fs=8160;max-br=${maxBitrate}`;
+        sdpLines.splice(insertAt, 0, fmtpLine);
+
+        return sdpLines.join('\r\n');
     }
 
     const onIceCandidate = (candidate) => {
