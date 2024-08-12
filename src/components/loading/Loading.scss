@@ -52,3 +52,7 @@
         left: -5%;
     }
 }
+
+.student-dashboard.collapsed ~ div {
+    width: 95%; 
+}

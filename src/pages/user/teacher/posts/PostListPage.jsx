@@ -53,7 +53,7 @@ const PostListPage = () => {
                     {data.map((item) => (
                         <div className="published-post" key={item?.postId}>
                             <MenuItems postId={item?.postId} onDelete={handlePostDelete} />
-                            <Link to={`/edit/${item?.postId}`}>
+                            <Link to={`/demo/${item?.postId}`}>
                                 <img
                                     className="post-image"
                                     src={`https://d37zebxsdrcn1w.cloudfront.net/${item?.imageId}`}

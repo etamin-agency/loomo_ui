@@ -1,64 +1,86 @@
-.StudentClassPage{
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 87%;
-  height: 100%;
-  text-align: center;
-  padding: 100px;
-  transition: all .3s ease;
-  z-index: -1;
-  .class-wrapper{
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-    max-width: 1200px;
-  }
-  .class{
-    width: 320px;
-    padding:  20px;
-    background-color: #cccccc;
-    border-radius: 20px;
-    margin-bottom: 40px;
-  }
-  .class-image{
-    width: 280px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 20px;
-  }
-  .class-title{
-    font-size: 20px;
-    line-height: 20px;
-    width: 280px;
-    margin: 5px auto 0;
-    font-weight: 600;
-    color: #0e100e;
-  }
-  .class-image-wrapper{
-    position: relative;
-  }
-  .timer-wrapper{
+.StudentClassPage {
     position: absolute;
+    right: 0;
     top: 0;
-    width: 280px;
-    height: 200px;
-    background-color: rgba(0,0,0,0.4);
-    border-radius: 20px;
-    z-index: 5;
-    color: white;
-    font-size: 22px;
-    margin: 0 auto;
-    text-align: center;
-    padding-top: 60px;
-  }
-  .create-icon{
-    display: block;
-    margin: 0 auto ;
-    cursor: pointer;
-  }
+    width: 87%;
+    height: 100%;
+    text-align: right;
+    padding: 100px;
+    transition: all 0.3s ease;
+    z-index: -1;
+
+    .btn-demo-classes {
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #fff;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease,
+                box-shadow 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            &:hover {
+                background-color: #0056b3;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
+
+    .class-wrapper {
+        display: flex;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        max-width: 1200px;
+    }
+    .class {
+        width: 320px;
+        padding: 20px;
+        background-color: #cccccc;
+        border-radius: 20px;
+        margin-bottom: 40px;
+    }
+    .class-image {
+        width: 280px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+    .class-title {
+        font-size: 20px;
+        line-height: 20px;
+        width: 280px;
+        margin: 5px auto 0;
+        font-weight: 600;
+        color: #0e100e;
+    }
+    .class-image-wrapper {
+        position: relative;
+    }
+    .timer-wrapper {
+        position: absolute;
+        top: 0;
+        width: 280px;
+        height: 200px;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 20px;
+        z-index: 5;
+        color: white;
+        font-size: 22px;
+        margin: 0 auto;
+        text-align: center;
+        padding-top: 60px;
+    }
+    .create-icon {
+        display: block;
+        margin: 0 auto;
+        cursor: pointer;
+    }
 }
 
 .student-dashboard.collapsed ~ .StudentClassPage {
-  width: 95%;
+    width: 95%;
 }

@@ -92,9 +92,9 @@ function App() {
                                     <Route path="/studio" element={<TeacherStudioPage/>}/>
                                     <Route path="/assignments" element={<AssignmentsPage/>}/>
                                     <Route path="/wallet" element={<WalletPage/>}/>
-                                    <Route path="/teacher-demo">
-                                        <Route path="/teacher-demo" element={<TeacherDemoPage/>}/>
-                                        <Route path="/teacher-demo/:postId" element={<DemoViewStudentPage/>}/>
+                                    <Route path="/demo">
+                                        <Route path="/demo" element={<TeacherDemoPage/>}/>
+                                        <Route path="/demo/:postId" element={<DemoViewStudentPage/>}/>
                                     </Route>
                                     <Route path="/edit-class">
                                         <Route path="/edit-class" element={<EditClassListPage/>}/>
