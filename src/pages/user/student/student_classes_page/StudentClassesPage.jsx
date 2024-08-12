@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import postService from "../../../../services/postService";
 import create_icon from "../../../../assets/white-create-icon.png";
 import classService from "../../../../services/classService";
+import Button from "react-bootstrap/Button";
 
 import ClassTimer from "../../../../components/timer/ClassTimer";
 
@@ -12,47 +13,42 @@ import {calculateTimeRemaining} from "../../../../utils/helper/math";
 import {useSelector} from "react-redux";
 import demoRoomService from "../../../../services/demoRoomService";
 import Loading from "../../../../components/loading/Loading";
+import demoService from "../../../../services/demoService";
 
 const StudentClassesPage = () => {
     const navigate = useNavigate();
     const [classes, setClasses] = useState();
     const [loading, setLoading] = useState(true);
+    const [isDemoExists,setDemoExists]=useState(false);
     const {role} = useSelector(state => state.role);
 
     useEffect(() => {
         if (role === 'teacher') {
             classService.fetchTeacherClasses().then(data => {
-                if (!data) {
+                if (!data || data?.length===0) {
                     console.log("teacher has  0 classes")
                 } else {
                     console.log(data)
-                    fetchImages(data)
+                    setClasses(data)
                 }
+                setLoading(false)
             })
+            demoService.isDemoClassesExists().then(data=>setDemoExists(data))
         } else {
             classService.fetchAttendingClassesForStudent().then(data => {
-                if (!data) {
+                if (!data || data?.length===0) {
                     console.log("student attending to 0 classes")
                 } else {
                     console.log(data)
-                    fetchImages(data)
+                    setClasses(data)
                 }
+                setLoading(false)
             })
+            demoService.isStudentAttendingToAnyClass().then(data=>setDemoExists(data))
         }
 
-    }, [])
-    const fetchImages = async (classes) => {
-        const newData = await Promise.all(classes?.map(async (classData) => {
-            const file = await postService.getImage(classData?.classImgLink);
-            return {
-                ...classData,
-                image: file
-            };
-        }))
-        setClasses(newData)
-        setLoading(false)
 
-    }
+    }, [])
 
     const handleOpenClass = (classId, teacherId) => {
         if (isJoinClass) {
@@ -93,13 +89,18 @@ const StudentClassesPage = () => {
     return (
         <div className="StudentClassPage">
             {loading && <Loading />}
+            {isDemoExists&&
+                <Link to="/teacher-demo">
+                    <Button>Demo Classes</Button>
+                </Link>
+                }
             <div className="class-wrapper">
                 {classes?.map(data => {
                     const isClassTime = isJoinClass(data?.classDays, data?.classTime)
                     return (
                         <div className="class" key={data?.classId}>
                             <div className="class-image-wrapper">
-                                <img className="class-image" src={`data:image/jpeg;base64, ${data?.image}`}
+                                <img className="class-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.classImgLink}`}
                                      alt="post-image"/>
 
                                 <div className="timer-wrapper">

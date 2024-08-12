@@ -17,14 +17,8 @@ const TeacherDemoPage = () => {
     }, [])
     const fetchDemoClasses = async () => {
         await demoService.getDemoClasses().then(async data => {
-            const newData = await Promise.all(data?.map(async (post) => {
-                const file = await postService.getImage(post?.introVideoImgLink);
-                return {
-                    ...post,
-                    image: file
-                };
-            }));
-            setDemoClass(newData)
+            setDemoClass(data)
+            console.log(data)
             setLoading(false)
         });
     }
@@ -43,9 +37,7 @@ const TeacherDemoPage = () => {
     const isCreateDemoRoom = (demoTime) => {
         const endTime = new Date(demoTime).getTime();
         const currentTime = new Date().getTime();
-        const userGMTOffsetInMilliseconds = new Date().getTimezoneOffset() * 60 * 1000;
-        const adjustedEndTime = endTime - userGMTOffsetInMilliseconds;
-        const timeDiff = adjustedEndTime - currentTime;
+        const timeDiff = endTime - currentTime;
 
         const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
 
@@ -68,7 +60,7 @@ const TeacherDemoPage = () => {
                         <div className="demo-class" key={data?.postId}
                              onClick={() => viewStudentInDemoClass(data?.postId,isDemoTime,data?.teacherId)}>
                             <div className="demo-class-image-wrapper">
-                                <img className="demo-class-image" src={`data:image/jpeg;base64, ${data?.image}`}
+                                <img className="demo-class-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.introVideoImgLink}`}
                                      alt="post-image"/>
 
                                 <div className="timer-wrapper">

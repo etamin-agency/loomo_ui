@@ -1,11 +1,10 @@
-import {useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 import kurentoUtils from 'kurento-utils';
 import './Participant.scss'
-const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate,isAudioOn = true,isVideoOn=true}) => {
+
+const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isAudioOn = true, isVideoOn = true }) => {
     const rtcPeer = useRef(null);
     const videoRef = useRef(null);
-
-
 
     useEffect(() => {
         if (sdpAnswer) {
@@ -25,26 +24,33 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate,isAud
             });
         }
     }, [candidate]);
+
     useEffect(() => {
-        if (!rtcPeer.current){
+        if (!rtcPeer.current) {
             if (isOwnCamera) {
                 const constraints = {
                     audio: isAudioOn,
                     video: isVideoOn ? {
-                        mandatory: {
-                            maxWidth: 320,
-                            maxFrameRate: 30,
-                            minFrameRate: 30
-                        }
+                        width: { ideal: 1920, max: 3840 },
+                        height: { ideal: 1080, max: 2160 },
+                        frameRate: { ideal: 30, max: 60 },
+                        aspectRatio: { ideal: 16/9 },
+                        facingMode: "user",
+                        echoCancellation: true,
+                        noiseSuppression: true,
                     } : false
                 };
-                console.log(constraints)
+                console.log(constraints);
                 let options = {
                     localVideo: videoRef.current,
                     mediaConstraints: constraints,
-                    onicecandidate: onIceCandidate
+                    onicecandidate: onIceCandidate,
+                    sendSource: 'webcam',
+                    configuration: {
+                        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                    }
                 }
-                rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
+                rtcPeer.current = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options,
                     function (error) {
                         if (error) {
                             return console.error(error);
@@ -52,12 +58,18 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate,isAud
                         this.generateOffer(offerToReceiveVideo);
                     });
             } else {
-
                 let options = {
                     remoteVideo: videoRef.current,
-                    onicecandidate: onIceCandidate
+                    onicecandidate: onIceCandidate,
+                    mediaConstraints: {
+                        audio: isAudioOn,
+                        video: isVideoOn
+                    },
+                    configuration: {
+                        iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+                    }
                 }
-                rtcPeer.current = new kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
+                rtcPeer.current = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options,
                     function (error) {
                         if (error) {
                             return console.error(error);
@@ -66,17 +78,61 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate,isAud
                     });
             }
         }
-    }, []);
+    }, [isOwnCamera, isAudioOn, isVideoOn, name, sendMessage]);
+
     const offerToReceiveVideo = (error, offerSdp, wp) => {
         if (error) return console.error("sdp offer error")
         console.log('Invoking SDP offer callback function');
+
+        const modifiedSdp = setHighBitrate(offerSdp);
+
         let msg = {
             id: "receiveVideoFrom",
             sender: name,
-            sdpOffer: offerSdp
+            sdpOffer: modifiedSdp
         };
         sendMessage(msg);
     }
+
+    const setHighBitrate = (sdp) => {
+        const sdpLines = sdp.split('\r\n');
+        let mLineIndex = -1;
+
+        // Find m= line for video
+        for (let i = 0; i < sdpLines.length; i++) {
+            if (sdpLines[i].startsWith('m=video')) {
+                mLineIndex = i;
+                break;
+            }
+        }
+
+        if (mLineIndex === -1) {
+            console.log('Could not find the m line for video');
+            return sdp;
+        }
+
+        // Find next m= line
+        let nextMLineIndex = -1;
+        for (let i = mLineIndex + 1; i < sdpLines.length; i++) {
+            if (sdpLines[i].startsWith('m=')) {
+                nextMLineIndex = i;
+                break;
+            }
+        }
+
+        if (nextMLineIndex === -1) {
+            nextMLineIndex = sdpLines.length;
+        }
+
+
+        const maxBitrate = 2000;
+        const insertAt = nextMLineIndex - 1;
+        const fmtpLine = `a=fmtp:96 max-fr=60;max-fs=8160;max-br=${maxBitrate}`;
+        sdpLines.splice(insertAt, 0, fmtpLine);
+
+        return sdpLines.join('\r\n');
+    }
+
     const onIceCandidate = (candidate) => {
         console.log("Local candidate" + JSON.stringify(candidate));
         let message = {
@@ -86,9 +142,10 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate,isAud
         };
         sendMessage(message);
     }
+
     return (
         <div className="student-video-item">
-            <video className="student-video" ref={videoRef} autoPlay width="620px" height="480px"></video>
+            <video className="student-video" ref={videoRef} autoPlay playsInline></video>
         </div>
     )
 }

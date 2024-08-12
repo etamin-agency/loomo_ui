@@ -11,8 +11,10 @@ import { jwtDecode } from "jwt-decode";
 import SwitchToLoginView from "../../../components/view/SwitchToLoginView";
 import demoService from "../../../services/demoService";
 import { useSelector } from "react-redux";
-import { Rating, Typography } from "@mui/material";
+import { Rating, Typography, Snackbar, Alert } from "@mui/material";
+import { convertMinutesToHours } from "../../../utils/helper/math";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import AuthDialog from "../../../components/auth_dialog/AuthDialog";
 
 const Post = () => {
     let { uuid } = useParams();
@@ -25,15 +27,15 @@ const Post = () => {
     const [teacher, setTeacher] = useState({});
     const [isAlreadyAttending, setAlreadyAttending] = useState(false);
     const [switchToStudentView, setSwitchToStudentView] = useState(false);
-    const navigate = useNavigate();
-
     const [isExpanded, setIsExpanded] = useState(false);
+    const [openAuthDialog, setOpenAuthDialog] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleToggleRoadmap = () => {
         data.roadmap && setIsExpanded(!isExpanded);
     };
-
-    console.log(data);
 
     useEffect(() => {
         postService.getPost(uuid).then((data) => {
@@ -103,10 +105,20 @@ const Post = () => {
                     postId: uuid,
                 });
                 setAlreadyAttending(true);
+                setSnackbarMessage("You are now registered for the demo!");
+                setOpenSnackbar(true);
             }
         } else {
-            navigate("/login");
+            setOpenAuthDialog(true);
         }
+    };
+
+    const handleCloseAuthDialog = () => {
+        setOpenAuthDialog(false);
+    };
+
+    const handleCloseSnackbar = () => {
+        setOpenSnackbar(false);
     };
 
     return loading ? (
@@ -115,9 +127,22 @@ const Post = () => {
         <div className="post-page">
             {switchToStudentView && (
                 <SwitchToLoginView
-                    close={() => setSwitchToStudentView(false)}
+                    open={switchToStudentView}
+                    onClose={() => setSwitchToStudentView(false)}
                 />
             )}
+            <AuthDialog open={openAuthDialog} onClose={handleCloseAuthDialog} />
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message={snackbarMessage}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity="success">
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
             <div className="post-content">
                 <div className="content-primary">
                     <div className="player-wrapper">
@@ -131,6 +156,11 @@ const Post = () => {
                             }}
                             width={"100%"}
                             height={"100%"}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "flex-end",
+                            }}
                         />
                     </div>
                     <div className="post-details">
@@ -156,13 +186,14 @@ const Post = () => {
                         </div>
                         <div className="schedule-info">
                             <div className="class-time">
-                                Class starts: {classTime?.year}.
-                                {classTime?.month}.{classTime?.day} at{" "}
+                                Class starts: {classTime?.day}.
+                                {classTime?.month}.{classTime?.year} at{" "}
                                 {addZeroIfRequired(classTime?.hour)}:
                                 {addZeroIfRequired(classTime?.minute)}
                             </div>
                             <div className="language-info">
-                                Language: {data?.language}
+                                Duration:{" "}
+                                {convertMinutesToHours(data?.duration)}
                             </div>
                         </div>
                         <div className="class-days">
@@ -176,13 +207,13 @@ const Post = () => {
                     </div>
                 </div>
                 <div className="content-secondary">
-                    <div className="course-description">
+                    <div className="course-info">
                         <div className="course-target">
                             <div className="target-title">Course Target:</div>
                             {data?.courseTarget?.length ? (
                                 data.courseTarget.map((obj, i) => (
                                     <div key={i} className="target-item">
-                                        {obj}
+                                        {obj.length ? obj : null}
                                     </div>
                                 ))
                             ) : (
@@ -240,16 +271,16 @@ const Post = () => {
                                 <div className="info-section">
                                     <div className="info-label">Demo Day:</div>
                                     <div className="info-value">
-                                        {demoDay?.year}.{demoDay?.month}.
-                                        {demoDay?.day} at{" "}
+                                        {demoDay?.day}.{demoDay?.month}.
+                                        {demoDay?.year} at{" "}
                                         {addZeroIfRequired(demoDay?.hour)}:
                                         {addZeroIfRequired(demoDay?.minute)}
                                     </div>
                                 </div>
                                 <div className="info-section">
-                                    <div className="info-label">Duration:</div>
+                                    <div className="info-label">Language:</div>
                                     <div className="info-value">
-                                        {data?.duration || "4 weeks"}
+                                        {data?.language}
                                     </div>
                                 </div>
                                 <div className="info-section">
@@ -261,12 +292,16 @@ const Post = () => {
                             </div>
 
                             <div className="action-section">
-                                {!isAlreadyAttending && (
+                                {!isAlreadyAttending ? (
                                     <div
                                         className="attend-demo-button"
                                         onClick={handleAttendDemo}
                                     >
                                         Attend Demo
+                                    </div>
+                                ) : (
+                                    <div className="already-attend-demo-button">
+                                        You are already attending demo
                                     </div>
                                 )}
                             </div>

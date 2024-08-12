@@ -3,7 +3,7 @@ import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
 // const API_BASE_URL = 'http://192.168.23.248:8085/api/v1/demo-class';
-const API_BASE_URL = 'http://192.168.23.246:8085/api/v1/demo-class';
+const API_BASE_URL = 'https://192.168.23.246:8448/api/v1/demo-class';
 // const API_BASE_URL = 'http://localhost:8085/api/v1/demo-class';
 
 const demoService = {
@@ -105,6 +105,23 @@ const demoService = {
         });
         try {
             const response = await axiosInstance.get(`/is-attending/${username}`);
+            return response.data;
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    isDemoClassesExists: async ()=>{
+        const token = Cookie.get('access_token');
+        const username = jwtDecode(token).sub;
+        const axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        try {
+            const response = await axiosInstance.get(`/is-demo-classes-exists/${username}`);
             return response.data;
         } catch (error) {
             console.log(error)

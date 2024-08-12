@@ -1,33 +1,42 @@
-import './View.scss'
-import {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
-import {handleLogout} from "../../utils/auth/authUtils";
+import React from "react";
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,
+    Typography,
+    IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
-const SwitchToLoginView = ({close}) => {
+const SwitchToLoginView = ({ open, onClose }) => {
     const navigate = useNavigate();
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
-        }, []
-    )
-    const handleClose = () => {
-        document.body.style.overflow = 'auto';
-        document.documentElement.style.overflow = 'auto';
-        close()
-    }
-    const  handleLogoutLogin=()=>{
-        handleLogout();
-        navigate("/login")
-        window.location.reload()
-    }
+
     return (
-        <div className="some-name">
-            <div className="SwitchToLoginView">
-                Switch to Student Account Please <div className="logout-login" onClick={handleLogoutLogin}> Login</div>
-                <div onClick={handleClose} className="btn-close switch-close-button"></div>
-            </div>
-        </div>
-    )
-}
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle>
+                Action Required
+                <IconButton
+                    className="closeButton"
+                    color="primary"
+                    onClick={onClose}
+                    aria-label="close"
+                    sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        width: 40,
+                        height: 40,
+                    }}
+                >
+                    <CloseIcon sx={{ fontSize: 24 }} />
+                </IconButton>
+            </DialogTitle>
+            <DialogContent>
+                <Typography>Switch to Student Account Please</Typography>
+            </DialogContent>
+        </Dialog>
+    );
+};
 
 export default SwitchToLoginView;
