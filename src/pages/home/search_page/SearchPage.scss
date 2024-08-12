@@ -6,22 +6,83 @@
   width: 100%;
   height: 100%;
   padding: 15px;
-  background-color: #eeeeee;
+  background-color: #ffffff;
+  .Result{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left:70px;
+    gap: 20px;
+   
+
+
+    .filter-section {
+      background: #fff;
+      border-radius: 5px;
+      transition: all 3s ease-out;
+      .filter-header {
+        width: 25%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      
+      .filter-button {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      
+      .sort-by {
+        display: flex;
+        align-items: center;
+      }
+      
+      .sort-by label {
+        margin-right: 5px;
+      }
+      
+      .sort-by select {
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 3px;
+        width: 200px;
+        height: 40px;
+      }
+      
+      .filter-options {
+        margin-top: 15px;
+      }
+      
+      details {
+        margin-bottom: 10px;
+      }
+      
+      summary {
+        font-weight: bold;
+        cursor: pointer;
+      }
+    }
+  }
   .results-number{
     font-size: 38px;
     text-align: left;
     margin-top: 30px;
-    margin-left: 250px;
-  }
-  .post-wrapper{
-    width: 100%;
-   display: flex;
-   align-items: center;
-   flex-direction: column;
-   gap: 30px;
     
   }
+  .post-wrapper{
+    width: 940px;
+   display: flex;
+   align-items: end;
+   flex-direction: column;
+   gap: 30px;
+   transition: all 3s ease-out;   
+  }
   .post{
+    position: relative;
     width: 940px;
     height: 220px;
     background-color: #ffffff;
@@ -31,6 +92,7 @@
     border-radius:20px;
     box-sizing: border-box;
     transition: background-color 0.5s ease;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     margin: 0;
     cursor: pointer;
     &:hover{
@@ -51,6 +113,7 @@
     height: 200px;
     object-fit: cover;
     border-radius: 20px;
+    margin: 0;
     
   }
   .post-text{
@@ -98,15 +161,22 @@
     text-decoration: none;
   }
   .post-language{
+    width: 550px;
+    bottom: 10px;
     display: flex;
     justify-content: space-between;
-    align-self: center;
+    align-items: center;
     margin-top: 5px;
+    position: absolute;
+    .language-text{
+      margin-top: 10px;
+    }
     
     p{
       width: 82px;
       height: 30px;
       font-size: 15px;
+      margin: 0;
     }
     .post-text-rank{
       height: auto;
@@ -159,5 +229,31 @@
 
   .show-more-button:hover {
       background-color: #0056b3;
+  }
+
+  .search-filter-panel{
+    width: 300px;
+    height: 1000px;
+    background-color: antiquewhite;
+  }
+
+  .post-group{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+
+    .post-wrapper-filter{
+      width: 350px;
+      height: auto;
+      background-color: #ffffff;
+      transition: max-height 1s ease-out, opacity 1s ease-out;
+      
+      
+      
+    }
+    .post-wrapper-filter.show {
+      max-height: 500px; /* Adjust based on content */
+      opacity: 1;
+  }
   }
 }

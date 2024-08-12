@@ -88,7 +88,7 @@ const Participant = ({isOwnCamera, name, sendMessage, sdpAnswer, candidate,isAud
     }
     return (
         <div className="student-video-item">
-            <video className="student-video" ref={videoRef} autoPlay width="720px" height="480px"></video>
+            <video className="student-video" ref={videoRef} autoPlay width="620px" height="480px"></video>
         </div>
     )
 }
