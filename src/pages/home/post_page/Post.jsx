@@ -39,37 +39,71 @@ const Post = () => {
     };
 
     useEffect(() => {
-        postService.getPost(uuid).then((data) => {
-            const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
-            setFile(url);
-            setData(data);
-            const classTime = new Date(data?.classTime);
-            const demoDay = new Date(data?.demoTime);
-            const classTimeObj = {
-                year: classTime.getFullYear(),
-                month: classTime.getMonth() + 1,
-                day: classTime.getDate(),
-                hour:
-                    classTime.getHours() +
-                    (classTime.getTimezoneOffset() / 60) * -1,
-                minute: classTime.getMinutes(),
-                gmt: (classTime.getTimezoneOffset() / 60) * -1,
-            };
-            const demoDayObj = {
-                year: demoDay.getFullYear(),
-                month: demoDay.getMonth() + 1,
-                day: demoDay.getDate(),
-                hour:
-                    demoDay.getHours() +
-                    (demoDay.getTimezoneOffset() / 60) * -1,
-                minute: demoDay.getMinutes(),
-                gmt: (demoDay.getTimezoneOffset() / 60) * -1,
-            };
-            getTeacher(data);
-            setClassTime(classTimeObj);
-            setDemoDay(demoDayObj);
-        });
-    }, [uuid]);
+        let isMounted = true;
+
+        const fetchData = async () => {
+            try {
+                const data = await postService.getPost(uuid);
+                if (isMounted) {
+                    const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
+                    const classTime = new Date(data?.classTime);
+                    const demoDay = new Date(data?.demoTime);
+                    const classTimeObj = {
+                        year: classTime.getFullYear(),
+                        month: classTime.getMonth() + 1,
+                        day: classTime.getDate(),
+                        hour:
+                            classTime.getHours() +
+                            (classTime.getTimezoneOffset() / 60) * -1,
+                        minute: classTime.getMinutes(),
+                        gmt: (classTime.getTimezoneOffset() / 60) * -1,
+                    };
+                    const demoDayObj = {
+                        year: demoDay.getFullYear(),
+                        month: demoDay.getMonth() + 1,
+                        day: demoDay.getDate(),
+                        hour:
+                            demoDay.getHours() +
+                            (demoDay.getTimezoneOffset() / 60) * -1,
+                        minute: demoDay.getMinutes(),
+                        gmt: (demoDay.getTimezoneOffset() / 60) * -1,
+                    };
+
+                    const teacher = await settingService.getTeacherProfileById(
+                        data?.teacherId
+                    );
+                    const img = teacher?.profilePicture
+                        ? `data:image/jpeg;base64,${teacher.profilePicture}`
+                        : teacher_image;
+
+                    if (isMounted) {
+                        setData(data);
+                        setFile(url);
+                        setClassTime(classTimeObj);
+                        setDemoDay(demoDayObj);
+                        setTeacher({ ...teacher, profilePicture: img });
+                        setLoading(false);
+                    }
+
+                    if (role) {
+                        const isAlreadyAttending =
+                            await demoService.isStudentAttending(uuid);
+                        if (isMounted) {
+                            setAlreadyAttending(isAlreadyAttending);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [uuid]); // Ensure role is included if necessary
 
     const getTeacher = async (data) => {
         await settingService
@@ -137,7 +171,7 @@ const Post = () => {
                     property="og:title"
                     content={`${data?.title} - ${
                         teacher?.firstName || "Andrew"
-                    } ${teacher?.lastName  || "Tate"}`}
+                    } ${teacher?.lastName || "Tate"}`}
                 />
                 <meta property="og:description" content={data?.description} />
                 <meta
