@@ -110,7 +110,7 @@ const StudentClassesPage = () => {
                         </p>
                     ) : (
                         <p>
-                            Look like no one enrolled in you classes 
+                            Looks like no one enrolled in your classes 
                         </p>
                     )}
                 </div>
