@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    FormControlLabel,
+    Switch,
+    TextField,
+    Typography,
+} from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import ReactPlayer from "react-player";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -29,6 +36,19 @@ import "./CreateEditPostPage.scss";
 const CreateEditPostPage = () => {
     const { postId } = useParams();
     const navigate = useNavigate();
+
+    const [isPrivate, setIsPrivate] = useState(false);
+
+    const handleSwitchChange = (event) => {
+        const { name, checked } = event.target;
+        setIsPrivate(event.target.checked);
+        setFormData((prevState) => ({
+            ...prevState,
+            [name]: checked,
+        }));
+
+        setChanged(true);
+    };
 
     const [formData, setFormData] = useState({
         title: "",
@@ -190,7 +210,7 @@ const CreateEditPostPage = () => {
                 ...prevErrors,
                 [fieldName]: error,
             };
-            console.log("Updated Errors State:", updatedErrors); // Debugging line
+            // console.log("Updated Errors State:", updatedErrors);
             return updatedErrors;
         });
 
@@ -289,7 +309,7 @@ const CreateEditPostPage = () => {
             tags: formData.tags,
             roadmap: formData.courseRoadMap,
             duration: formData.classDuration,
-            isPrivate: false,
+            isPrivate: isPrivate,
             isRoadmapPresent: !!formData.courseRoadMap,
         };
         submitData.append("classDto", JSON.stringify(obj));
@@ -600,32 +620,61 @@ const CreateEditPostPage = () => {
                                 validateField("tags", tags);
                             }}
                         />
-                        <Box
-                            display="flex"
-                            justifyContent="flex-end"
-                            gap={3}
-                            mt={2}
-                        >
-                            <Button
-                                variant="outlined"
-                                color="secondary"
-                                onClick={() => navigate("/posts")}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                type="submit"
-                                disabled={
-                                    !isChanged ||
-                                    Object.values(errors).some(
-                                        (error) => error !== ""
-                                    )
+                        <Box display="flex" flexDirection="column">
+                            <FormControlLabel
+                                label="Private"
+                                labelPlacement="start"
+                                // sx={{ alignItems: "end" }}
+                                control={
+                                    <Switch
+                                        name="isClassPrivate"
+                                        checked={formData.isClassPrivate}
+                                        onChange={handleSwitchChange}
+                                        color="primary"
+                                        // sx={{
+                                        //     width: 42,
+                                        //     height: 24,
+                                        //     padding: 0.7,
+                                        //     marginRight: 1,
+                                        //     "& .MuiSwitch-thumb": {
+                                        //         width: 15,
+                                        //         height: 15,
+                                        //     },
+                                        //     "& .MuiSwitch-switchBase": {
+                                        //         top: -4,
+                                        //         left: -4,
+                                        //     },
+                                        // }}
+                                    />
                                 }
+                            />
+                            <Box
+                                display="flex"
+                                justifyContent="flex-end"
+                                gap={3}
                             >
-                                Save
-                            </Button>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => navigate("/posts")}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    sx={{ padding: "5px 30px" }}
+                                    disabled={
+                                        !isChanged ||
+                                        Object.values(errors).some(
+                                            (error) => error !== ""
+                                        )
+                                    }
+                                >
+                                    Save
+                                </Button>
+                            </Box>
                         </Box>
                     </div>
                 </div>
