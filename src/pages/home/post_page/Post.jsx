@@ -128,10 +128,17 @@ const Post = () => {
     ) : (
         <div className="post-page">
             <Helmet>
-                <title>{data?.title} | Loomo</title>
+                <title>{`${data?.title} - ${teacher?.firstName || "Andrew"} ${
+                    teacher?.lastName || "Tate"
+                } | Loomo`}</title>
                 <meta name="description" content={data?.description} />
                 <meta name="medium" content="mult" />
-                <meta property="og:title" content={data?.title} />
+                <meta
+                    property="og:title"
+                    content={`${data?.title} - ${
+                        teacher?.firstName || "Andrew"
+                    } ${teacher?.lastName  || "Tate"}`}
+                />
                 <meta property="og:description" content={data?.description} />
                 <meta
                     property="og:image"
@@ -149,9 +156,23 @@ const Post = () => {
                 />
                 <meta property="og:site_name" content="Loomo" />
                 <meta property="og:type" content="loomo_com:course" />
+                <meta
+                    property="og:video"
+                    content={`https://d37zebxsdrcn1w.cloudfront.net/${
+                        data?.introVideoLink || "default-placeholder.mp4"
+                    }`}
+                />
+                <meta property="og:video:type" content="video/mp4" />
+                <meta property="og:video:width" content="1200" />
+                <meta property="og:video:height" content="630" />
                 <meta name="twitter:card" content="summary_large_image" />
                 <meta name="twitter:site" content="@loomo" />
-                <meta name="twitter:title" content={data?.title} />
+                <meta
+                    name="twitter:title"
+                    content={`${data?.title} - ${
+                        teacher?.firstName || "Andrew"
+                    } ${teacher?.lastName || "Tate"}`}
+                />
                 <meta name="twitter:description" content={data?.description} />
                 <meta
                     name="twitter:image"
@@ -164,7 +185,9 @@ const Post = () => {
                     {`{
                         "@context": "https://schema.org",
                         "@type": "Course",
-                        "name": "${data?.title || "Default Course Title"}",
+                        "name": "${data?.title || "Default Course Title"} - ${
+                        teacher?.firstName || "Default"
+                    } ${teacher?.lastName || "Name"}",
                         "description": "${
                             data?.description || "Default Course Description"
                         }",
@@ -182,15 +205,19 @@ const Post = () => {
                             "courseMode": "online",
                             "instructor": {
                                 "@type": "Person",
-                                "name": "${teacher?.name || "Default Instructor Name"}"
+                                "name": "${
+                                    teacher?.firstName || "Default First Name"
+                                } ${teacher?.lastName || "Default Last Name"}"
                             },                                              
                             "startDate": "${
-                                data?.classStartDate || "2024-08-07T19:00:00.000Z"
+                                data?.classStartDate ||
+                                "2024-08-07T19:00:00.000Z"
                             }"
                         }
                     }`}
                 </script>
             </Helmet>
+
             {switchToStudentView && (
                 <SwitchToLoginView
                     open={switchToStudentView}
