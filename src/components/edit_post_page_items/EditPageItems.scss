@@ -541,3 +541,19 @@
   }
 
 }
+
+
+.PostLanguage {
+    .custom-toggle {
+        &.error {
+            border-color: red !important; // Highlight border in error state
+        }
+    }
+
+    .error-text {
+        color: red;
+        font-size: 0.8rem; // Adjust font size if needed
+        margin-top: 0.25rem;
+        margin-left: 10px;
+    }
+}

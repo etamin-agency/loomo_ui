@@ -93,11 +93,29 @@ const StudentClassesPage = () => {
     return (
         <div className="StudentClassPage">
             {loading && <Loading />}
+
             {isDemoExists && (
                 <Link className="btn-demo-classes" to="/demo">
                     <Button>Demo Classes</Button>
                 </Link>
             )}
+
+            {typeof classes === "undefined" && (
+                <div className="no-classes-message">
+                    <h2>No Classes Available</h2>
+                    {role === "student" ? (
+                        <p>
+                            You’re not enrolled in any classes. Check out our
+                            available courses!
+                        </p>
+                    ) : (
+                        <p>
+                            Looks like no one enrolled in your classes 
+                        </p>
+                    )}
+                </div>
+            )}
+
             <div className="class-wrapper">
                 {classes?.map((data) => {
                     const isClassTime = isJoinClass(
@@ -110,7 +128,7 @@ const StudentClassesPage = () => {
                                 <img
                                     className="class-image"
                                     src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.classImgLink}`}
-                                    alt="post-image"
+                                    alt="post"
                                 />
 
                                 <div className="timer-wrapper">

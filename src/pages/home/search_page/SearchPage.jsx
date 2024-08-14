@@ -6,6 +6,7 @@ import FilterComponent from "../../../components/filter";
 import Loading from "../../../components/loading/Loading";
 import { calculateDaysBetween, convertMinutesToHours, formatDateTime } from "../../../utils/helper/math";
 import './SearchPage.scss';
+import { Helmet } from "react-helmet-async";
 
 const SearchPage = () => {
     const [searchParams] = useSearchParams();
@@ -81,21 +82,40 @@ const SearchPage = () => {
     return (
         <div className="SearchPage">
             {loading && <Loading />}
+            <Helmet>
+                <title>This is Search Page</title>
+            </Helmet>
             <div className="Result">
                 <div className="results-number">
                     Number of Results: {totalNum}
                 </div>
                 <div className="filter-section">
                     <div className="filter-header">
-                        <button className="filter-button" onClick={toggleFilterVisibility}>Filter</button>
+                        <button
+                            className="filter-button"
+                            onClick={toggleFilterVisibility}
+                        >
+                            Filter
+                        </button>
                         <div className="sort-by">
                             <label>Sort by</label>
-                            <select onChange={handleSortChange} value={sortOrder}>
+                            <select
+                                onChange={handleSortChange}
+                                value={sortOrder}
+                            >
                                 <option value="">Default</option>
-                                <option value="price-low">Price: Low to High</option>
-                                <option value="price-high">Price: High to Low</option>
-                                <option value="language-asc">Language: A to Z</option>
-                                <option value="language-desc">Language: Z to A</option>
+                                <option value="price-low">
+                                    Price: Low to High
+                                </option>
+                                <option value="price-high">
+                                    Price: High to Low
+                                </option>
+                                <option value="language-asc">
+                                    Language: A to Z
+                                </option>
+                                <option value="language-desc">
+                                    Language: Z to A
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -103,37 +123,81 @@ const SearchPage = () => {
             </div>
             <div className="post-group">
                 {isFilterVisible && (
-                    <div className={`post-wrapper-filter ${isFilterVisible ? 'show' : ''}`}>
-                        <FilterComponent filters={filters} onFilterChange={handleFilterChange} />
+                    <div
+                        className={`post-wrapper-filter ${
+                            isFilterVisible ? "show" : ""
+                        }`}
+                    >
+                        <FilterComponent
+                            filters={filters}
+                            onFilterChange={handleFilterChange}
+                        />
                     </div>
                 )}
                 <div className="post-wrapper">
-                    {posts?.slice(0, visiblePosts).map(post => (
+                    {posts?.slice(0, visiblePosts).map((post) => (
                         <div className="post" key={post.id}>
-                            <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <img className="post-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${post?.imageId}`}
-                                    alt="post-image" />
+                            <Link
+                                to={`/post/${post.id}`}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "inherit",
+                                }}
+                            >
+                                <img
+                                    className="post-image"
+                                    src={`https://d37zebxsdrcn1w.cloudfront.net/${post?.imageId}`}
+                                    alt="post-image"
+                                />
                             </Link>
-                            <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Link
+                                to={`/post/${post.id}`}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "inherit",
+                                }}
+                            >
                                 <div className="post-text-group">
                                     <div className="post-text">
                                         <h3>{post?.title}</h3>
                                         <p>{post?.price}$</p>
                                     </div>
                                     <div className="post-text-duration">
-                                        <p>{calculateDaysBetween(post?.classStartDate, staticEndDate)} Lessons | Class Duration: {convertMinutesToHours(post?.duration)}</p>
+                                        <p>
+                                            {calculateDaysBetween(
+                                                post?.classStartDate,
+                                                staticEndDate
+                                            )}{" "}
+                                            Lessons | Class Duration:{" "}
+                                            {convertMinutesToHours(
+                                                post?.duration
+                                            )}
+                                        </p>
                                     </div>
-                                    <p className="post-text-description">{post?.description}</p>
+                                    <p className="post-text-description">
+                                        {post?.description}
+                                    </p>
 
                                     <div className="post-language">
-                                        <p className="language-text"> {post?.language}</p>
-                                        <p>Starts: {formatDateTime(post?.classStartDate)}</p>
+                                        <p className="language-text">
+                                            {" "}
+                                            {post?.language}
+                                        </p>
+                                        <p>
+                                            Starts:{" "}
+                                            {formatDateTime(
+                                                post?.classStartDate
+                                            )}
+                                        </p>
                                         <div className="post-teacher-profile">
                                             <div className="teacher-name">
                                                 <h5>Andrew Hate</h5>
                                                 <p>Software Engineer</p>
                                             </div>
-                                            <img src={teacher_icon} alt="teacher"/>
+                                            <img
+                                                src={teacher_icon}
+                                                alt="teacher"
+                                            />
                                         </div>
                                     </div>
                                 </div>

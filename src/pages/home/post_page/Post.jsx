@@ -15,6 +15,7 @@ import { Rating, Typography, Snackbar, Alert } from "@mui/material";
 import { convertMinutesToHours } from "../../../utils/helper/math";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import AuthDialog from "../../../components/auth_dialog/AuthDialog";
+import { Helmet } from "react-helmet-async";
 
 const Post = () => {
     let { uuid } = useParams();
@@ -38,37 +39,71 @@ const Post = () => {
     };
 
     useEffect(() => {
-        postService.getPost(uuid).then((data) => {
-            const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
-            setFile(url);
-            setData(data);
-            const classTime = new Date(data?.classTime);
-            const demoDay = new Date(data?.demoTime);
-            const classTimeObj = {
-                year: classTime.getFullYear(),
-                month: classTime.getMonth() + 1,
-                day: classTime.getDate(),
-                hour:
-                    classTime.getHours() +
-                    (classTime.getTimezoneOffset() / 60) * -1,
-                minute: classTime.getMinutes(),
-                gmt: (classTime.getTimezoneOffset() / 60) * -1,
-            };
-            const demoDayObj = {
-                year: demoDay.getFullYear(),
-                month: demoDay.getMonth() + 1,
-                day: demoDay.getDate(),
-                hour:
-                    demoDay.getHours() +
-                    (demoDay.getTimezoneOffset() / 60) * -1,
-                minute: demoDay.getMinutes(),
-                gmt: (demoDay.getTimezoneOffset() / 60) * -1,
-            };
-            getTeacher(data);
-            setClassTime(classTimeObj);
-            setDemoDay(demoDayObj);
-        });
-    }, [uuid]);
+        let isMounted = true;
+
+        const fetchData = async () => {
+            try {
+                const data = await postService.getPost(uuid);
+                if (isMounted) {
+                    const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
+                    const classTime = new Date(data?.classTime);
+                    const demoDay = new Date(data?.demoTime);
+                    const classTimeObj = {
+                        year: classTime.getFullYear(),
+                        month: classTime.getMonth() + 1,
+                        day: classTime.getDate(),
+                        hour:
+                            classTime.getHours() +
+                            (classTime.getTimezoneOffset() / 60) * -1,
+                        minute: classTime.getMinutes(),
+                        gmt: (classTime.getTimezoneOffset() / 60) * -1,
+                    };
+                    const demoDayObj = {
+                        year: demoDay.getFullYear(),
+                        month: demoDay.getMonth() + 1,
+                        day: demoDay.getDate(),
+                        hour:
+                            demoDay.getHours() +
+                            (demoDay.getTimezoneOffset() / 60) * -1,
+                        minute: demoDay.getMinutes(),
+                        gmt: (demoDay.getTimezoneOffset() / 60) * -1,
+                    };
+
+                    const teacher = await settingService.getTeacherProfileById(
+                        data?.teacherId
+                    );
+                    const img = teacher?.profilePicture
+                        ? `data:image/jpeg;base64,${teacher.profilePicture}`
+                        : teacher_image;
+
+                    if (isMounted) {
+                        setData(data);
+                        setFile(url);
+                        setClassTime(classTimeObj);
+                        setDemoDay(demoDayObj);
+                        setTeacher({ ...teacher, profilePicture: img });
+                        setLoading(false);
+                    }
+
+                    if (role) {
+                        const isAlreadyAttending =
+                            await demoService.isStudentAttending(uuid);
+                        if (isMounted) {
+                            setAlreadyAttending(isAlreadyAttending);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [uuid]); // Ensure role is included if necessary
 
     const getTeacher = async (data) => {
         await settingService
@@ -120,11 +155,103 @@ const Post = () => {
     const handleCloseSnackbar = () => {
         setOpenSnackbar(false);
     };
+    console.log(data);
 
     return loading ? (
         <Loading />
     ) : (
         <div className="post-page">
+            <Helmet>
+                <title>{`${data?.title} - ${teacher?.firstName || "Andrew"} ${
+                    teacher?.lastName || "Tate"
+                } | Loomo`}</title>
+                <meta name="description" content={data?.description} />
+                <meta name="medium" content="mult" />
+                <meta
+                    property="og:title"
+                    content={`${data?.title} - ${
+                        teacher?.firstName || "Andrew"
+                    } ${teacher?.lastName || "Tate"}`}
+                />
+                <meta property="og:description" content={data?.description} />
+                <meta
+                    property="og:image"
+                    content={`https://d37zebxsdrcn1w.cloudfront.net/${
+                        data?.introVideoImgLink || "default-placeholder.jpg"
+                    }`}
+                />
+                <meta
+                    property="og:url"
+                    content={
+                        data?.url
+                            ? data?.url
+                            : `http://localhost:3000/post/${data?.postId}`
+                    }
+                />
+                <meta property="og:site_name" content="Loomo" />
+                <meta property="og:type" content="loomo_com:course" />
+                <meta
+                    property="og:video"
+                    content={`https://d37zebxsdrcn1w.cloudfront.net/${
+                        data?.introVideoLink || "default-placeholder.mp4"
+                    }`}
+                />
+                <meta property="og:video:type" content="video/mp4" />
+                <meta property="og:video:width" content="1200" />
+                <meta property="og:video:height" content="630" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:site" content="@loomo" />
+                <meta
+                    name="twitter:title"
+                    content={`${data?.title} - ${
+                        teacher?.firstName || "Andrew"
+                    } ${teacher?.lastName || "Tate"}`}
+                />
+                <meta name="twitter:description" content={data?.description} />
+                <meta
+                    name="twitter:image"
+                    content={`https://d37zebxsdrcn1w.cloudfront.net/${
+                        data?.introVideoImgLink || "default-placeholder.jpg"
+                    }`}
+                />
+                <meta name="application-name" content="Loomo" />
+                <script type="application/ld+json">
+                    {`{
+                        "@context": "https://schema.org",
+                        "@type": "Course",
+                        "name": "${data?.title || "Default Course Title"} - ${
+                        teacher?.firstName || "Default"
+                    } ${teacher?.lastName || "Name"}",
+                        "description": "${
+                            data?.description || "Default Course Description"
+                        }",
+                        "image": "https://d37zebxsdrcn1w.cloudfront.net/${
+                            data?.introVideoImgLink || "default-placeholder.jpg"
+                        }",
+                        "provider": {
+                            "@type": "Organization",
+                            "name": "Loomo",
+                            "sameAs": "https://www.loomo.com"
+                        },
+                        "educationalCredentialAwarded": "Certificate of Completion",
+                        "hasCourseInstance": {
+                            "@type": "CourseInstance",
+                            "courseMode": "online",
+                            "instructor": {
+                                "@type": "Person",
+                                "name": "${
+                                    teacher?.firstName || "Default First Name"
+                                } ${teacher?.lastName || "Default Last Name"}"
+                            },                                              
+                            "startDate": "${
+                                data?.classStartDate ||
+                                "2024-08-07T19:00:00.000Z"
+                            }"
+                        }
+                    }`}
+                </script>
+            </Helmet>
+
             {switchToStudentView && (
                 <SwitchToLoginView
                     open={switchToStudentView}
