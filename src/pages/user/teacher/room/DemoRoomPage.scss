@@ -1,7 +1,7 @@
 .DemoRoomPage{
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: auto;
   background-color: #071931;
   margin: 0;
   top: 0;
@@ -27,36 +27,87 @@
     transform: translateX(-50%);
     border-radius: 10px;
   }
+  .teacher-video-navbar{
+    width: 100%;
+    height: 100px;
+    background-color: aqua;
+  }
   .teacher-video-wrapper{
-    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+  
+
+
   }
   .teacher-video{
-    margin: 0 auto;
-    width: 1100px;
-    height: 720px;
-    position: absolute;
-    bottom: 90px;
-    left: 50%;
-    transform: translateX(-50%);
+   
+    width: 100%;
+    height: 620px;
+    border-radius: 20px;
+   
+    
   }
+ 
+  .teacher-wrapper{
+    width: 65%;
+    height: 100%;
+
+    .mates-video{
+      width: 100%;
+      height: 200px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      
+      .mate{
+        width: 32%;
+        height: 200px;
+        background-color: white;
+        border-radius: 20px;
+      }
+    }
+  }
+  
+ 
   .tool-wrapper{
-    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 90px;
-    background-color: black;
+    background-color: #03142b;
     bottom: 0;
     z-index: 200;
+    margin-top: 40px;
   }
   .tool-center-wrapper{
-    width: 350px;
-    margin: 15px auto 0;
+    width: 650px;
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .hang-up-icon{
-    position: relative;
-    width: 60px;
+  .screen-sharing{
+    border: none;
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    color:rgb(7, 7, 7);
+    border: none;
+    background-color: rgb(9, 255, 0);
+    
+  }
+  .hang-up-button{
+    width: 150px;
+    height: 50px;
+    border-radius: 10px;
+    color:white;
+    border: none;
+    background-color: red;
+    
     cursor: pointer;
   }
   .audio{
@@ -92,5 +143,10 @@
   }
   .hide-students{
     display: none;
+  }
+  .Teacher-video-chat{
+    width: 25%;
+    height: 950px;
+    background-color: #021f44;
   }
 }
