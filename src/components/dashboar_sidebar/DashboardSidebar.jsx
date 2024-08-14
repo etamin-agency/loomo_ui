@@ -1,39 +1,38 @@
-import {Link} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {useEffect, useRef, useState} from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
 import Cookie from "js-cookie";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import ArrowIcon from "@mui/icons-material/ArrowCircleRightOutlined";
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 import demoService from "../../services/demoService";
 
+import class_logo from "../../assets/class-logo.png";
+import message_logo from "../../assets/messages-logo.png";
+import archive_logo from "../../assets/archive-logo.png";
+import home_logo from "../../assets/home-page-logo.png";
+import home_work_logo from "../../assets/homework-logo.png";
+import user_logo from "../../assets/user-logo.png";
+import studio_logo from "../../assets/studio-logo.png";
+import wallet_logo from "../../assets/wallet-logo.png";
+import demo_day from "../../assets/demo.png";
 
-import class_logo from "../../assets/class-logo.png"
-import message_logo from "../../assets/messages-logo.png"
-import archive_logo from "../../assets/archive-logo.png"
-import home_logo from "../../assets/home-page-logo.png"
-import home_work_logo from "../../assets/homework-logo.png"
-import user_logo from "../../assets/user-logo.png"
-import studio_logo from "../../assets/studio-logo.png"
-import wallet_logo from "../../assets/wallet-logo.png"
-import demo_day from "../../assets/demo.png"
-
-
-import "./DashboarSidebar.scss"
-
+import "./DashboarSidebar.scss";
 
 const DashboardSidebar = () => {
-    const {role} = useSelector(state => state.role);
-    const userName = useRef(jwtDecode(Cookie.get('access_token')).sub);
-    const [isDemoLessons,setIsDemoLessons]=useState(false);
+    const { role } = useSelector((state) => state.role);
+    const userName = useRef(jwtDecode(Cookie.get("access_token")).sub);
+    const [isDemoLessons, setIsDemoLessons] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
-    const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1000);
+    const [isSmallScreen, setIsSmallScreen] = useState(
+        window.innerWidth < 1000
+    );
 
+    const location = useLocation();
 
     const handleToggle = () => {
-        setCollapsed(prevState => !prevState);
+        setCollapsed((prevState) => !prevState);
     };
-
 
     useEffect(() => {
         const handleResize = () => {
@@ -45,9 +44,9 @@ const DashboardSidebar = () => {
         handleResize();
 
         if (isSmallScreen) {
-            setCollapsed(true)
+            setCollapsed(true);
         } else {
-            setCollapsed(false)
+            setCollapsed(false);
         }
 
         return () => {
@@ -55,33 +54,31 @@ const DashboardSidebar = () => {
         };
     }, [isSmallScreen]);
 
-
     const student = [
         {
             link: "classes",
             src: class_logo,
             alt: "class-logo",
-            name: "Classes"
+            name: "Classes",
         },
         {
             link: "messages",
             src: message_logo,
             alt: "messages-logo",
-            name: "Messages"
+            name: "Messages",
         },
         {
             link: "assignments",
             src: home_work_logo,
             alt: "homework-logo",
-            name: "Assignments"
+            name: "Assignments",
         },
         {
             link: "archive",
             src: archive_logo,
             alt: "archive-logo",
-            name: "Archive"
+            name: "Archive",
         },
-
     ];
 
     const teacher = [
@@ -89,13 +86,13 @@ const DashboardSidebar = () => {
             link: "classes",
             src: class_logo,
             alt: "class-logo",
-            name: "Classes"
+            name: "Classes",
         },
         {
             link: "posts",
             src: studio_logo,
             alt: "studio-logo",
-            name: "Posts"
+            name: "Posts",
         },
         // {
         //     link: "assignments",
@@ -109,17 +106,16 @@ const DashboardSidebar = () => {
         //     alt: "archive-logo",
         //     name: "Wallet"
         // },
-
     ];
-    useEffect(()=>{
-        if (role==='student'){
-            demoService.isStudentAttendingToAnyClass().then(data=>{
+    useEffect(() => {
+        if (role === "student") {
+            demoService.isStudentAttendingToAnyClass().then((data) => {
                 setIsDemoLessons(data);
             });
         }
-    },[])
+    }, []);
 
-    console.log(userName)
+    console.log(userName);
     return (
         <aside className={`student-dashboard ${collapsed ? "collapsed" : ""}`}>
             <div className="home-link">
@@ -144,7 +140,7 @@ const DashboardSidebar = () => {
                 />
             </div>
             <div className="wrapper">
-                {role === "student" && isDemoLessons && (
+                {/* {role === "student" && isDemoLessons && (
                     <div className="dashboard-block">
                         <Link to={`/class-demo`} className="student-link">
                             <img
@@ -155,12 +151,18 @@ const DashboardSidebar = () => {
                             <div>Demo Classes</div>
                         </Link>
                     </div>
-                )}
+                )} */}
                 {role === "student" &&
                     student.map(({ link, src, alt, name }, id) => {
+                        const isActive = location.pathname === `/${link}`;
                         return (
                             <div className="dashboard-block" key={id}>
-                                <Link to={`/${link}`} className="student-link">
+                                <Link
+                                    to={`/${link}`}
+                                    className={`student-link ${
+                                        isActive ? "active" : ""
+                                    }`}
+                                >
                                     <img
                                         src={src}
                                         className="student-logo"
@@ -179,9 +181,15 @@ const DashboardSidebar = () => {
                     })}
                 {role === "teacher" &&
                     teacher.map(({ link, src, alt, name }, id) => {
+                        const isActive = location.pathname === `/${link}`;
                         return (
                             <div className="dashboard-block" key={id}>
-                                <Link to={`/${link}`} className="student-link">
+                                <Link
+                                    to={`/${link}`}
+                                    className={`student-link ${
+                                        isActive ? "active" : ""
+                                    }`}
+                                >
                                     <img
                                         src={src}
                                         className="student-logo"
@@ -220,8 +228,6 @@ const DashboardSidebar = () => {
             </div>
         </aside>
     );
-}
+};
 
 export default DashboardSidebar;
-
-

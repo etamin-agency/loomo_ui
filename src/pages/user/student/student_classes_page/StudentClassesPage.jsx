@@ -13,6 +13,14 @@ import { useSelector } from "react-redux";
 import demoRoomService from "../../../../services/demoRoomService";
 import Loading from "../../../../components/loading/Loading";
 import demoService from "../../../../services/demoService";
+import {
+    Box,
+    LinearProgress,
+    linearProgressClasses,
+    Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import ClassMenu from "../../../../components/class_menu/ClassMenu";
 
 const StudentClassesPage = () => {
     const navigate = useNavigate();
@@ -20,6 +28,21 @@ const StudentClassesPage = () => {
     const [loading, setLoading] = useState(true);
     const [isDemoExists, setDemoExists] = useState(false);
     const { role } = useSelector((state) => state.role);
+
+    const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+        height: 10,
+        borderRadius: 5,
+        marginTop: 5,
+        [`&.${linearProgressClasses.colorPrimary}`]: {
+            backgroundColor:
+                theme.palette.grey[theme.palette.mode === "light" ? 200 : 800],
+        },
+        [`& .${linearProgressClasses.bar}`]: {
+            borderRadius: 5,
+            backgroundColor:
+                theme.palette.mode === "light" ? "#1a90ff" : "#308fe8",
+        },
+    }));
 
     useEffect(() => {
         if (role === "teacher") {
@@ -67,7 +90,6 @@ const StudentClassesPage = () => {
     const isJoinClass = (classDays, classTime) => {
         let twoHoursAgo = new Date(new Date().getTime() + 2 * 60 * 60 * 1000);
         const data = calculateTimeRemaining(classDays, classTime, twoHoursAgo);
-        console.log(data);
         if (
             data?.hours === -1 &&
             data?.days === -1 &&
@@ -100,8 +122,7 @@ const StudentClassesPage = () => {
                 </Link>
             )}
 
-            {typeof classes === "undefined" && (
-                <div className="no-classes-message">
+            {/* <div className="no-democlasses-message">
                     <h2>No Classes Available</h2>
                     {role === "student" ? (
                         <p>
@@ -109,12 +130,9 @@ const StudentClassesPage = () => {
                             available courses!
                         </p>
                     ) : (
-                        <p>
-                            Looks like no one enrolled in your classes 
-                        </p>
+                        <p>Looks like no one enrolled in your classes</p>
                     )}
-                </div>
-            )}
+                </div> */}
 
             <div className="class-wrapper">
                 {classes?.map((data) => {
@@ -130,9 +148,10 @@ const StudentClassesPage = () => {
                                     src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.classImgLink}`}
                                     alt="post"
                                 />
+                                <ClassMenu classId={data?.classId} />
 
-                                <div className="timer-wrapper">
-                                    {isClassTime ? (
+                                {/* <div className="timer-wrapper">
+                                    {isClassTime && (
                                         <div
                                             className="plus"
                                             onClick={() =>
@@ -148,7 +167,18 @@ const StudentClassesPage = () => {
                                                 className="create-icon"
                                             />
                                         </div>
-                                    ) : (
+                                    )}
+                                </div> */}
+                            </div>
+                            <div className="class-info-wrapper">
+                                <div className="class-title">
+                                    {data?.className}
+                                </div>
+                                {calculateTimeRemaining(
+                                    data?.classDays,
+                                    data?.classTime
+                                ).hours !== -1 ? (
+                                    <div className="class-title">
                                         <ClassTimer
                                             className={data?.className}
                                             classDays={data?.classDays}
@@ -156,10 +186,27 @@ const StudentClassesPage = () => {
                                             classId={data?.classId}
                                             teacherId={data?.teacherId}
                                         />
-                                    )}
-                                </div>
+                                    </div>
+                                ) : (
+                                    <Box display={"flex"} alignItems={"center"}>
+                                        <Box width={"100%"} mr={1}>
+                                            <BorderLinearProgress
+                                                variant="determinate"
+                                                value={54}
+                                            />
+                                        </Box>
+                                        <Box minWidth={35}>
+                                            <Typography
+                                                variant="body"
+                                                sx={{ fontSize: 20 }}
+                                                color={"primary"}
+                                            >
+                                                {`${Math.round(54.3)}%`}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                )}
                             </div>
-                            <div className="class-title">{data?.className}</div>
                         </div>
                     );
                 })}

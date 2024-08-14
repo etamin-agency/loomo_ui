@@ -1,144 +1,152 @@
 .student-dashboard {
-  position: fixed;
-  display: block;
-  width: 20%;
-  min-width: 90px;
-  max-width: 200px;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  background-color: #007bff;
-  border-left-style: none;
-  border-bottom-style: none;
-  border-radius: 0px 10px 10px 0px;
-  transition: width 0.3s ease; /* Smooth transition for width */
+    position: fixed;
+    display: block;
+    width: 20%;
+    min-width: 90px;
+    max-width: 200px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #007bff;
+    border-left-style: none;
+    border-bottom-style: none;
+    border-radius: 0px 10px 10px 0px;
+    transition: width 0.3s ease; /* Smooth transition for width */
 }
 
 .student-dashboard.collapsed {
-  width: 90px; /* Adjust as needed for collapsed state */
+    width: 90px; /* Adjust as needed for collapsed state */
+}
+
+.student-dashboard.collapsed ~ div {
+    width: 95%; 
 }
 
 .wrapper {
-  position: absolute;
-  display: flex;
-  width: 100%;
-  height: 130px;
-  top: 50%;
-  transform: translateY(-50%);
-  flex-direction: column;
-  justify-content: center;
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 130px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    justify-content: center;
 }
 
 .dashboard-block {
-  width: 100%;
-  height: 60px;
-  padding: 30px;
-  text-align: start;
-  border-radius: 20px;
-  margin-bottom: 10px;
+    width: 100%;
+    height: 60px;
+    padding: 30px;
+    text-align: start;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }
 
 .student-name {
-  margin-right: 5px;
-  width: 80%;
-  height: 45px;
-  padding-top: 10px;
-  padding-left: 20px;
-  box-sizing: border-box;
-  text-align: start;
-  border-radius: 30px;
+    margin-right: 5px;
+    width: 80%;
+    height: 45px;
+    padding-top: 10px;
+    padding-left: 20px;
+    box-sizing: border-box;
+    text-align: start;
+    border-radius: 30px;
 }
 
 .student-name:hover {
-  background-color: rgb(245, 241, 246);
-  color: #15064e;
+    background-color: rgb(245, 241, 246);
+    color: #15064e;
 }
 
 .student-link {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: start; /* Corrected 'st' to 'start' */
-  align-items: center;
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    transition: color 0.3s, background-color 0.3s, border 0.3s;
+
+    &.active .student-name {
+        background-color: rgb(245, 241, 246);
+        color: #15064e;
+    }
 }
 
 .profile-link {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .user-photo {
-  position: absolute;
-  top: 6%;
-  left: 0;
+    position: absolute;
+    top: 6%;
+    left: 0;
 }
 
 .student_picture {
-  display: block;
-  width: 30%;
-  margin: 0 auto;
+    display: block;
+    width: 30%;
+    margin: 0 auto;
 }
 
 .student-logo {
-  display: block;
-  width: 25px;
-  height: 25px;
-  margin-right: auto;
-  transition: 1s opacity;
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin-right: auto;
+    transition: 1s opacity;
 }
 
 .loomo {
-  position: absolute;
-  display: block;
-  top: 3%;
-  left: 5%;
-  color: white;
-  font-size: 26px;
-  font-weight: 600;
+    position: absolute;
+    display: block;
+    top: 3%;
+    left: 5%;
+    color: white;
+    font-size: 26px;
+    font-weight: 600;
 }
 
 .home-logo {
-  display: none;
+    display: none;
 }
 
 .arrow-icon {
-  position: absolute;
-  right: -15px;
-  top: 8%;
-  cursor: pointer; /* Add pointer cursor to indicate clickable */
-  transform: rotate(180deg);
+    position: absolute;
+    right: -15px;
+    top: 8%;
+    cursor: pointer; /* Add pointer cursor to indicate clickable */
+    transform: rotate(180deg);
 }
 
 .back-arrow {
-  transform: rotate(0deg);
+    transform: rotate(0deg);
 }
 
 .student-name.hidden {
-  opacity: 0;
-  height: 0;
-  padding: 0;   
-  margin: 0;
-  border: none;
-  pointer-events: none;
+    opacity: 0;
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: none;
+    pointer-events: none;
 }
-
 
 @media (max-width: 900px) {
-  .student-dashboard.collapsed ~ .PostListPage {
-    width: 95%;
-    padding-left: 50px;
-}
+    .student-dashboard.collapsed ~ .PostListPage {
+        width: 95%;
+        padding-left: 50px;
+    }
 
-  .arrow-icon {
-    display: none;
-    pointer-events: none;
-    opacity: 0;
-  }
+    .arrow-icon {
+        display: none;
+        pointer-events: none;
+        opacity: 0;
+    }
 }
