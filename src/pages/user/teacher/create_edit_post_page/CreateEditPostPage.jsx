@@ -29,7 +29,10 @@ import video_icon from "../../../../assets/video-icon.png";
 import image_icon from "../../../../assets/image-icon.png";
 
 import publishService from "../../../../services/publishService";
-import { isValidUUID } from "../../../../utils/helper/validation";
+import {
+    isValidUUID,
+    validateField,
+} from "../../../../utils/helper/validation";
 
 import "./CreateEditPostPage.scss";
 
@@ -81,6 +84,8 @@ const CreateEditPostPage = () => {
         language: "",
         price: "",
         tags: "",
+        video: "",
+        image: ''
     });
 
     useEffect(() => {
@@ -161,60 +166,7 @@ const CreateEditPostPage = () => {
             [name]: value,
         }));
         setChanged(true);
-        validateField(name, value);
-    };
-
-    const validateField = (fieldName, value) => {
-        let error = "";
-        switch (fieldName) {
-            case "title":
-                if (value.trim() === "") {
-                    error = "Title is required";
-                } else if (value.length < 3) {
-                    error = "Title must be at least 3 characters long";
-                }
-                break;
-            case "desc":
-                if (value.trim() === "") {
-                    error = "Description is required";
-                } else if (value.length < 4) {
-                    error = "Description must be at least 3 characters long";
-                }
-                break;
-            case "language": // Correct the case
-                if (value.trim() === "") {
-                    error = "Language is required"; // Correct the error message
-                }
-                break;
-            case "price":
-                if (isNaN(value) || Number(value) <= 0) {
-                    error = "Price must be a positive number";
-                }
-                break;
-            case "tags":
-                if (
-                    !Array.isArray(value) ||
-                    value.some((tag) => tag.trim() === "")
-                ) {
-                    error = "Tags must be non-empty";
-                }
-                if (new Set(value).size !== value.length) {
-                    error = "Tags must be unique";
-                }
-                break;
-            default:
-                break;
-        }
-        setErrors((prevErrors) => {
-            const updatedErrors = {
-                ...prevErrors,
-                [fieldName]: error,
-            };
-            // console.log("Updated Errors State:", updatedErrors);
-            return updatedErrors;
-        });
-
-        return error === "";
+        validateField(name, value, setErrors);
     };
 
     const onDropVideo = useCallback((acceptedFiles) => {
@@ -223,7 +175,16 @@ const CreateEditPostPage = () => {
             console.error("File is not a video.");
             return;
         }
+
+        const sizeInMB = (file.size / 1024 / 1024).toFixed(2);
+        console.log("Video file type:", file.type);
+        console.log("Video file size:", sizeInMB, "MB");
+
         setVideoFile(file);
+        setErrors((prevState) => ({
+            ...prevState,
+            ["video"]: video,
+        }));
         const reader = new FileReader();
         reader.onload = () => {
             setVideo(reader.result);
@@ -239,6 +200,10 @@ const CreateEditPostPage = () => {
             return;
         }
         setImageFile(file);
+        setErrors((prevState) => ({
+            ...prevState,
+            ["image"]: image,
+        }));
         const reader = new FileReader();
         reader.onload = () => {
             setImage(reader.result);
@@ -272,11 +237,14 @@ const CreateEditPostPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        validateField("title", formData.title);
-        validateField("desc", formData.desc);
-        validateField("language", formData.language);
-        validateField("price", formData.price);
-        validateField("tags", formData.tags);
+        validateField("title", formData.title, setErrors);
+        validateField("desc", formData.desc, setErrors);
+        validateField("language", formData.language, setErrors);
+        validateField("price", formData.price, setErrors);
+        validateField("tags", formData.tags, setErrors);
+
+        validateField("video", videoFile, setErrors);
+        validateField("image", imageFile, setErrors);
 
         if (Object.values(errors).some((error) => error !== "")) {
             console.error(
@@ -376,29 +344,44 @@ const CreateEditPostPage = () => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="media-block">
+                            <div>
                                 <div
-                                    className="dropzone-video"
-                                    {...getRootPropsForVideo()}
+                                    className={`media-block ${
+                                        errors.video ? "error" : ""
+                                    } `}
                                 >
-                                    <input {...getInputPropsForVideo()} />
-                                    <div className="media-icons-wrapper">
-                                        <img
-                                            className="center-icon"
-                                            src={video_icon}
-                                            alt="video-icon"
-                                        />
+                                    <div
+                                        className="dropzone-video"
+                                        {...getRootPropsForVideo()}
+                                    >
+                                        <input {...getInputPropsForVideo()} />
+                                        <div className="media-icons-wrapper">
+                                            <img
+                                                className="center-icon"
+                                                src={video_icon}
+                                                alt="video-icon"
+                                            />
+                                        </div>
+                                        <div className="upload-media-text">
+                                            Drag and drop your Introduction
+                                            Video
+                                        </div>
+                                        <div className="upload-media-subtext">
+                                            or press Button
+                                        </div>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >
+                                            Select Video
+                                        </Button>
                                     </div>
-                                    <div className="upload-media-text">
-                                        Drag and drop your Introduction Video
-                                    </div>
-                                    <div className="upload-media-subtext">
-                                        or press Button
-                                    </div>
-                                    <Button variant="contained" color="primary">
-                                        Select Video
-                                    </Button>
                                 </div>
+                                {errors.video && (
+                                    <Typography color="error" variant="danger">
+                                        {errors.video}
+                                    </Typography>
+                                )}
                             </div>
                         )}
                         {image ? (
@@ -418,29 +401,43 @@ const CreateEditPostPage = () => {
                                 </div>
                             </div>
                         ) : (
-                            <div className="media-block">
+                            <div>
                                 <div
-                                    className="dropzone-image"
-                                    {...getRootPropsForImage()}
+                                    className={`media-block ${
+                                        errors.image ? "error" : ""
+                                    } `}
                                 >
-                                    <input {...getInputPropsForImage()} />
-                                    <div className="media-icons-wrapper">
-                                        <img
-                                            className="center-icon"
-                                            src={image_icon}
-                                            alt="icon"
-                                        />
+                                    <div
+                                        className="dropzone-image"
+                                        {...getRootPropsForImage()}
+                                    >
+                                        <input {...getInputPropsForImage()} />
+                                        <div className="media-icons-wrapper">
+                                            <img
+                                                className="center-icon"
+                                                src={image_icon}
+                                                alt="icon"
+                                            />
+                                        </div>
+                                        <div className="upload-media-text">
+                                            Drag and drop your Course Image
+                                        </div>
+                                        <div className="upload-media-subtext">
+                                            or press Button
+                                        </div>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                        >
+                                            Select Image
+                                        </Button>
                                     </div>
-                                    <div className="upload-media-text">
-                                        Drag and drop your Course Image
-                                    </div>
-                                    <div className="upload-media-subtext">
-                                        or press Button
-                                    </div>
-                                    <Button variant="contained" color="primary">
-                                        Select Image
-                                    </Button>
                                 </div>
+                                {errors.image && (
+                                    <Typography color="error" variant="danger">
+                                        {errors.image}
+                                    </Typography>
+                                )}
                             </div>
                         )}
                     </div>
@@ -480,7 +477,7 @@ const CreateEditPostPage = () => {
                                     language: lang,
                                 }));
                                 setChanged(true);
-                                validateField("language", lang);
+                                validateField("language", lang, setErrors);
                             }}
                             error={!!errors.language}
                             helperText={errors.language}
@@ -524,7 +521,7 @@ const CreateEditPostPage = () => {
                                     price,
                                 }));
                                 setChanged(true);
-                                validateField("price", price);
+                                validateField("price", price, setErrors);
                             }}
                             error={!!errors.price}
                             helperText={errors.price}
@@ -617,34 +614,19 @@ const CreateEditPostPage = () => {
                                     tags,
                                 }));
                                 setChanged(true);
-                                validateField("tags", tags);
+                                validateField("tags", tags, setErrors);
                             }}
                         />
                         <Box display="flex" flexDirection="column">
                             <FormControlLabel
                                 label="Private"
                                 labelPlacement="start"
-                                // sx={{ alignItems: "end" }}
                                 control={
                                     <Switch
                                         name="isClassPrivate"
                                         checked={formData.isClassPrivate}
                                         onChange={handleSwitchChange}
                                         color="primary"
-                                        // sx={{
-                                        //     width: 42,
-                                        //     height: 24,
-                                        //     padding: 0.7,
-                                        //     marginRight: 1,
-                                        //     "& .MuiSwitch-thumb": {
-                                        //         width: 15,
-                                        //         height: 15,
-                                        //     },
-                                        //     "& .MuiSwitch-switchBase": {
-                                        //         top: -4,
-                                        //         left: -4,
-                                        //     },
-                                        // }}
                                     />
                                 }
                             />
