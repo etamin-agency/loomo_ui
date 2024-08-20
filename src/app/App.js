@@ -36,6 +36,7 @@ import CreateEditPostPage from "../pages/user/teacher/create_edit_post_page/Crea
 import TeacherProfilePage from "../pages/user/teacher/teacher_profile_page/TeacherProfilePage";
 import PostListPage from "../pages/user/teacher/posts/PostListPage";
 
+
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
 const LogInPage = lazy(() => import("../pages/auth/login_page/LogInPage"));
 const SignUpPage = lazy(() => import("../pages/auth/signup_page/SignUpPage"));
