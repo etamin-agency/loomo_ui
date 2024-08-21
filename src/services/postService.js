@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const API_BASE_URL = 'http://16.170.223.3:8084/api/v1/post';
-const API_BASE_URL = 'https://192.168.23.246:8447/api/v1/post';
+const API_BASE_URL = 'http://16.171.254.114:8084/api/v1/post';
 // const API_BASE_URL = 'http://localhost:8084/api/v1/post';
 const postService = {
 
