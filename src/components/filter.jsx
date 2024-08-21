@@ -102,7 +102,7 @@ const FilterComponent = ({ filters, onFilterChange }) => {
         </Stack>
         </AccordionDetails>
         </Accordion>
-        <Accordion  defaultExpanded>
+        {/* <Accordion  defaultExpanded>
         <AccordionSummary
            expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"
@@ -125,7 +125,7 @@ const FilterComponent = ({ filters, onFilterChange }) => {
         ))}
         </div>
         </AccordionDetails>
-        </Accordion>
+        </Accordion> */}
       
     </div>
   );
