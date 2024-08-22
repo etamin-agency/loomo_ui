@@ -5,6 +5,7 @@ import Timer from "../../../../components/timer/Timer";
 import { Link, useNavigate } from "react-router-dom";
 import create_icon from "../../../../assets/white-create-icon.png";
 import demoRoomService from "../../../../services/demoRoomService";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 import "./TeacherDemoPage.scss";
 import Loading from "../../../../components/loading/Loading";
@@ -70,21 +71,19 @@ const TeacherDemoPage = () => {
                                 />
 
                                 <div className="timer-wrapper">
-                                    {isDemoTime ? (
-                                        <div className="plus">
-                                            <img
-                                                src={create_icon}
-                                                alt="create-class-icon"
-                                                className="create-icon"
-                                            />
-                                        </div>
-                                    ) : (
-                                        <Timer demoTime={data?.demoTime} />
-                                    )}
+                                   
                                 </div>
                             </div>
                             <div className="demo-class-title">
                                 {data?.title}
+                                {isDemoTime ? (
+                                        <div className="plus">
+                                        
+                                           <AddCircleOutlineIcon  fontSize="large"/>
+                                        </div>
+                                    ) : (
+                                        <Timer demoTime={data?.demoTime} />
+                                    )}
                             </div>
                         </div>
                     );
