@@ -208,15 +208,13 @@ const StudentClassesPage = () => {
                     );
                 })}
             </div>
-            {role === "teacher" ?(
+            {isDemoExists && role === "teacher" ?(
                 <div>
                 <h1>Demo Classes</h1>
                 <br/>
                 <TeacherDemoPage/>
             </div>
-            ): (
-                        <p></p>
-            )}
+            ): null}
             
         </div>
     );
