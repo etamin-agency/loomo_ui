@@ -1,17 +1,17 @@
 .TeacherDemoPage {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 88%;
-    height: 100%;
-    padding: 100px 5% 100px 100px;
-    margin: 0 auto;
-    background-color: #f7f9fc;
-    font-size: 16px;
-    text-align: center;
-    box-sizing: border-box;
-    overflow-y: auto;
-    transition: width 0.3s ease;
+    // position: absolute;
+    // right: 0;
+    // top: 0;
+    // width: 88%;
+    // height: 100%;
+    // padding: 100px 5% 100px 100px;
+    // margin: 0 auto;
+    // background-color: #f7f9fc;
+    // font-size: 16px;
+    // text-align: center;
+    // box-sizing: border-box;
+    // overflow-y: auto;
+    // transition: width 0.3s ease;
 
     .demo-class-wrapper {
         display: flex;
@@ -41,6 +41,7 @@
             height: 180px;
             overflow: hidden;
             position: relative;
+            text-align: center;
 
             .demo-class-image {
                 width: 100%;

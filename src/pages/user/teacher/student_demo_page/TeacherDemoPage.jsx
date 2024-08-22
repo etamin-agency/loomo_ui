@@ -46,7 +46,7 @@ const TeacherDemoPage = () => {
 
     return (
         <div className="TeacherDemoPage">
-            {loading && <Loading />}
+            {/* {loading && <Loading />} */}
             <div className="demo-class-wrapper">
                 {demoClass?.map((data) => {
                     const isDemoTime = isCreateDemoRoom(data?.demoTime);

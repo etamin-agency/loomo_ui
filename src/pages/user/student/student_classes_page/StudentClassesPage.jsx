@@ -6,6 +6,7 @@ import classService from "../../../../services/classService";
 import Button from "react-bootstrap/Button";
 
 import ClassTimer from "../../../../components/timer/ClassTimer";
+import TeacherDemoPage from "../../teacher/student_demo_page/TeacherDemoPage";
 
 import "./StudentClassesPage.scss";
 import { calculateTimeRemaining } from "../../../../utils/helper/math";
@@ -112,30 +113,13 @@ const StudentClassesPage = () => {
         return false;
     };
 
+    console.log(isDemoExists);
+
     return (
         <div className="StudentClassPage">
             {loading && <Loading />}
-
-            {isDemoExists && (
-                <Link className="btn-demo-classes" to="/demo">
-                    <Button>Demo Classes</Button>
-                </Link>
-            )}
-
-            {/* <div className="no-democlasses-message">
-                    <h2>No Classes Available</h2>
-                    {role === "student" ? (
-                        <p>
-                            You’re not enrolled in any classes. Check out our
-                            available courses!
-                        </p>
-                    ) : (
-                        <p>Looks like no one enrolled in your classes</p>
-                    )}
-                </div> */}
-
             <div className="class-wrapper">
-                {classes?.map((data) => {
+                {/* {classes?.map((data) => {
                     const isClassTime = isJoinClass(
                         data?.classDays,
                         data?.classTime
@@ -150,7 +134,7 @@ const StudentClassesPage = () => {
                                 />
                                 <ClassMenu classId={data?.classId} />
 
-                                {/* <div className="timer-wrapper">
+                                <div className="timer-wrapper">
                                     {isClassTime && (
                                         <div
                                             className="plus"
@@ -168,7 +152,7 @@ const StudentClassesPage = () => {
                                             />
                                         </div>
                                     )}
-                                </div> */}
+                                </div>
                             </div>
                             <div className="class-info-wrapper">
                                 <div className="class-title">
@@ -209,8 +193,27 @@ const StudentClassesPage = () => {
                             </div>
                         </div>
                     );
-                })}
+                })} */}
+                <div className="class"></div>
+                <div className="class"></div>
+                <div className="class"></div>
             </div>
+            {isDemoExists && <h1>Demo classes</h1>}
+            {!isDemoExists && (
+                <div className="no-democlasses-message">
+                    <h2>No Classes Available</h2>
+                    {role === "student" ? (
+                        <p>
+                            You’re not enrolled in any classes. Check out our
+                            available courses!
+                        </p>
+                    ) : (
+                        <p>Looks like no one enrolled in your classes</p>
+                    )}
+                </div>
+            )}
+
+            <TeacherDemoPage />
         </div>
     );
 };
