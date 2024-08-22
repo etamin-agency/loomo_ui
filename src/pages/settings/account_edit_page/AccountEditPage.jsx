@@ -1,17 +1,17 @@
-import {useFormik} from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import Cookie from "js-cookie";
-import {jwtDecode} from "jwt-decode";
-import {useCallback} from "react";
+import { jwtDecode } from "jwt-decode";
+import { useCallback } from "react";
 import Button from "react-bootstrap/Button";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 import settingService from "../../../services/settingService";
 
-import './AccountEditPage.scss'
+import "./AccountEditPage.scss";
 
 const AccountEditPage = () => {
-    const {profile} = useSelector(state => state.profile);
+    const { profile } = useSelector((state) => state.profile);
 
     const formik = useFormik({
         initialValues: {
@@ -20,9 +20,9 @@ const AccountEditPage = () => {
         validationSchema: Yup.object({
             bio: Yup.string().min(40).max(7000, "Have to be less than chars"),
         }),
-        onSubmit: async (values, {setSubmitting}) => {
+        onSubmit: async (values, { setSubmitting }) => {
             try {
-                const userName = jwtDecode(Cookie.get('access_token')).sub;
+                const userName = jwtDecode(Cookie.get("access_token")).sub;
 
                 await settingService.updateProfile(userName, formik.values.bio);
             } catch (error) {
@@ -39,7 +39,8 @@ const AccountEditPage = () => {
         const words = formik.values.bio.trim().split(/\s+/);
         return words.length;
     }, [formik.values]);
-    const isButtonDisabled = formik.touched.bio && (formik.errors.bio || countWords() > 800);
+    const isButtonDisabled =
+        formik.touched.bio && (formik.errors.bio || countWords() > 800);
 
     return (
         <div className="AccountEditPage">
@@ -47,7 +48,11 @@ const AccountEditPage = () => {
                 <div className="form-group">
                     <div className="bio-text">Bio:</div>
                     <textarea
-                        className="bio-textarea"
+                        className={`bio-textarea ${
+                            formik.touched.bio && formik.errors.bio
+                                ? "textarea-error"
+                                : ""
+                        }`}
                         id="bio"
                         name="bio"
                         onChange={formik.handleChange}
@@ -61,7 +66,6 @@ const AccountEditPage = () => {
                     <div className="word-counter">{countWords()}/800</div>
                 </div>
 
-
                 <div className="form-group">
                     <Button type="submit" size="lg" disabled={isButtonDisabled}>
                         Update
@@ -69,7 +73,7 @@ const AccountEditPage = () => {
                 </div>
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default AccountEditPage;

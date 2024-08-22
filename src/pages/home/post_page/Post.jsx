@@ -449,10 +449,11 @@ const Post = () => {
                                     </div>
                                 </Link>
                             </div>
-                            <div className="teacher-desc">
-                                {teacher?.description ||
-                                    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum omnis exercitationem tempora sunt ipsam iste eaque similique. Architecto, minima quo?"}
-                            </div>
+                            {teacher?.bio && (
+                                <div className="teacher-desc">
+                                    {teacher?.bio}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

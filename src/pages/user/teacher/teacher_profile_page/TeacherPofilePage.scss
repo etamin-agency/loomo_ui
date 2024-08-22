@@ -1,94 +1,117 @@
 .TeacherProfilePage {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 85%;
-  height: 100%;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  // padding: 170px;
-  font-size: 36px;
-  transition: all .3s ease;
-
-  .user-image {
-    display: block;
-    width: 250px;
-    height: 250px;
-    border-radius: 100%;
-    transition: all 0.3s ease-in-out;
-    object-fit: cover;
-  }
-
-  .student-wrapper {
-    display: flex;
-    width: 600px;
-    margin-left: 100px;
-    justify-content: space-between;
-
-  }
-
-  .settings-icon {
-    display: block;
-    width: 32px;
-    height: 32px;
-    margin-top: 50px;
-  }
-
-  .student-username {
-    font-size: 36px;
-  }
-
-  .student-name {
-    font-size: 24px;
-  }
-
-  .student-bio {
-    margin-top: 50px;
-    margin-left: 100px;
-    width: 700px;
-    font-size: 24px;
-    text-align: left;
-    padding: 10px;
-    border: 1px solid;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-
-  .student-name-wrapper {
-    margin-top: 30px;
-  }
-  .user-image-container{
-    position: relative;
-  }
-
-
-  .camera-image {
     position: absolute;
-    display: none;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: 60px;
-    height: 60px;
-    // z-index: -1;
-    transition: all 0.3s ease-in-out ;
-  }
-  .show-image{
-    display: block;
-  }
-}
-.user-image-hover {
-  filter: brightness(50%);
-}
+    right: 0;
+    top: 0;
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #f5f5f5;
+    font-size: 1.25rem;
+    transition: all 0.3s ease;
 
-.wrapper-cursor{
-  cursor: pointer;
-}
+    .student-wrapper {
+        position: relative;
+        display: flex;
+        align-items: left;
+        width: 70%;
+        margin-bottom: 1.5rem;
+        padding: 1.5rem;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
+    .user-image-container {
+        position: relative;
+        margin-right: 2rem;
+        cursor: pointer;
+        border-radius: 50%;
+        overflow: hidden;
+        transition: all 0.3s ease;
 
-.student-dashboard.collapsed ~ .TeacherProfilePage {
-  width: 94%;
+        &:hover .user-image {
+            filter: brightness(0.7);
+        }
+
+        &:hover .camera-image {
+            display: block;
+        }
+
+        .user-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+
+        .camera-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            display: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+    }
+
+    .student-name-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        text-align: left;
+
+        .student-username {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .profile-student-name {
+            font-size: 1.5rem;
+            color: #777;
+            margin-top: 0.5rem;
+        }
+
+        a {
+            display: inline;
+            width: max-content;
+            display: flex;
+            align-items: right;
+            position: absolute;
+            top: 0;
+            right: 15px;
+
+            .settings-icon {
+                margin-top: 1rem;
+                // display: inline-block;
+                width: 28px;
+                height: 28px;
+            }
+        }
+    }
+
+    .student-bio {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        width: 70%;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #444;
+        word-wrap: break-word;
+    }
+
+    .student-dashboard.collapsed ~ & {
+        width: 95%;
+    }
 }
