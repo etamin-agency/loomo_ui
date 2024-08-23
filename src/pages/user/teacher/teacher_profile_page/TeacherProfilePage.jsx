@@ -1,18 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
-
 import Cookie from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+
 import settingService from "../../../../services/settingService";
-import { setStudentProfile, setTeacherProfile } from "../../../../actions";
+
 import user_image from "../../../../assets/student_image.png";
-import camera_image from "../../../../assets/photo-camera.png";
 import settings_icon from "../../../../assets/settings.png";
+import camera_image from "../../../../assets/photo-camera.png";
 import ProfilePictureUpload from "../../../../components/profile_puctire_upload/ProfilePictureUpload";
 
-import "./TeacherPofilePage.scss";
 import Loading from "../../../../components/loading/Loading";
+
+import "./TeacherPofilePage.scss";
 
 const TeacherProfilePage = () => {
     const [showUploadView, setShowUploadView] = useState(false);
@@ -27,7 +27,13 @@ const TeacherProfilePage = () => {
         if (accountUserName === userName) {
             setOwnerProfile(true);
         }
-        settingService.getTeacherProfile(userName).then((data) => {
+        fetchProfileData(userName);
+    }, [userName]);
+
+    const fetchProfileData = useCallback(async (userName) => {
+        setLoading(true);
+        try {
+            const data = await settingService.getTeacherProfile(userName);
             const obj = {
                 firstName: data?.firstName,
                 lastName: data?.lastName,
@@ -36,9 +42,21 @@ const TeacherProfilePage = () => {
                 bio: data?.bio,
             };
             setData(obj);
+        } finally {
             setLoading(false);
-        });
+        }
     }, []);
+
+    const handleProfileUpdate = (newProfilePicture) => {
+        if (newProfilePicture) {
+            setData((prevData) => ({
+                ...prevData,
+                profilePicture: newProfilePicture,
+            }));
+        } else {
+            fetchProfileData(userName); // Re-fetch if upload fails
+        }
+    };
 
     const handleMouseOver = () => {
         if (isProfileOfOwner) {
@@ -52,6 +70,7 @@ const TeacherProfilePage = () => {
             }
         }
     };
+
     const handleMouseOut = () => {
         if (isProfileOfOwner) {
             const cameraImage = document.querySelector(".camera-image");
@@ -64,15 +83,20 @@ const TeacherProfilePage = () => {
             }
         }
     };
+
     const handleContainerClick = () => {
         if (isProfileOfOwner) {
             setShowUploadView(!showUploadView);
         }
     };
+
     return (
         <>
             {showUploadView && (
-                <ProfilePictureUpload setShowUploadView={setShowUploadView} />
+                <ProfilePictureUpload
+                    setShowUploadView={setShowUploadView}
+                    onProfileUpdate={handleProfileUpdate} // Pass callback
+                />
             )}
             <div className="TeacherProfilePage">
                 {loading && <Loading />}
@@ -91,12 +115,12 @@ const TeacherProfilePage = () => {
                                     : `data:image/jpeg;base64,${data?.profilePicture}`
                             }
                             alt="user-image"
-                            className={"user-image"}
+                            className="user-image"
                         />
                         <img
                             src={camera_image}
                             alt="camera-image"
-                            className={"camera-image"}
+                            className="camera-image"
                         />
                     </div>
                     <div className="student-name-wrapper">
@@ -120,4 +144,5 @@ const TeacherProfilePage = () => {
         </>
     );
 };
+
 export default TeacherProfilePage;
