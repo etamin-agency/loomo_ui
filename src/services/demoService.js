@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
-const API_BASE_URL = 'http://16.170.15.46:8085/api/v1/demo-class';
+const API_BASE_URL = 'http://16.16.159.103:8085/api/v1/demo-class';
 // const API_BASE_URL = 'https://192.168.23.246:8448/api/v1/demo-class';
 // const API_BASE_URL = 'http:///localhost:8085/api/v1/demo-class';
 

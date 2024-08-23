@@ -18,7 +18,7 @@ export default function IconMenu(props) {
     const [openDialog, setOpenDialog] = useState(false);
 
     const copyLink = () => {
-        navigator.clipboard.writeText(`https://loomo.online/posts/${props?.postId}`)
+        navigator.clipboard.writeText(`${window.location.origin}/post/${props?.postId}`)
             .then(() => {
                 setOpenSnackbar(true);
             });
