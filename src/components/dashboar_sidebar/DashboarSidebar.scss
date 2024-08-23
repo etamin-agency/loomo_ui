@@ -13,7 +13,7 @@
     border-bottom-style: none;
     border-radius: 0px 10px 10px 0px;
     transition: width 0.3s ease; /* Smooth transition for width */
-    
+
     .wrapper {
         position: absolute;
         display: flex;
@@ -41,22 +41,17 @@
     text-align: start;
     border-radius: 20px;
     margin-bottom: 10px;
-}
 
-.student-name {
-    margin-right: 5px;
-    width: 80%;
-    height: 45px;
-    padding-top: 10px;
-    padding-left: 20px;
-    box-sizing: border-box;
-    text-align: start;
-    border-radius: 30px;
-}
+    .student-name {
+        margin-right: 5px;
+        padding: 10px;
+        border-radius: 30px;
 
-.student-name:hover {
-    background-color: rgb(245, 241, 246);
-    color: #15064e;
+        &:hover {
+            background-color: rgb(245, 241, 246);
+            color: #15064e;
+        }
+    }
 }
 
 .student-link {
@@ -66,8 +61,16 @@
     align-items: center;
     text-decoration: none;
     color: white;
+    gap: 15px;
     font-weight: 600;
     transition: color 0.3s, background-color 0.3s, border 0.3s;
+
+    .student-logo {
+        display: block;
+        width: 25px;
+        height: 25px;
+        transition: 1s opacity;
+    }
 
     &.active .student-name {
         background-color: rgb(245, 241, 246);
@@ -93,14 +96,6 @@
     display: block;
     width: 30%;
     margin: 0 auto;
-}
-
-.student-logo {
-    display: block;
-    width: 25px;
-    height: 25px;
-    margin-right: auto;
-    transition: 1s opacity;
 }
 
 .loomo {
