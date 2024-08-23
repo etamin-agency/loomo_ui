@@ -2,7 +2,7 @@ import axios from 'axios';
 import Cookie from 'js-cookie';
 import {jwtDecode} from "jwt-decode";
 
-const API_BASE_URL = 'http://13.60.43.94:8082/api/v1/publish-class';
+const API_BASE_URL = 'https://dev.loomo.online:8445/api/v1/publish-class';
 
 // const API_BASE_URL = 'http://localhost:8082/api/v1/publish-class';
 

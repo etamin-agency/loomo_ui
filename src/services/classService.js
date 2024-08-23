@@ -2,8 +2,8 @@ import axios from 'axios';
 import Cookie from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 
-// const API_BASE_URL = 'http://class.loomo.online:8087/api/v1/class';
-const API_BASE_URL = 'http://16.16.159.103:8087/api/v1/class';
+const API_BASE_URL = 'https://dev.loomo.online:8450/api/v1/class';
+// const API_BASE_URL = 'http://16.16.159.103:8087/api/v1/class';
 // const API_BASE_URL = 'http://localhost:8087/api/v1/class';
 const classService = {
 

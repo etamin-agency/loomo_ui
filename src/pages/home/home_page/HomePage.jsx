@@ -20,7 +20,7 @@ const HomePage = () => {
                     name="description"
                     content="This is the home page of our application"
                 />
-                <link rel="canonical" href="https://www.example.com/home" />
+                <link rel="canonical" href={`${window.location.origin}/home`} />
             </Helmet>
             <div className="header">
                 <h1>Loomo</h1>

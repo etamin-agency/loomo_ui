@@ -1,6 +1,6 @@
 import axios from 'axios';
 // const API_BASE_URL = 'http://search.loomo.online:8083/api/v1/search';
-const API_BASE_URL = 'http://13.48.248.105:8083/api/v1/search';
+const API_BASE_URL = 'https://dev.loomo.online:8446/api/v1/search';
 // const API_BASE_URL = 'http://localhost:8083/api/v1/search';
 
 const searchService = {

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // const API_BASE_URL = 'http://16.16.28.179:8080/api/v1/auth';
-// const API_BASE_URL = 'https://192.168.23.246:8443/api/v1/auth';
-const API_BASE_URL = 'http://16.171.5.22:8080/api/v1/auth';
+const API_BASE_URL = 'https://dev.loomo.online:8443/api/v1/auth';
+// const API_BASE_URL = 'http://16.171.5.22:8080/api/v1/auth';
 // const API_BASE_URL = 'http://localhost:8080/api/v1/auth';
 
 const authService = {

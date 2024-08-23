@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const API_BASE_URL = 'http://16.170.223.3:8084/api/v1/post';
-const API_BASE_URL = 'http://16.16.159.103:8084/api/v1/post';
+const API_BASE_URL = 'https://dev.loomo.online:8447/api/v1/post';
 // const API_BASE_URL = 'http://localhost:8084/api/v1/post';
 const postService = {
 

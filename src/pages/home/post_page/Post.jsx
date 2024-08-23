@@ -185,7 +185,7 @@ const Post = () => {
                     content={
                         data?.url
                             ? data?.url
-                            : `http://localhost:3000/post/${data?.postId}`
+                            : `${window.location.origin}/post/${data?.postId}`
                     }
                 />
                 <meta property="og:site_name" content="Loomo" />
