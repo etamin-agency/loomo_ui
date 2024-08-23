@@ -1,12 +1,19 @@
 .DemoViewStudentPage{
   position: absolute;
-  left: 340px;
+  right: 0;
   top: 0;
-  width: 70%;
-  height: 100%;
+  width: 87%;
   text-align: center;
-  padding: 100px;
+  padding: 100px 150px;
   font-size: 36px;
+  transition: width .3s ease;
+  
+  h2 {
+    position: relative;
+    z-index: -2;
+  }
+
+
   .custom-table th,
   .custom-table td {
     text-align: center;
@@ -27,7 +34,9 @@
   }
 
   .table-responsive {
+    position: relative;
     overflow-x: auto;
+    z-index: -2;
   }
   .student-link-some{
     margin: 0;

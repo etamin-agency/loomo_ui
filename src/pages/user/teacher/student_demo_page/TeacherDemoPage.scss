@@ -1,18 +1,4 @@
 .TeacherDemoPage {
-    // position: absolute;
-    // right: 0;
-    // top: 0;
-    // width: 88%;
-    // height: 100%;
-    // padding: 100px 5% 100px 100px;
-    // margin: 0 auto;
-    // background-color: #f7f9fc;
-    // font-size: 16px;
-    // text-align: center;
-    // box-sizing: border-box;
-    // overflow-y: auto;
-    // transition: width 0.3s ease;
-
     .demo-class-wrapper {
         display: flex;
         justify-content: space-between;
@@ -49,10 +35,6 @@
                 height: 100%;
                 object-fit: cover;
                 transition: transform 0.3s ease;
-
-                &:hover {
-                    transform: scale(1.05);
-                }
             }
         }
 
@@ -86,24 +68,38 @@
                 opacity: 1;
             }
 
-            
-
             img.create-icon {
                 width: 30px;
                 height: 30px;
             }
         }
     }
-    .plus {
+
+    .plus-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 50px;
-        height: 50px;
+        gap: 10px;
         margin-top: 10px;
-        background-color: #0564f5;
-        border-radius: 50%;
+
+        .plus {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+        }
+
+        .join-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: red;
+        }
     }
+
     .just-add-sign {
         font-size: 70px;
         color: #ff6f61;
@@ -134,14 +130,13 @@
     }
 }
 
-
-@media (max-width: 870px ) {
-  .TeacherDemoPage {
-    padding: 0;
-    .demo-class-wrapper {
-      display: grid;
-      grid-template-columns: 1fr;
-      place-items: center;
+@media (max-width: 870px) {
+    .TeacherDemoPage {
+        padding: 0;
+        .demo-class-wrapper {
+            display: grid;
+            grid-template-columns: 1fr;
+            place-items: center;
+        }
     }
-  }
 }
