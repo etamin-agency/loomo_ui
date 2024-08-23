@@ -75,7 +75,7 @@ const TeacherProfilePage = () => {
                 <ProfilePictureUpload setShowUploadView={setShowUploadView} />
             )}
             <div className="TeacherProfilePage">
-                {/* {loading && <Loading />} */}
+                {loading && <Loading />}
                 <div className="student-wrapper">
                     <div
                         className="user-image-container"
