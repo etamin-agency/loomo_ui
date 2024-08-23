@@ -11,6 +11,20 @@
     z-index: 5;
     transform: translate(-50%, -50%);
 
+    .loading-to-center {
+        width: 100%;
+        left: 0;
+        border-radius: 10px;
+
+        &::before {
+            content: "";
+            background-color: transparent;
+        }
+        .Loading {
+            top: 35%;
+        }
+    }
+
     .user-image-icon {
         display: block;
         width: 180px;
@@ -63,7 +77,7 @@
 .profile-picture-container {
     position: absolute;
     display: block;
-    transition: width .3s ease;
+    transition: width 0.3s ease;
     width: 88%;
     height: 100%;
     top: 0;

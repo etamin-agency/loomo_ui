@@ -1,31 +1,23 @@
 import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Button from "react-bootstrap/Button";
-
 import "./ProfilePictureUpload.scss";
 import settingService from "../../services/settingService";
 import Cookie from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import user_image from "../../assets/student_image.png";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setProfileImage } from "../../actions";
 import Loading from "../loading/Loading";
 
-const ProfilePictureUpload = (props) => {
-    const { profile } = useSelector((state) => state.profile);
+const ProfilePictureUpload = ({ setShowUploadView, onProfileUpdate }) => {
     const dispatch = useDispatch();
-
-    const [userImage, setUserImage] = useState(
-        profile?.profilePicture == null || profile?.profilePicture === ""
-            ? user_image
-            : `data:image/jpeg;base64,${profile?.profilePicture}`
-    );
+    const [userImage, setUserImage] = useState(user_image);
     const [isButtonDisabled, setButtonDisabled] = useState(true);
     const [file, setFile] = useState();
     const [loading, setLoading] = useState(false);
 
     const onDrop = useCallback((acceptedFiles) => {
-        console.log(acceptedFiles);
         try {
             setFile(acceptedFiles[0]);
             const reader = new FileReader();
@@ -47,15 +39,18 @@ const ProfilePictureUpload = (props) => {
         await settingService
             .updateProfileImage(userName, formData)
             .catch((err) => console.log(err));
-        props.setShowUploadView(false);
+        setShowUploadView(false);
         await settingService.getUserProfileImage(userName).then((data) => {
             dispatch(setProfileImage(data));
             setLoading(false);
+            onProfileUpdate(); // Call the callback to refresh profile data
         });
     };
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
     });
+
     return (
         <div className="profile-picture-container">
             <div className="ProfilePictureUpload">
@@ -65,7 +60,6 @@ const ProfilePictureUpload = (props) => {
                     alt="user-image"
                     className="user-image-icon"
                 />
-
                 <div className="dropzone-block" {...getRootProps()}>
                     <input {...getInputProps()} />
                     {isDragActive ? (
@@ -82,7 +76,7 @@ const ProfilePictureUpload = (props) => {
                     Update
                 </Button>
                 <div
-                    onClick={() => props.setShowUploadView(false)}
+                    onClick={() => setShowUploadView(false)}
                     className="btn-close close-button"
                 ></div>
             </div>
