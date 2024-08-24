@@ -2,6 +2,7 @@
   position: absolute;
   right: 0;
   top: 0;
+  height: 100%;
   width: 87%;
   text-align: center;
   padding: 100px 150px;
@@ -35,7 +36,7 @@
 
   .table-responsive {
     position: relative;
-    overflow-x: auto;
+    overflow-x: hidden;
     z-index: -2;
   }
   .student-link-some{
