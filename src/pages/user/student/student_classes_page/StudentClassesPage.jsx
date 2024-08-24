@@ -116,10 +116,8 @@ const StudentClassesPage = () => {
     return (
         <div className="StudentClassPage">
             {loading && <Loading />}
-
-            
-
-            <div className="no-democlasses-message">
+            {classes?.length === 0 && (
+                <div className="no-democlasses-message">
                     <h2>No Classes Available</h2>
                     {role === "student" ? (
                         <p>
@@ -130,6 +128,7 @@ const StudentClassesPage = () => {
                         <p>Looks like no one enrolled in your classes</p>
                     )}
                 </div>
+            )}
 
             <div className="class-wrapper">
                 {classes?.map((data) => {
@@ -208,14 +207,13 @@ const StudentClassesPage = () => {
                     );
                 })}
             </div>
-            {isDemoExists && role === "teacher" ?(
+            {isDemoExists && role === "teacher" ? (
                 <div>
-                <h1>Demo Classes</h1>
-                <br/>
-                <TeacherDemoPage/>
-            </div>
-            ): null}
-            
+                    <h1>Demo Classes</h1>
+                    <br />
+                    <TeacherDemoPage />
+                </div>
+            ) : null}
         </div>
     );
 };

@@ -14,17 +14,18 @@ const TeacherDemoPage = () => {
     const [demoClass, setDemoClass] = useState();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+
     useEffect(() => {
         fetchDemoClasses();
     }, []);
+
     const fetchDemoClasses = async () => {
         await demoService.getDemoClasses().then(async (data) => {
             setDemoClass(data);
-            console.log(data);
             setLoading(false);
         });
     };
-    console.log(demoClass);
+
     const viewStudentInDemoClass = (id, isDemoTime, teacherId) => {
         if (isDemoTime) {
             demoRoomService.createRoom(id, teacherId).then((data) => {
@@ -39,7 +40,6 @@ const TeacherDemoPage = () => {
         const endTime = new Date(demoTime).getTime();
         const currentTime = new Date().getTime();
         const timeDiff = endTime - currentTime;
-
         const twoHoursInMilliseconds = 2 * 60 * 60 * 1000;
 
         return Math.abs(timeDiff) <= twoHoursInMilliseconds;
@@ -69,8 +69,6 @@ const TeacherDemoPage = () => {
                                     src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.introVideoImgLink}`}
                                     alt="post"
                                 />
-
-                                {/* <div className="timer-wrapper"></div> */}
                             </div>
                             <div className="demo-class-title">
                                 {data?.title}
@@ -92,4 +90,5 @@ const TeacherDemoPage = () => {
         </div>
     );
 };
+
 export default TeacherDemoPage;
