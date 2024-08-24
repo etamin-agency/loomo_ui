@@ -174,12 +174,7 @@ const Post = () => {
                     } ${teacher?.lastName || "Tate"}`}
                 />
                 <meta property="og:description" content={data?.description} />
-                <meta
-                    property="og:image"
-                    content={`https://d37zebxsdrcn1w.cloudfront.net/${
-                        data?.introVideoImgLink || "default-placeholder.jpg"
-                    }`}
-                />
+                <meta property="og:image" content={file} />
                 <meta
                     property="og:url"
                     content={
@@ -192,7 +187,7 @@ const Post = () => {
                 <meta property="og:type" content="loomo_com:course" />
                 <meta
                     property="og:video"
-                    content={`https://d37zebxsdrcn1w.cloudfront.net/${
+                    content={`https://d1kcxr0k66kiti.cloudfront.net/${
                         data?.introVideoLink || "default-placeholder.mp4"
                     }`}
                 />
@@ -208,12 +203,7 @@ const Post = () => {
                     } ${teacher?.lastName || "Tate"}`}
                 />
                 <meta name="twitter:description" content={data?.description} />
-                <meta
-                    name="twitter:image"
-                    content={`https://d37zebxsdrcn1w.cloudfront.net/${
-                        data?.introVideoImgLink || "default-placeholder.jpg"
-                    }`}
-                />
+                <meta name="twitter:image" content={file} />
                 <meta name="application-name" content="Loomo" />
                 <script type="application/ld+json">
                     {`{
@@ -225,13 +215,11 @@ const Post = () => {
                         "description": "${
                             data?.description || "Default Course Description"
                         }",
-                        "image": "https://d37zebxsdrcn1w.cloudfront.net/${
-                            data?.introVideoImgLink || "default-placeholder.jpg"
-                        }",
+                        "image": "${file}",
                         "provider": {
                             "@type": "Organization",
                             "name": "Loomo",
-                            "sameAs": "https://www.loomo.com"
+                            "sameAs": "${window.location.origin}"
                         },
                         "educationalCredentialAwarded": "Certificate of Completion",
                         "hasCourseInstance": {
