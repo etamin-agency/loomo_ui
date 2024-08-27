@@ -295,16 +295,7 @@ const DemoRoomPage = () => {
         <div className="DemoRoomPage">
             {loading && <Loading />}
             {showCreateClass && <CreateClassView createClass={createClassAndClose} close={() => setShowCreateClass(false)} />}
-            <div className={`students-video-wrapper ${!showStudents && 'hide-students'}`}>
-                {Array.from(participantsView.current.values()).map((participant, index) => {
-                    if (participant.props.name === teacherName) return;
-                    return (
-                        <div className="demo-video-item" key={index}>
-                            {participant}
-                        </div>
-                    );
-                })}
-            </div>
+            
 
             <div className="teacher-group">
                 <div className="teacher-video-wrapper">
@@ -313,9 +304,17 @@ const DemoRoomPage = () => {
                             {participantsView.current.get(teacherName)}
                         </div>
                         <div className="mates-video">
-                            <div className="mate"></div>
-                            <div className="mate"></div>
-                            <div className="mate"></div>
+                           
+                            <div className={`students-video-wrapper ${!showStudents && 'hide-students'}`}>
+                                {Array.from(participantsView.current.values()).map((participant, index) => {
+                                    if (participant.props.name === teacherName) return;
+                                    return (
+                                        <div className="demo-video-item" key={index}>
+                                            {participant}
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
                         <div className="tool-wrapper">
                             <div className="tool-center-wrapper">

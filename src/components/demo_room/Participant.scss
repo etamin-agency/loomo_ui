@@ -1,11 +1,42 @@
-.student-video-item {
-  height: 100%;
-  width: 100%;
+// .student-video-item {
+//   height: 100%;
+//   width: 100%;
 
+//   .student-video {
+//     height: 100%;
+//     width: 100%;
+//     object-fit: cover;
+//     border-radius: 10px;
+//   }
+// }
+.student-video-item {
+  position: relative;
+
+  .fullscreen-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+          background: rgba(0, 0, 0, 0.7);
+      }
+  }
   .student-video {
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 10px;
+  }
+  .non-mirrored {
+    transform: scaleX(-1);
   }
 }

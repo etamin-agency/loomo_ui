@@ -1,10 +1,16 @@
-import { useEffect, useRef } from "react";
+
+import { useEffect,useState, useRef,useCallback } from "react";
 import kurentoUtils from 'kurento-utils';
+import { Fullscreen, FullscreenExit } from '@mui/icons-material'; // Import Material-UI icons
+
 import './Participant.scss'
 
 const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isAudioOn = true, isVideoOn = true }) => {
     const rtcPeer = useRef(null);
     const videoRef = useRef(null);
+    const [containerElement, setContainerElement] = useState(null);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
         if (sdpAnswer) {
@@ -38,6 +44,7 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
                         facingMode: "user",
                         echoCancellation: true,
                         noiseSuppression: true,
+                        mirror: false 
                     } : false
                 };
                 console.log(constraints);
@@ -80,6 +87,7 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
         }
     }, [isOwnCamera, isAudioOn, isVideoOn, name, sendMessage]);
 
+ 
     const offerToReceiveVideo = (error, offerSdp, wp) => {
         if (error) return console.error("sdp offer error")
         console.log('Invoking SDP offer callback function');
@@ -141,11 +149,80 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
             name: name
         };
         sendMessage(message);
-    }
+    } 
+    
+
+    useEffect(() => {
+        setIsMounted(true);
+        return () => setIsMounted(false);
+    }, []);
+
+    
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        };
+    }, []);
+
+    const toggleFullscreen = useCallback(() => {
+        console.log("Toggle fullscreen called, containerElement:", containerElement);
+        if (!isMounted) {
+            console.log("Component is not mounted, aborting fullscreen toggle");
+            return;
+        }
+
+        if (!document.fullscreenElement) {
+            if (containerElement) {
+                if (containerElement.requestFullscreen) {
+                    containerElement.requestFullscreen().catch(err => {
+                        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+                    });
+                } else if (containerElement.mozRequestFullScreen) { // Firefox
+                    containerElement.mozRequestFullScreen();
+                } else if (containerElement.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                    containerElement.webkitRequestFullscreen();
+                } else if (containerElement.msRequestFullscreen) { // IE/Edge
+                    containerElement.msRequestFullscreen();
+                }
+            } else {
+                console.error('Container element not found');
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari and Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+        }
+    }, [containerElement, isMounted]);
+
+
+  
 
     return (
-        <div className="student-video-item">
-            <video className="student-video" ref={videoRef} autoPlay playsInline></video>
+        <div 
+            className="student-video-item" 
+            ref={(el) => {
+                if (el) {
+                    console.log("Container ref set");
+                    setContainerElement(el);
+                }
+            }}
+        >
+            <video className="student-video non-mirrored" ref={videoRef} autoPlay playsInline></video>
+            <button className="fullscreen-button" onClick={toggleFullscreen}>
+                {isFullscreen ? <FullscreenExit /> : <Fullscreen />}
+            </button>
         </div>
     )
 }
