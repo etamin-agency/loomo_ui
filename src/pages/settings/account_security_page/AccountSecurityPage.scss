@@ -1,0 +1,63 @@
+.AccountSecurityPage {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 90%;
+    height: 100%;
+    padding: 80px;
+    font-size: 18px;
+    background-color: #f5f7fa;
+    .form-email,
+    .form-password {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        gap: 10px;
+        width: 50%;
+
+        .label-text {
+            font-size: 18px;
+            color: #008080; /* Teal */
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+
+            .input-field {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                color: #333;
+                pointer-events: none; /* Non-clickable */
+            }
+
+            .edit-button {
+                position: absolute;
+                right: 10px;
+                color: #008080; /* Teal */
+            }
+        }
+    }
+
+    .MuiDialog-paper {
+        border-radius: 8px;
+    }
+
+    .MuiDialogTitle-root {
+        background-color: #008080; /* Teal */
+        color: #fff;
+    }
+
+    .MuiDialogActions-root {
+        button {
+            color: #008080; /* Teal */
+        }
+    }
+
+    .MuiTextField-root {
+        margin-bottom: 16px;
+    }
+}

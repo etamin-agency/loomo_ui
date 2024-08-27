@@ -6,8 +6,12 @@ const SettingsSideBar = () => {
     const settingsPages = [
         {
             link: "edit",
-            name: "Edit Profile",
+            name: "Profile",
         },
+        {
+            link: 'security',
+            name: 'Account Security'
+        }
     ];
     return (
         <aside className="SettingsSideBar">

@@ -7,12 +7,6 @@ const SettingsPage = () => {
 
     return (
         <div className="SettingsPage">
-            {/* <div className="settings-page-header"></div>
-            <div className="dashboard-link">
-                <Link to="/classes">
-                    <div className="loomo">Loomo</div>
-                </Link>
-            </div> */}
             <SettingsSideBar/>
             <Outlet/>
         </div>

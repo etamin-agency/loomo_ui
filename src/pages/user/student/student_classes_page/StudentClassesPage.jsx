@@ -116,19 +116,17 @@ const StudentClassesPage = () => {
     return (
         <div className="StudentClassPage">
             {loading && <Loading />}
-            {classes?.length === 0 && (
-                <div className="no-democlasses-message">
-                    <h2>No Classes Available</h2>
-                    {role === "student" ? (
-                        <p>
-                            You’re not enrolled in any classes. Check out our
-                            available courses!
-                        </p>
-                    ) : (
-                        <p>Looks like no one enrolled in your classes</p>
-                    )}
-                </div>
-            )}
+            <div className="no-democlasses-message">
+                <h2>No Classes Available</h2>
+                {role === "student" ? (
+                    <p>
+                        You’re not enrolled in any classes. Check out our
+                        available courses!
+                    </p>
+                ) : (
+                    <p>Looks like no one enrolled in your classes</p>
+                )}
+            </div>
 
             <div className="class-wrapper">
                 {classes?.map((data) => {
