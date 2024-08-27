@@ -45,7 +45,15 @@ const AccountEditPage = () => {
     return (
         <div className="AccountEditPage">
             <form onSubmit={formik.handleSubmit}>
-                <div className="form-group">
+                <div className="form-name">
+                    <div className="bio-text">First Name:</div>
+                    <input type="text" className="bio-textarea" />
+                </div>
+                <div className="form-name">
+                    <div className="bio-text">Last Name:</div>
+                    <input type="text" className="bio-textarea" />
+                </div>
+                <div className="form-bio">
                     <div className="bio-text">Bio:</div>
                     <textarea
                         className={`bio-textarea ${

@@ -35,6 +35,7 @@ import EditClassPage from "../pages/user/teacher/edit_class_page/EditClassPage";
 import CreateEditPostPage from "../pages/user/teacher/create_edit_post_page/CreateEditPostPage";
 import TeacherProfilePage from "../pages/user/teacher/teacher_profile_page/TeacherProfilePage";
 import PostListPage from "../pages/user/teacher/posts/PostListPage";
+import AccountSecurityPage from "../pages/settings/account_security_page/AccountSecurityPage";
 
 
 const HomePage = lazy(() => import("../pages/home/home_page/HomePage"))
@@ -110,6 +111,7 @@ function App() {
                                 </Route>
                                 <Route path="/account" element={<SettingsPage/>}>
                                     <Route path="/account/edit" element={<AccountEditPage/>}/>
+                                    <Route path="/account/security" element={<AccountSecurityPage />} />
                                 </Route>
                                 <Route path="/edit">
                                     <Route path="/edit/:postId" element={
@@ -122,7 +124,6 @@ function App() {
                                             <CreateEditPostPage/>
                                         </LocalizationProvider>
                                     }/>
-
                                 </Route>
                             </Route>
 
