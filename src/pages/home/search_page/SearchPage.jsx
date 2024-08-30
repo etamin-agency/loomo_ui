@@ -146,7 +146,8 @@ const SearchPage = () => {
                             >
                                 <img
                                     className="post-image"
-                                    src={`https://d37zebxsdrcn1w.cloudfront.net/${post?.imageId}`}
+                                    // src={`https://d37zebxsdrcn1w.cloudfront.net/${post?.imageId}`}
+                                    src={`https://post-images-loomo.s3.eu-north-1.amazonaws.com/${post?.imageId}`}
                                     alt="post-image"
                                 />
                             </Link>

@@ -1,7 +1,7 @@
 
 import { useEffect,useState, useRef,useCallback } from "react";
 import kurentoUtils from 'kurento-utils';
-import { Fullscreen, FullscreenExit } from '@mui/icons-material'; // Import Material-UI icons
+import { Fullscreen, FullscreenExit } from '@mui/icons-material';
 
 import './Participant.scss'
 
@@ -14,6 +14,7 @@ const Participant = ({ isOwnCamera, name, sendMessage, sdpAnswer, candidate, isA
 
     useEffect(() => {
         if (sdpAnswer) {
+            console.log("------------------------------------------------sdp answer")
             rtcPeer.current.processAnswer(sdpAnswer, function (error) {
                 if (error) return console.error(error);
             });

@@ -125,10 +125,12 @@ const CreateEditPostPage = () => {
                         classDuration: data?.duration,
                     }));
                     setImage(
-                        `https://d37zebxsdrcn1w.cloudfront.net/${data.introVideoImgLink}`
+                        // `https://d37zebxsdrcn1w.cloudfront.net/${data.introVideoImgLink}`
+                        `https://post-images-loomo.s3.eu-north-1.amazonaws.com/${data.introVideoImgLink}`
                     );
                     setVideo(
-                        `https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoLink}`
+                        // `https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoLink}`
+                        `https://post-videos-loomo.s3.eu-north-1.amazonaws.com/${data.introVideoLink}`
                     );
                 })
                 .catch(() => {
@@ -183,7 +185,7 @@ const CreateEditPostPage = () => {
         setVideoFile(file);
         setErrors((prevState) => ({
             ...prevState,
-            ["video"]: video,
+            "video": video,
         }));
         const reader = new FileReader();
         reader.onload = () => {
@@ -202,7 +204,7 @@ const CreateEditPostPage = () => {
         setImageFile(file);
         setErrors((prevState) => ({
             ...prevState,
-            ["image"]: image,
+            "image": image,
         }));
         const reader = new FileReader();
         reader.onload = () => {

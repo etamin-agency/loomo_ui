@@ -66,7 +66,8 @@ const TeacherDemoPage = () => {
                             <div className="demo-class-image-wrapper">
                                 <img
                                     className="demo-class-image"
-                                    src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.introVideoImgLink}`}
+                                    // src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.introVideoImgLink}`}
+                                    src={`https://post-images-loomo.s3.eu-north-1.amazonaws.com/${data?.introVideoImgLink}`}
                                     alt="post"
                                 />
                             </div>

@@ -45,7 +45,8 @@ const Post = () => {
             try {
                 const data = await postService.getPost(uuid);
                 if (isMounted) {
-                    const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
+                    // const url = `https://d1kcxr0k66kiti.cloudfront.net/${data?.introVideoLink}`;
+                    const url = `https://post-videos-loomo.s3.eu-north-1.amazonaws.com/${data?.introVideoLink}`;
                     const classTime = new Date(data?.classTime);
                     const demoDay = new Date(data?.demoTime);
                     const classTimeObj = {

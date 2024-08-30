@@ -34,7 +34,8 @@ const PublishPostsPage = () => {
                         {data?.map((item) => (
                             <div className="published-post" key={item?.postId}>
                                 <Link to={`/edit/${item.postId}`}>
-                                    <img className="post-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${item?.imageId}`}
+                                    {/*<img className="post-image" src={`https://d37zebxsdrcn1w.cloudfront.net/${item?.imageId}`}*/}
+                                    <img className="post-image" src={`https://post-images-loomo.s3.eu-north-1.amazonaws.com/${item?.imageId}`}
                                          alt="post-photo"/>
                                 </Link>
                                 <div className="post-title">

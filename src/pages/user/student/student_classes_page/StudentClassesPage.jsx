@@ -139,7 +139,8 @@ const StudentClassesPage = () => {
                             <div className="class-image-wrapper">
                                 <img
                                     className="class-image"
-                                    src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.classImgLink}`}
+                                    // src={`https://d37zebxsdrcn1w.cloudfront.net/${data?.classImgLink}`}
+                                    src={`https://post-images-loomo.s3.eu-north-1.amazonaws.com/${data?.classImgLink}`}
                                     alt="post"
                                 />
                                 <ClassMenu classId={data?.classId} />

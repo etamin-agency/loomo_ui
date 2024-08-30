@@ -56,7 +56,8 @@ const PostListPage = () => {
                             {/*<Link to={`/demo/${item?.postId}`}>*/}
                                 <img
                                     className="post-image"
-                                    src={`https://d37zebxsdrcn1w.cloudfront.net/${item?.imageId}`}
+                                    // src={`https://d37zebxsdrcn1w.cloudfront.net/${item?.imageId}`}
+                                    src={`https://post-images-loomo.s3.eu-north-1.amazonaws.com/${item?.imageId}`}
                                     alt="post-photo"
                                 />
                             {/*</Link>*/}
