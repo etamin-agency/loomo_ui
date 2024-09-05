@@ -125,12 +125,12 @@ const CreateEditPostPage = () => {
                         classDuration: data?.duration,
                     }));
                     setImage(
-                        // `https://d37zebxsdrcn1w.cloudfront.net/${data.introVideoImgLink}`
-                        `https://post-images-loomo.s3.eu-north-1.amazonaws.com/${data.introVideoImgLink}`
+                        `https://d3lbjyikmv8xuy.cloudfront.net/${data.introVideoImgLink}`
+                        // `https://post-images-loomo.s3.eu-north-1.amazonaws.com/${data.introVideoImgLink}`
                     );
                     setVideo(
-                        // `https://d1kcxr0k66kiti.cloudfront.net/${data.introVideoLink}`
-                        `https://post-videos-loomo.s3.eu-north-1.amazonaws.com/${data.introVideoLink}`
+                        `https://d1a1pwt8h1hq88.cloudfront.net/${data.introVideoLink}`
+                        // `https://post-videos-loomo.s3.eu-north-1.amazonaws.com/${data.introVideoLink}`
                     );
                 })
                 .catch(() => {
