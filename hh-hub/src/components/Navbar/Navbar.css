@@ -1,0 +1,38 @@
+
+nav{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    justify-content: space-around;
+    position: fixed;
+    z-index: 2;
+    opacity: 0.99;
+    background-color:black;
+    
+}
+
+.Navlinks{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+
+}
+.Navlinks a{
+    text-decoration: none;
+    color: lightgray;
+}
+
+.logo-wrapper{
+    display: flex;
+    gap: 10px;
+}
+.logo-wrapper b{
+    color: white;
+    margin-top: 5px;
+    display: inline-block;
+}
+small{
+    color: green;
+}
